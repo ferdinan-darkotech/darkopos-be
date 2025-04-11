@@ -1,0 +1,45 @@
+"use strict";
+
+module.exports = function (sequelize, DataTypes) {
+  var View = sequelize.define("vw_follow_up_detail_002", {
+    followUpDetailId: { type: DataTypes.INTEGER },
+    followUpId: { type: DataTypes.INTEGER },
+    posDetailId: { type: DataTypes.INTEGER },
+    productId: { type: DataTypes.INTEGER },
+    productCode: { type: DataTypes.STRING },
+    productName: { type: DataTypes.STRING },
+    code: { type: DataTypes.STRING },
+    posId: { type: DataTypes.INTEGER },
+    memberId: { type: DataTypes.STRING },
+    memberCode: { type: DataTypes.STRING },
+    memberName: { type: DataTypes.STRING },
+    mobileNumber: { type: DataTypes.STRING },
+    phoneNumber: { type: DataTypes.STRING },
+    policeNo: { type: DataTypes.STRING },
+    policeNoId: { type: DataTypes.INTEGER },
+    lastMeter: { type: DataTypes.INTEGER },
+    transNoId: { type: DataTypes.INTEGER },
+    transNo: { type: DataTypes.STRING },
+    transDate: { type: DataTypes.DATE },
+    transTime: { type: DataTypes.DATE },
+    transNoStatus: { type: DataTypes.STRING },
+    dpp: { type: DataTypes.NUMERIC },
+    ppn: { type: DataTypes.NUMERIC },
+    nettoTotal: { type: DataTypes.NUMERIC },
+    status: { type: DataTypes.STRING },
+    lastCaller: { type: DataTypes.STRING },
+    lastCall: { type: DataTypes.STRING },
+    customerSatisfaction: { type: DataTypes.STRING },
+    postService: { type: DataTypes.DATE },
+    nextCall: { type: DataTypes.DATE },
+    pendingReason: { type: DataTypes.STRING },
+    denyOfferingReason: { type: DataTypes.STRING },
+    acceptOfferingDate: { type: DataTypes.DATE },
+    acceptOfferingReason: { type: DataTypes.STRING },
+    createdBy: { type: DataTypes.STRING },
+    createdAt: { type: DataTypes.DATE },
+    updatedBy: { type: DataTypes.STRING },
+    updatedAt: { type: DataTypes.DATE }
+  }, { tableName: 'vw_follow_up_detail_002' })
+  return View
+}

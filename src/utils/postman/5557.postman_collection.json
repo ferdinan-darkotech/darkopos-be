@@ -1,0 +1,5080 @@
+{
+	"info": {
+		"name": "5557",
+		"_postman_id": "cd67770c-832a-4085-dd11-3f273b320399",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "00. others",
+			"item": [
+				{
+					"name": "01. upload file",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"value": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5557/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5557",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get employee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}employees?page=2&pageSize=5",
+							"host": [
+								"{{uri}}employees"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. get ip address",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userid\":\"ownerPOS\",\"password\":\"admin1618\", \"userrole\":\"---\"}"
+						},
+						"url": {
+							"raw": "http://192.168.88.170:5557/api/v1/utils/ipaddr",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"88",
+								"170"
+							],
+							"port": "5557",
+							"path": [
+								"api",
+								"v1",
+								"utils",
+								"ipaddr"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "01. users",
+			"item": [
+				{
+					"name": "010. main",
+					"item": [
+						{
+							"name": "01. login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c9fbe65c-ffc1-4dd6-85d9-2515bd88b958",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"Authorization\", \"JWT \" + jsonData.id_token);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"userid\":\"ownerPOS\",\"password\":\"owner1618\"}"
+								},
+								"url": {
+									"raw": "{{uri}}users/login",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01a. loginrole",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d84ee9f7-b1fc-4842-954c-71c12f79afbc",
+										"type": "text/javascript",
+										"exec": [
+											"//{\"userid\":\"ownerPOS\",\"password\":\"owner1618\",\"userrole\":\"OWN\"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"userid\":\"ownerPOS\",\"password\":\"owner1618\",\"userrole\":\"OWN\"}"
+								},
+								"url": {
+									"raw": "{{uri}}users/login",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01b. prelogin",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "be47e061-76f2-4660-ac15-29aea2324417",
+										"type": "text/javascript",
+										"exec": [
+											"//{\"userid\":\"superPOS\",\"password\":\"supersuper\"}",
+											"//{\"userid\":\"ownerPOS\",\"password\":\"owner1618\"}",
+											"//{\"userid\":\"adminPOS\",\"password\":\"adminadmin\"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"userid\":\"adminPOS\",\"password\":\"adminadmin\"}"
+								},
+								"url": {
+									"raw": "{{uri}}users/prelogin",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"prelogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. logout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/logout",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. get a user",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/000001",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"000001"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. get some users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users",
+									"host": [
+										"{{uri}}users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. insert a user",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"isEmployee\":true,\n   \"userName\":\"HADI64s\",\n   \"active\":false,\n   \"userRole\":\"\",\n   \"email\":\"HADI64s@GMAIL.COM\",\n   \"fullName\":\"HADI\",\n   \"password\":\"xxxxxx\",\n   \"confirm\":\"xxxxxx\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}users/E000056",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"E000056"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. update a user",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"isEmployee\":true,\n   \"userName\":\"HERMAN\",\n   \"active\":true,\n   \"userRole\":\"-\",\n   \"email\":\"HERMAN@ITCFINANCE.COM\",\n   \"fullName\":\"HERMANss\",\n   \"password\":\"xxxxxxxy\",\n   \"confirm\":\"xxxxxxxy\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}users/E000057",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"E000057"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "07. delete a user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/E000056",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"E000056"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "08. delete some users",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"userId\":[\"E000054\",\"E000055\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}users",
+									"host": [
+										"{{uri}}users"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "01a. user roles",
+					"item": [
+						{
+							"name": "01. get a user's role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/roles/ADM",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"roles",
+										"ADM"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some user's role",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/roles",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02a. get some user's role as value,label",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/roles?as=value,label",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"roles"
+									],
+									"query": [
+										{
+											"key": "as",
+											"value": "value,label"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert and delete user role",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"{\"in\":[\"REP\"],\"out\":[\"ADM\",\"CSH\"]}",
+											"{\"in\":[],\"out\":[\"REP\"]}",
+											"{\"in\":[\"ADM\",\"REP\"],\"out\":[\"OWN\"]}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"in\":[\"REP\"],\"out\":[]}"
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/roles",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "01b. totp",
+					"item": [
+						{
+							"name": "01. generate totp",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/totp",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"totp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. mode verify",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0bfa0b94-71c9-4fe9-b98c-1641c9281d49",
+										"type": "text/javascript",
+										"exec": [
+											"//{\"userid\":\"adminPOS\",\"password\":\"adminadmin\",\"verification\":\"044480\"}"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"userid\":\"adminPOS\",\"password\":\"adminadmin\",\"verification\":\"044480\"}"
+								},
+								"url": {
+									"raw": "{{uri}}users/adminPOS/totp",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"adminPOS",
+										"totp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. mode load",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/totp?mode=load",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"totp"
+									],
+									"query": [
+										{
+											"key": "mode",
+											"value": "load"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "01c. user stores",
+					"item": [
+						{
+							"name": "01. get user stores",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/stores",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"stores"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "01a. get user stores copy for lov",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/stores?mode=lov",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"stores"
+									],
+									"query": [
+										{
+											"key": "mode",
+											"value": "lov",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. update user default store",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"defaultStore\":\"000-001\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}users/ownerPOS/stores",
+									"host": [
+										"{{uri}}users"
+									],
+									"path": [
+										"ownerPOS",
+										"stores"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "02. employees",
+			"item": [
+				{
+					"name": "01. get an employee",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}employees/E000001",
+							"host": [
+								"{{uri}}employees"
+							],
+							"path": [
+								"E000001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some employees",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}employees",
+							"host": [
+								"{{uri}}employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert an employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeName\": \"ZAHIRA\",\n  \"positionId\": 3,\n  \"address01\": \"\",\n  \"address02\": null,\n  \"cityId\": 2,\n  \"mobileNumber\": \"082366530053\",\n  \"phoneNumber\": null,\n  \"email\": null\n}"
+						},
+						"url": {
+							"raw": "{{uri}}employees/000018",
+							"host": [
+								"{{uri}}employees"
+							],
+							"path": [
+								"000018"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update an employee",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"employeeName\":\"AIR BATERAI\",\n   \"positionId\":\"0001\",\n   \"address01\":\"jalan pemuda no. 21\",\n   \"address02\":\"jalan pemuda no. 1\",\n   \"city\":\"medan\",\n   \"state\":\"sumut\",\n   \"zipCode\":\"20000\",\n   \"mobileNumber\":\"08123456789\",\n   \"phoneNumber\":\"06121232\",\n   \"email\":\"A@aa.com\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}employees/E0000011",
+							"host": [
+								"{{uri}}employees"
+							],
+							"path": [
+								"E0000011"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete an employee",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}employees/E0000011",
+							"host": [
+								"{{uri}}employees"
+							],
+							"path": [
+								"E0000011"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete some employees",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"employeeId\":[\"E000011\",\"E0000010\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}employees",
+							"host": [
+								"{{uri}}employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07. lov for menu setting | users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}employees?fields=employeeId,employeeName,email,positionName&for=user",
+							"host": [
+								"{{uri}}employees"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "employeeId,employeeName,email,positionName"
+								},
+								{
+									"key": "for",
+									"value": "user"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. customers",
+			"item": [
+				{
+					"name": "030. main",
+					"item": [
+						{
+							"name": "01. get a customer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN001000104",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN001000104"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members",
+									"host": [
+										"{{uri}}members"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02a. search customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members?memberName=had",
+									"host": [
+										"{{uri}}members"
+									],
+									"query": [
+										{
+											"key": "memberName",
+											"value": "had",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"memberName\":\"HADI\",\n   \"memberGroupId\": 1,\n   \"memberTypeId\": 1,\n   \"cityId\": 1,\n   \"idType\":\"KTP\",\n   \"idNo\":\"1234567890\",\n   \"address01\":\"jalan Sikupang no. 1\",\n   \"address02\":\"medan timur\",\n   \"city\":\"medan\",\n   \"state\":\"sumut\",\n   \"zipCode\":\"20000\",\n   \"phoneNumber\":\"081234567890\",\n   \"email\":\"hadi@gmail.com\",\n   \"birthDate\":\"2017-07-19 13:13:13\",\n   \"taxId\":\"1212121212\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a customer",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"memberName\":\"HADIs\",\n   \"memberGroupId\": \"2\",\n   \"memberTypeId\": \"1\",\n   \"idType\": \"SIM\",\n   \"idNo\": \"1111122222\",\n   \"address01\": \"pemuda 1\",\n   \"address02\": \"medan timur\",\n   \"cityId\": \"medan\",\n   \"state\" : \"sumut\",\n   \"zipCode\": \"20000\",\n   \"phoneNumber\": \"08123123\",\n   \"email\": \"buka@email.com\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a customer",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some customers",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"memberCode\":[\"MDN00070\",\"MDN00071\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}members",
+									"host": [
+										"{{uri}}members"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "03a. customers group",
+					"item": [
+						{
+							"name": "01. get a customer's group",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/groups/BKL",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups",
+										"BKL"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some customer's group",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/groups",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a customer's group",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"groupName\": \"Pemuda Preman\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/groups/PeP",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups",
+										"PeP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a customer's group",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"groupName\": \"PePre\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/groups/PeP",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups",
+										"PeP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a customer's group",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/groups/PeP",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups",
+										"PeP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some customers's groups",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"groupCode\":[\"BKL\",\"ECE\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}members/groups",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"groups"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "03b. customers type",
+					"item": [
+						{
+							"name": "01. get a customer's type",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/types/G",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types",
+										"G"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some customer's type",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/types",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a customer's type",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"groupName\": \"Platinum\",\n   \"discPct01\": \"1\",\n   \"discPct02\": \"0\",\n   \"discPct03\": \"0\",\n   \"discNominal\": \"0\",\n   \"sellPrice\" : \"HET\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/types/P",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types",
+										"P"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a customer's type",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"typeName\": \"Gold\",\n   \"discPct01\": \"11\",\n   \"discPct02\": \"0\",\n   \"discPct03\": \"0\",\n   \"discNominal\": \"0\",\n   \"sellPrice\" : \"HET\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/types/G",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types",
+										"G"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a customer's type",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/types/G",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types",
+										"G"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some customers's types",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"typeCode\":[\"G\",\"P\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}members/types",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"types"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "03c. customers unit",
+					"item": [
+						{
+							"name": "01. get a customer's unit",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units/BK2014NE",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units",
+										"BK2014NE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some customer's unit",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a customer's unit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"idType\": \"SIM\",\n   \"merk\": \"TOYOTA\",\n   \"model\": \"AVANZA\",\n   \"type\": \"VELOZ\",\n   \"year\": \"2014\",\n   \"chassisNo\" : \"MJSFDSFDSD123123\",\n   \"machineNo\": \"JSDFSD-ASDFDSF\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units/BK2014NE",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units",
+										"BK2014NE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a customer's unit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"idType\": \"SIM\",\n   \"merk\": \"TOYOTA\",\n   \"model\": \"AVANZA\",\n   \"type\": \"VELOZ\",\n   \"year\": \"2013\",\n   \"chassisNo\" : \"MJSFDSFDSD123123\",\n   \"machineNo\": \"JSDFSD-ASDFDSF\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units/BK2013NE",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units",
+										"BK2013NE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a customer's unit",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units/BK2012NE",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units",
+										"BK2012NE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some customers's unit",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"policeNo\":[\"BK2011NE\",\"BK2012NE\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}members/MDN00073/units",
+									"host": [
+										"{{uri}}members"
+									],
+									"path": [
+										"MDN00073",
+										"units"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "04. misc",
+			"item": [
+				{
+					"name": "01. get a misc by code, name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/USERROLE/name/IT",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"USERROLE",
+								"name",
+								"IT"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some misc by code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/JOBPOS",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"JOBPOS"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02a. get some misc by code with fields",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/JOBPOS?fields=miscName,miscDesc",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"JOBPOS"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "miscName,miscDesc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02b. get some misc by code with fields rename",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/KASSA?fields=miscName,miscDesc&as=cashierNo,cashierDesc",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"KASSA"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "miscName,miscDesc"
+								},
+								{
+									"key": "as",
+									"value": "cashierNo,cashierDesc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. get all misc",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc",
+							"host": [
+								"{{uri}}misc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. insert a misc",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"miscDesc\":\"IT Support\",\"miscVariable\":\"\"}"
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/JOBPOS/name/ITSP",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"JOBPOS",
+								"name",
+								"ITSP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. update a misc",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"miscDesc\":\"Admin\",\"miscVariable\":\"1,2,21,211,22,221,222,223,23,25,26,3,31,11,4,41,411,412,4121,413,42,423,4231,43,432,44,441,442,45,451,452,453,33\"}"
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/OTHER/name/OFG",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"OTHER",
+								"name",
+								"OFG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete a misc",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"OTHER\",\"name\":\"OFG\"}"
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/OTHER/name/OFG",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"OTHER",
+								"name",
+								"OFG"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07. lov",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}misc/code/JOBPOS?fields=miscName,miscDesc&for=user",
+							"host": [
+								"{{uri}}misc"
+							],
+							"path": [
+								"code",
+								"JOBPOS"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "miscName,miscDesc"
+								},
+								{
+									"key": "for",
+									"value": "user"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05. product",
+			"item": [
+				{
+					"name": "050. main",
+					"item": [
+						{
+							"name": "01. get a product",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/SOL-SMF-NS70%2FNX110-5",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"SOL-SMF-NS70%2FNX110-5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some products",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks",
+									"host": [
+										"{{uri}}stocks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02a. search product",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks?productCode=saringan",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"query": [
+										{
+											"key": "productCode",
+											"value": "saringan"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"productName\":\"GLADE SENSATION\",\n   \"barCode01\":\"1233\",\n   \"barCode02\":\"1244\",\n   \"otherName01\": \"GLADE SENSATION OT1\",\n   \"otherName02\": \"GLADE SENSATION OT2\",\n   \"location01\": \"rak1\",\n   \"location02\": \"rak2\",\n   \"costPrice\": 10000,\n   \"sellPrice\": 20000,\n   \"distPrice01\": \"19000\",\n   \"distPrice02\": \"18000\",\n   \"sellPricePre\": 0,\n   \"brandId\": 1,\n   \"categoryId\": 1,\n   \"trackQty\": 1,\n   \"alertQty\": 10,\n   \"active\": 1,\n   \"exception01\": 1,\n   \"productImage\": \"no_image.png\",\n   \"dummyCode\": \"08090000\",\n   \"dummyName\": \"GLADE SENSATION\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/08090008",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"08090008"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a product",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"productName\":\"GLADE SENSATION\",\n   \"barCode01\":\"1233\",\n   \"barCode02\":\"1244\",\n   \"otherName01\": \"GLADE SENSATION OT1\",\n   \"otherName02\": \"GLADE SENSATION OT2\",\n   \"location01\": \"rak1\",\n   \"location02\": \"rak2\",\n   \"costPrice\": 10000,\n   \"sellPrice\": 20000,\n   \"distPrice01\": \"19000\",\n   \"distPrice02\": \"18000\",\n   \"sellPricePre\": 0,\n   \"brandId\": 1,\n   \"categoryId\": 2,\n   \"trackQty\": 1,\n   \"alertQty\": 10,\n   \"active\": 1,\n   \"exception01\": 1,\n   \"productImage\": \"no_image.png\",\n   \"dummyCode\": \"08090000\",\n   \"dummyName\": \"GLADE SENSATION\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/08090008",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"08090008"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a product",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/08090008",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"08090008"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some products",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"productCode\":[\"08090001\",\"08090002\",\"08090003\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks",
+									"host": [
+										"{{uri}}stocks"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "05a. brands",
+					"item": [
+						{
+							"name": "01. get a brand",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some brands",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a brand",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"brandName\":\"AIR BATERAI\",\n   \"brandImage\":\"///:-\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a brand",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"brandName\":\"AIR BATERE\",\n   \"brandImage\": \"c:/image/airbatere.jpg\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands/TDF",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands",
+										"TDF"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a brand",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some brands",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"brandCode\":[\"MDN00070\",\"MDN00071\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/brands",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"brands"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "05b. categories",
+					"item": [
+						{
+							"name": "01. get a category",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories/ACC",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories",
+										"ACC"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. get some categories",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert a category",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"categoryName\":\"AIR BATERAI\",\n   \"categoryImage\":\"///:-\",\n   \"categoryParentId\":\"1\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "04. update a category",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{  \n   \"categoryName\":\"AIR BATERAI\",\n   \"categoryImage\":\"///:-\",\n   \"categoryParentId\":\"1\"\n}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "05. delete a category",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories/AIRBAT",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories",
+										"AIRBAT"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "06. delete some categories",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"categoryCode\":[\"AIRBAT\",\"AIRBAT1\"]}"
+								},
+								"url": {
+									"raw": "{{uri}}stocks/categories/",
+									"host": [
+										"{{uri}}stocks"
+									],
+									"path": [
+										"categories",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "06. supplliers",
+			"item": [
+				{
+					"name": "01. get a supplier",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}suppliers/AM",
+							"host": [
+								"{{uri}}suppliers"
+							],
+							"path": [
+								"AM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some suppliers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}suppliers",
+							"host": [
+								"{{uri}}suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02a. search suppliers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}suppliers?userName=auto",
+							"host": [
+								"{{uri}}suppliers"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "auto",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"supplierName\":\"ASEAN MOTOR\",\n   \"address01\":\"JL. S. PARMAN NO. 39\",\n   \"address02\":\"MEDAN PETISAH\",\n   \"city\":\"MEDAN\",\n   \"state\":\"SUMUT\",\n   \"zipCode\":\"20000\",\n   \"phoneNumber\":\"081234567890\",\n   \"mobileNumber\": \"0614544795\",\n   \"email\":\"hadi@gmail.com\",\n   \"taxId\":\"1212121212\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}suppliers/AM",
+							"host": [
+								"{{uri}}suppliers"
+							],
+							"path": [
+								"AM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update a store",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"supplierName\":\"ASEAN MOTOR\",\n   \"address01\":\"JL. S. PARMAN NO. 391\",\n   \"address02\":\"MEDAN PETISAH\",\n   \"city\":\"MEDAN\",\n   \"state\":\"SUMUT\",\n   \"zipCode\":\"20000\",\n   \"phoneNumber\":\"081234567890\",\n   \"mobileNumber\": \"0614544795\",\n   \"email\":\"hadi@gmail.com\",\n   \"taxId\":\"1212121212\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}suppliers/AM",
+							"host": [
+								"{{uri}}suppliers"
+							],
+							"path": [
+								"AM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete a supplier",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}suppliers/AM",
+							"host": [
+								"{{uri}}suppliers"
+							],
+							"path": [
+								"AM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete some suppliers",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"supplierCode\":[\"AM\",\"AMs\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}suppliers",
+							"host": [
+								"{{uri}}suppliers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "07. cashiers",
+			"item": [
+				{
+					"name": "02. get some cashiers shift transaction",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cashierTrans",
+							"host": [
+								"{{uri}}cashierTrans"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "08. cities",
+			"item": [
+				{
+					"name": "01. get a city",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cities/MDN",
+							"host": [
+								"{{uri}}cities"
+							],
+							"path": [
+								"MDN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01a. get a city by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cities/id/1",
+							"host": [
+								"{{uri}}cities"
+							],
+							"path": [
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get cities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cities",
+							"host": [
+								"{{uri}}cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a city",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"cityName\":\"JAKARTA\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}cities/JKT",
+							"host": [
+								"{{uri}}cities"
+							],
+							"path": [
+								"JKT"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update a city",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"cityName\":\"JAKARTE\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}cities/JKT",
+							"host": [
+								"{{uri}}cities"
+							],
+							"path": [
+								"JKT"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete a city",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cities/MDN",
+							"host": [
+								"{{uri}}cities"
+							],
+							"path": [
+								"MDN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete some cities",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cityCode\":[\"TDF\",\"JKT\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}cities",
+							"host": [
+								"{{uri}}cities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "09. service",
+			"item": [
+				{
+					"name": "01. get service",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}services/BBA",
+							"host": [
+								"{{uri}}services"
+							],
+							"path": [
+								"BBA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get services",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}services/",
+							"host": [
+								"{{uri}}services"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "02.get services"
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a service",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n            \"serviceName\": \"BALANCING ANT\",\n            \"cost\": 0,\n            \"serviceCost\": 25000,\n            \"serviceTypeId\": \"SR\"\n        }"
+						},
+						"url": {
+							"raw": "{{uri}}services/BAL26",
+							"host": [
+								"{{uri}}services"
+							],
+							"path": [
+								"BAL26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update service",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"serviceName\": \"BALANCING ANT\",\n    \"cost\": 0,\n    \"serviceCost\": 25000,\n    \"serviceTypeId\": \"SR\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}services/BAL26",
+							"host": [
+								"{{uri}}services"
+							],
+							"path": [
+								"BAL26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete a service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}services/BAL26",
+							"host": [
+								"{{uri}}services"
+							],
+							"path": [
+								"BAL26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete some service",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"serviceCode\":[\"BAL25\",\"TUBELESS\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}services",
+							"host": [
+								"{{uri}}services"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10. POS",
+			"item": [
+				{
+					"name": "01. get a pos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}pos/code/FJ08170001",
+							"host": [
+								"{{uri}}pos"
+							],
+							"path": [
+								"code",
+								"FJ08170001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some pos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}pos?startPeriod=2018-01-01&endPeriod=2018-01-31&storeId=3",
+							"host": [
+								"{{uri}}pos"
+							],
+							"query": [
+								{
+									"key": "startPeriod",
+									"value": "2018-01-01",
+									"equals": true
+								},
+								{
+									"key": "endPeriod",
+									"value": "2018-01-31",
+									"equals": true
+								},
+								{
+									"key": "storeId",
+									"value": "3",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a pos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "        {\n            \"technicianId\": null,\n            \"memberCode\": null,\n            \"cashierNo\": \"001\",\n            \"cashierId\": \"000001\",\n            \"shift\": 1,\n            \"transDate\": \"2017-06-26T00:00:00.000Z\",\n            \"transTime\": \"15:27:19\",\n            \"total\": 10000,\n            \"creditCardNo\": \"\",\n            \"creditCardType\": \"\",\n            \"creditCardCharge\": 0,\n            \"totalCreditCard\": 0,\n            \"discount\": 0,\n            \"rounding\": 0,\n            \"paid\": 170000,\n            \"change\": 0,\n            \"lastMeter\": 50,\n            \"policeNo\": 20000\n        }"
+						},
+						"url": {
+							"raw": "{{uri}}pos/code/FJ08170188",
+							"host": [
+								"{{uri}}pos"
+							],
+							"path": [
+								"code",
+								"FJ08170188"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update a pos",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 5,\n        \"technicianId\": null,\n        \"memberCode\": null,\n        \"cashierNo\": \"001\",\n        \"cashierId\": \"000002\",\n        \"shift\": 1,\n        \"transDate\": \"2017-06-26T00:00:00.000Z\",\n        \"transTime\": \"21:58:22\",\n        \"total\": 170000,\n        \"creditCardNo\": \"\",\n        \"creditCardType\": \"\",\n        \"creditCardCharge\": 0,\n        \"totalCreditCard\": 0,\n        \"discount\": 0,\n        \"rounding\": 0,\n        \"paid\": 170000,\n        \"change\": 0,\n        \"policeNo\": \"BK2211JE\",\n        \"createdAt\": \"2017-06-26T14:58:22.000Z\",\n        \"updatedAt\": \"2017-06-26T14:58:22.000Z\"\n    }"
+						},
+						"url": {
+							"raw": "{{uri}}pos/code/SPOUT07170008",
+							"host": [
+								"{{uri}}pos"
+							],
+							"path": [
+								"code",
+								"SPOUT07170008"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete a pos",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}pos/GI26062017000005",
+							"host": [
+								"{{uri}}pos"
+							],
+							"path": [
+								"GI26062017000005"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete some pos",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"transNo\":[\"FJ08170001\",\"FJ08170003\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}pos",
+							"host": [
+								"{{uri}}pos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07. get only transNo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}pos/last",
+							"host": [
+								"{{uri}}pos"
+							],
+							"path": [
+								"last"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11. POS DETAIL",
+			"item": [
+				{
+					"name": "01. get a pos detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}posdetail/FJ%2F0118%2F0114?storeId=2",
+							"host": [
+								"{{uri}}posdetail"
+							],
+							"path": [
+								"FJ%2F0118%2F0114"
+							],
+							"query": [
+								{
+									"key": "storeId",
+									"value": "2",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some pos detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}posdetail",
+							"host": [
+								"{{uri}}posdetail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert pos detail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"transNo\":\"FJ08170002\",\"productId\":\"10100000\",\"productName\":\"GLADE CONT-FRESHNESS FRUIT NECTAR 24X8GR\",\"qty\":1,\"sellingPrice\":15000,\"discount\":0,\"disc1\":0,\"disc2\":0,\"disc3\":0},{\"transNo\":\"FJ08170002\",\"productId\":\"BRAKE\",\"productName\":\"PENGGANTIAN SOK BRAKER\",\"qty\":1,\"sellingPrice\":200000,\"discount\":0,\"disc1\":0,\"disc2\":0,\"disc3\":0}]"
+						},
+						"url": {
+							"raw": "{{uri}}posdetail/FJ08170188",
+							"host": [
+								"{{uri}}posdetail"
+							],
+							"path": [
+								"FJ08170188"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "12. cashier_trans",
+			"item": [
+				{
+					"name": "01. get cashier by code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cashierTrans",
+							"host": [
+								"{{uri}}cashierTrans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.get some cashier trans",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}cashierTrans",
+							"host": [
+								"{{uri}}cashierTrans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert cashier trans",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"cashierNo\": \"KS02\",\n    \"shift\": 2,\n    \"balance\": 30000,\n    \"transDate\": \"2017-08-10T00:00:00.000Z\",\n    \"total\": 20000,\n    \"totalCreditCard\": 0\n}"
+						},
+						"url": {
+							"raw": "{{uri}}cashierTrans/000002/O",
+							"host": [
+								"{{uri}}cashierTrans"
+							],
+							"path": [
+								"000002",
+								"O"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "13. purchase",
+			"item": [
+				{
+					"name": "01. get all purchase",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}purchase?startPeriod=2017-09-01&endPeriod=2018-02-28",
+							"host": [
+								"{{uri}}purchase"
+							],
+							"query": [
+								{
+									"key": "startPeriod",
+									"value": "2017-09-01",
+									"equals": true
+								},
+								{
+									"key": "endPeriod",
+									"value": "2018-02-28",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. insert purchase",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\t\t{\n\t\t\t\"transNo\": \"MBHM-z11z\",\n\t\t\t\"data\": \n\t\t{\n            \"periode\": 2,\n            \"year\": 2017,\n            \"transNo\": \"MBHM-z11z\",\n            \"transDate\": \"2017-02-16T17:00:00.000Z\",\n            \"supplierCode\": \"\",\n            \"supplierName\": \"\",\n            \"taxType\": \"\",\n            \"discPercent\": 0,\n            \"discNominal\": 0,\n            \"invoiceTotal\": 0,\n            \"discTotal\": 0,\n            \"totalDPP\": 0,\n            \"totalPPN\": 0,\n            \"nettoTotal\": 0,\n            \"qtyTotal\": 0,\n            \"reference\": \"TANDA TERIMA MAM 17 FEB 2017\",\n            \"KET\": \"TANDA TERIMA MAM 17 FEB 2017\",\n            \"transType\": \"AJIN\",\n            \"VAL_BATAL\": \"0\",\n            \"createdBy\": \"ADMIN\",\n            \"updatedBy\": null,\n            \"printNo\": 3,\n            \"tempo\": null,\n            \"dueDate\": null,\n            \"invoiceType\": null,\n            \"taxId\": null\n        }\n}"
+						},
+						"url": {
+							"raw": "{{uri}}purchase",
+							"host": [
+								"{{uri}}purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. update purchase",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\t\t{\n\t\t\t\"transNo\": \"MBHM-000372\",\n\t\t\t\"data\": \n\t\t{\n            \"id\": 1,\n            \"periode\": 2,\n            \"year\": 2017,\n            \"transNo\": \"MBHM-000372\",\n            \"transDate\": \"2017-02-16T17:00:00.000Z\",\n            \"supplierCode\": \"\",\n            \"supplierName\": \"\",\n            \"taxType\": \"\",\n            \"discPercent\": 0,\n            \"discNominal\": 0,\n            \"invoiceTotal\": 0,\n            \"discTotal\": 0,\n            \"totalDPP\": 0,\n            \"totalPPN\": 0,\n            \"nettoTotal\": 0,\n            \"qtyTotal\": 0,\n            \"reference\": \"TANDA TERIMA MAM 17 FEB 2017\",\n            \"KET\": \"TANDA TERIMA MAM 17 FEB 2017\",\n            \"transType\": \"AJIN\",\n            \"VAL_BATAL\": \"0\",\n            \"createdBy\": \"ADMIN\",\n            \"updatedBy\": null,\n            \"printNo\": 3,\n            \"tempo\": null,\n            \"dueDate\": null,\n            \"invoiceType\": null,\n            \"taxId\": null\n        }\n}"
+						},
+						"url": {
+							"raw": "{{uri}}purchase",
+							"host": [
+								"{{uri}}purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. get a purchase",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}purchase/transNo/TDF-020917",
+							"host": [
+								"{{uri}}purchase"
+							],
+							"path": [
+								"transNo",
+								"TDF-020917"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "14. purchase detail",
+			"item": [
+				{
+					"name": "01. get purchase detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}purchase/transNo/FB08070017",
+							"host": [
+								"{{uri}}purchase"
+							],
+							"path": [
+								"transNo",
+								"FB08070017"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get some purchase detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}purchasedetail?transNo=MAB/MU/OUT/1217/0182&storeId=3",
+							"host": [
+								"{{uri}}purchasedetail"
+							],
+							"query": [
+								{
+									"key": "transNo",
+									"value": "MAB/MU/OUT/1217/0182",
+									"equals": true
+								},
+								{
+									"key": "storeId",
+									"value": "3",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert purchase detail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\t\"id\": \"MBHM-000353\",\n\t\"data\" : \t[{\n            \"periode\": 8,\n            \"year\": 2017,\n            \"transNo\": \"PB-022881\",\n            \"partUnit\": \"PCS\",\n            \"productId\": \"OIL-SEAL RODA BLKNG\",\n            \"productName\": \"SEAL AS RODA BELAKANG\",\n            \"qty\": 1,\n            \"purchasePrice\": 20000,\n            \"sellingPrice\": 0,\n            \"costPrice\": 10000,\n            \"discPercent\": 0,\n            \"discNominal\": 10000,\n            \"netto\": 0,\n            \"nettoDist\": 10000,\n            \"DPP\": 10000,\n            \"distDPP\": 10000,\n            \"PPN\": 0,\n            \"distPPN\": 0,\n            \"transType\": \"FB\",\n            \"closed\": 0,\n            \"createdAt\": null\n        },\n        {\n            \"periode\": 8,\n            \"year\": 2017,\n            \"transNo\": \"PB-022881\",\n            \"partUnit\": \"PCS\",\n            \"productId\": \"OIL-SEAL RODA BLKNG\",\n            \"productName\": \"SEAL AS RODA BELAKANG\",\n            \"qty\": 1,\n            \"purchasePrice\": 20000,\n            \"sellingPrice\": 0,\n            \"costPrice\": 10000,\n            \"discPercent\": 0,\n            \"discNominal\": 10000,\n            \"netto\": 0,\n            \"nettoDist\": 10000,\n            \"DPP\": 10000,\n            \"distDPP\": 10000,\n            \"PPN\": 0,\n            \"distPPN\": 0,\n            \"transType\": \"FB\",\n            \"closed\": 0\n        }]}"
+						},
+						"url": {
+							"raw": "{{uri}}purchasedetail/purchase",
+							"host": [
+								"{{uri}}purchasedetail"
+							],
+							"path": [
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update purchase detail",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"AM-010417-1\",\"data\":[{\"transNo\":\"AM-010417-1\",\"productId\":\"186\",\"productName\":\"FILTER OLI SAKURA C-2804\",\"qty\":\"10\",\"purchasePrice\":49000,\"DPP\":350000,\"PPN\":0,\"discPercent\":0,\"discNominal\":14000}]}"
+						},
+						"url": {
+							"raw": "{{uri}}purchasedetail",
+							"host": [
+								"{{uri}}purchasedetail"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "15. Adjusment",
+			"item": [
+				{
+					"name": "01. get all adjust",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}adjust",
+							"host": [
+								"{{uri}}adjust"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. insert adjust",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"FJ/0100/01230\",\n\t\"data\":{\n\t\t\"transNo\":\"FJ/0100/01230\",\n\t\t\"transType\":\"AJIN\",\n\t\t\"transDate\":\"2017-09-08T05:56:50.777Z\",\n\t\t\"reference\":\"0012000\",\n\t\t\"employeeName\":\"ANTO\",\n\t\t\"pic\":\"ANTO\",\n\t\t\"picId\":\"000002\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{uri}}adjust/code/FJ%2F0100%2F01230",
+							"host": [
+								"{{uri}}adjust"
+							],
+							"path": [
+								"code",
+								"FJ%2F0100%2F01230"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. get all adjust detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}adjustdetail",
+							"host": [
+								"{{uri}}adjustdetail"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "16. Setting",
+			"item": [
+				{
+					"name": "01. get a Setting",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}setting/Inventory",
+							"host": [
+								"{{uri}}setting"
+							],
+							"path": [
+								"Inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get all setting",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}setting",
+							"host": [
+								"{{uri}}setting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. Update Setting",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"settingValue\": \"{posOrder: {outOfStock: 1}}\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}setting/Inventory",
+							"host": [
+								"{{uri}}setting"
+							],
+							"path": [
+								"Inventory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "17. Sequence",
+			"item": [
+				{
+					"name": "Sequence",
+					"item": [
+						{
+							"name": "01. Get Sequence",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}sequence?seqCode=INV&type=3",
+									"host": [
+										"{{uri}}sequence"
+									],
+									"query": [
+										{
+											"key": "seqCode",
+											"value": "INV",
+											"equals": true
+										},
+										{
+											"key": "type",
+											"value": "3",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "02. Increase Work Order Seq",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{uri}}sequence/increase?seqCode=INV&type=3",
+									"host": [
+										"{{uri}}sequence"
+									],
+									"path": [
+										"increase"
+									],
+									"query": [
+										{
+											"key": "seqCode",
+											"value": "INV",
+											"equals": true
+										},
+										{
+											"key": "type",
+											"value": "3",
+											"equals": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "03. Insert a sequence format",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"seqName\": \"PERIOD SEQUENCE\",\n  \"storeId\": 3,\n  \"typeSeq\": 2,\n  \"initialChar\": \"PRD\",\n  \"maxNumber\": 4,\n  \"resetType\": \"M\",\n  \"oldValue\": null,\n  \"resetDate\": null,\n  \"seqValue\": 1\n}"
+								},
+								"url": {
+									"raw": "{{uri}}sequence/PRD",
+									"host": [
+										"{{uri}}sequence"
+									],
+									"path": [
+										"PRD"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "18. Menu",
+			"item": [
+				{
+					"name": "01. get all menus",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}menus",
+							"host": [
+								"{{uri}}menus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get menu by MenuId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}menus/1",
+							"host": [
+								"{{uri}}menus"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a menu",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"icon\": \"wallet\",\n  \"name\": \"Payment Detail\",\n  \"bpid\": \"51\",\n  \"mpid\": \"-1\",\n  \"route\": \"/accounts/payment/:id\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}menus/511",
+							"host": [
+								"{{uri}}menus"
+							],
+							"path": [
+								"511"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. insert some menu",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": [\n    {\n      \"menuId\": \"5\",\n      \"icon\": \"bank\",\n      \"name\": \"Accounts\",\n      \"bpid\": null,\n      \"mpid\": null,\n      \"route\": null\n    },\n    {\n      \"menuId\": \"51\",\n      \"icon\": \"wallet\",\n      \"name\": \"Payment\",\n      \"bpid\": \"5\",\n      \"mpid\": \"5\",\n      \"route\": \"/accounts/payment\"\n    },\n    {\n      \"menuId\": \"511\",\n      \"icon\": \"wallet\",\n      \"name\": \"Payment Detail\",\n      \"bpid\": \"51\",\n      \"mpid\": \"-1\",\n      \"route\": \"/accounts/payment/:id\"\n    },\n    {\n      \"menuId\": \"52\",\n      \"icon\": \"book\",\n      \"name\": \"Debt\",\n      \"bpid\": \"5\",\n      \"mpid\": \"5\",\n      \"route\": \"/accounts/Debt\"\n    },\n    {\n      \"menuId\": \"6111\",\n      \"icon\": \"wallet\",\n      \"name\": \"Inventory In Detail\",\n      \"bpid\": \"611\",\n      \"mpid\": \"-1\",\n      \"route\": \"/inventory/transfer/in/:id\"\n    },\n    {\n      \"menuId\": \"6121\",\n      \"icon\": \"wallet\",\n      \"name\": \"Inventory Out Detail\",\n      \"bpid\": \"612\",\n      \"mpid\": \"-1\",\n      \"route\": \"/inventory/transfer/out/:id\"\n    },\n    {\n      \"menuId\": \"47\",\n      \"icon\": \"inbox\",\n      \"name\": \"Inventory\",\n      \"bpid\": \"4\",\n      \"mpid\": \"4\",\n      \"route\": \"/report/inventory/:id\"\n    },\n    {\n      \"menuId\": \"471\",\n      \"icon\": \"download\",\n      \"name\": \"Transfer\",\n      \"bpid\": \"47\",\n      \"mpid\": \"47\",\n      \"route\": \"/report/inventory/transfer\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{uri}}menus",
+							"host": [
+								"{{uri}}menus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. update a menu",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"menuId\": \"7\",\n  \"icon\": \"database\",\n  \"name\": \"Maintenance\",\n  \"bpid\": null,\n  \"mpid\": null,\n  \"route\": \"/maintenance\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}menus/39",
+							"host": [
+								"{{uri}}menus"
+							],
+							"path": [
+								"39"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06. delete a menu",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}menus/1",
+							"host": [
+								"{{uri}}menus"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07. delete some menu",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"menuId\":[\"1\",\"2\",\"21\", \"22\", \"31\", \"33\", \"32\"]}"
+						},
+						"url": {
+							"raw": "{{uri}}menus",
+							"host": [
+								"{{uri}}menus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "19. Stores",
+			"item": [
+				{
+					"name": "01. get all stores",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}stores",
+							"host": [
+								"{{uri}}stores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02. get a store",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}stores/001",
+							"host": [
+								"{{uri}}stores"
+							],
+							"path": [
+								"001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03. insert a store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"storeName\":\"TYREMASTER PETISAH\",\n   \"storeParentId\":\"1\",\n   \"address01\":\"addres01\",\n   \"address02\":\"addres02\",\n   \"cityId\":\"1\",\n   \"state\":\"-\",\n   \"zipCode\": \"20000\",\n   \"phoneNumber\": \"061-\",\n   \"mobileNumber\": \"081-\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}stores/004",
+							"host": [
+								"{{uri}}stores"
+							],
+							"path": [
+								"004"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04. update a store",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"supplierName\":\"ASEAN MOTOR\",\n   \"address01\":\"JL. S. PARMAN NO. 391\",\n   \"address02\":\"MEDAN PETISAH\",\n   \"city\":\"MEDAN\",\n   \"state\":\"SUMUT\",\n   \"zipCode\":\"20000\",\n   \"phoneNumber\":\"081234567890\",\n   \"mobileNumber\": \"0614544795\",\n   \"email\":\"hadi@gmail.com\",\n   \"taxId\":\"1212121212\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}stores/003",
+							"host": [
+								"{{uri}}stores"
+							],
+							"path": [
+								"003"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05. delete a store",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{uri}}stores/003",
+							"host": [
+								"{{uri}}stores"
+							],
+							"path": [
+								"003"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "20. Mutasi Inventory",
+			"description": "",
+			"item": [
+				{
+					"name": "20 a. MUTASI IN",
+					"description": "",
+					"item": [
+						{
+							"name": "01. get mutasi in by transNo",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/in/code?transNo=MUIN2018000001&storeId=1",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in",
+										"code"
+									],
+									"query": [
+										{
+											"key": "transNo",
+											"value": "MUIN2018000001",
+											"equals": true
+										},
+										{
+											"key": "storeId",
+											"value": "1",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "02. get data periode",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/in?start=2018-02-01&end=2018-02-28&storeId=3",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2018-02-01",
+											"equals": true
+										},
+										{
+											"key": "end",
+											"value": "2018-02-28",
+											"equals": true
+										},
+										{
+											"key": "storeId",
+											"value": "3",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "02 a. get list of data periode",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/in?start=2018-12-01&end=2018-12-31&active=1&status=1",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2018-12-01",
+											"equals": true
+										},
+										{
+											"key": "end",
+											"value": "2018-12-31",
+											"equals": true
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert mutasi in",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transNo\": \"MUIN2018000004\",\n  \"storeId\": 1,\n  \"data\": {\n    \"storeIdSender\": 2,\n    \"reference\": 1,\n    \"transType\": \"MUIN\",\n    \"employeeId\": 1,\n    \"carNumber\": null,\n    \"totalColly\": 3,\n    \"description\": null\n  },\n  \"detail\": [\n    {\n      \"id\": 1,\n      \"storeId\": 2,\n      \"storeName\": \"TYRE SPARMAN\",\n      \"transNo\": \"MUOUT2018000001\",\n      \"transType\": \"MUOUT\",\n      \"transDate\": \"2018-02-14T03:59:05.000Z\",\n      \"productId\": 1328,\n      \"productCode\": \"52400KVY961\",\n      \"productName\": \"PEREDAM KEJUT BELAKANG\",\n      \"qty\": 3,\n      \"description\": null,\n      \"createdBy\": \"ownerPOS\",\n      \"createdAt\": \"2018-02-14T03:59:05.000Z\",\n      \"updatedBy\": \"---\",\n      \"updatedAt\": \"2018-02-14T03:59:05.000Z\"\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{uri}}transfer/in",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "04. Cancel Mutasi In",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"1\",\n\t\"transNo\": \"MUIN2018000004\",\n\t\"reference\": 1,\n\t\"memo\": \"Pengganti\",\n\t\"storeId\": 1\n}"
+								},
+								"url": {
+									"raw": "{{uri}}transfer/in/cancel",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in",
+										"cancel"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "20 b. MUTASI OUT",
+					"description": "",
+					"item": [
+						{
+							"name": "01. get mutasi out by transNo",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/out/code?start=2018-02-01&end=2018-02-28",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out",
+										"code"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2018-02-01",
+											"equals": true
+										},
+										{
+											"key": "end",
+											"value": "2018-02-28",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "02 a. get list of data periode",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/out?start=2018-02-01&end=2018-02-28&active=1&status=1&storeId=1",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2018-02-01",
+											"equals": true
+										},
+										{
+											"key": "end",
+											"value": "2018-02-28",
+											"equals": true
+										},
+										{
+											"key": "active",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "status",
+											"value": "1",
+											"equals": true
+										},
+										{
+											"key": "storeId",
+											"value": "1",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "02. get data periode",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/out?start=2018-02-01&end=2018-02-28",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2018-02-01",
+											"equals": true
+										},
+										{
+											"key": "end",
+											"value": "2018-02-28",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "03. insert mutasi out",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transNo\": \"MUOUT17.000015\",\n  \"storeId\": 2,\n  \"data\": {\n    \"storeIdReceiver\": 1,\n    \"reference\": null,\n    \"transType\": \"MUOUT\",\n    \"employeeId\": 1,\n    \"carNumber\": \"BK2017JE\",\n    \"totalColly\": 1,\n    \"description\": null\n  },\n  \"detail\": [\n    {\n      \"transType\": \"MUOUT\",\n      \"productId\": 1,\n      \"qty\": 20,\n      \"description\": null\n    },\n    {\n      \"transType\": \"MUOUT\",\n      \"productId\": 2,\n      \"qty\": 20,\n      \"description\": null\n    },\n    {\n      \"transType\": \"MUOUT\",\n      \"productId\": 3,\n      \"qty\": 20,\n      \"description\": null\n    },\n    {\n      \"transType\": \"MUOUT\",\n      \"productId\": 4,\n      \"qty\": 20,\n      \"description\": null\n    }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{uri}}transfer/out",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "04. Cancel Mutasi Out",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": 1,\n\t\"transNo\": \"MUOUT2018000001\",\n\t\"storeId\": 2,\n\t\"memo\": null\n}"
+								},
+								"url": {
+									"raw": "{{uri}}transfer/out/cancel",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out",
+										"cancel"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "20 c. MUTAIS IN DETAIL",
+					"description": "",
+					"item": [
+						{
+							"name": "01. get mutasi in detail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/in/detail?transNo=MUIN2018000010&storeId=3",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"in",
+										"detail"
+									],
+									"query": [
+										{
+											"key": "transNo",
+											"value": "MUIN2018000010",
+											"equals": true
+										},
+										{
+											"key": "storeId",
+											"value": "3",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "20 d. MUTAIS OUT DETAIL",
+					"description": "",
+					"item": [
+						{
+							"name": "01. get mutasi out detail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{Authorization}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{uri}}transfer/out/detail?transNo=MUOUT2018000013&storeId=1",
+									"host": [
+										"{{uri}}transfer"
+									],
+									"path": [
+										"out",
+										"detail"
+									],
+									"query": [
+										{
+											"key": "transNo",
+											"value": "MUOUT2018000013",
+											"equals": true
+										},
+										{
+											"key": "storeId",
+											"value": "1",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "21. Cashier Payment",
+			"description": "",
+			"item": []
+		},
+		{
+			"name": "22. Payment",
+			"description": "",
+			"item": [
+				{
+					"name": "01. Get a Pos by transNo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{uri}}payment/pos?transNo=FJ/0917/0004&storeId=2",
+							"host": [
+								"{{uri}}payment"
+							],
+							"path": [
+								"pos"
+							],
+							"query": [
+								{
+									"key": "transNo",
+									"value": "FJ/0917/0004",
+									"equals": true,
+									"description": "transNo & storeId"
+								},
+								{
+									"key": "storeId",
+									"value": "2",
+									"equals": true,
+									"description": "transNo & storeId"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "02. Get a Payment by transNo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{uri}}payment/pos?transNo=FJ/0917/0001&storeId=2",
+							"host": [
+								"{{uri}}payment"
+							],
+							"path": [
+								"pos"
+							],
+							"query": [
+								{
+									"key": "transNo",
+									"value": "FJ/0917/0001",
+									"equals": true
+								},
+								{
+									"key": "storeId",
+									"value": "2",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "03. Insert Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"reference\": 4,\n    \"transNo\": \"FJ/0917/0004\",\n    \"storeId\": 2,\n    \"storeIdPayment\": 3,\n    \"typeCode\": \"C\",\n    \"amount\": 123250,\n    \"description\": \"Pembayaran tertunda bulan maret\",\n    \"cardName\": \"IRWAN HADI\",\n    \"batchNo\": \"200123\",\n    \"printDate\": \"2018-02-12T08:11:47.000Z\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{uri}}payment",
+							"host": [
+								"{{uri}}payment"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "04. Insert Some Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"head\": {\n    \"transNo\": \"FJ/0917/0004\",\n    \"storeId\": 2,\n    \"storeIdPayment\": 3\n  },\n  \"data\": [\n    {\n      \"typeCode\": \"C\",\n      \"amount\": 23250,\n      \"description\": \"Pembayaran tertunda bulan maret\",\n      \"cardName\": \"IRWAN HADI\",\n      \"batchNo\": \"200123\",\n      \"printDate\": \"2018-02-12T08:11:47.000Z\"\n    },\n    {\n      \"typeCode\": \"C\",\n      \"amount\": 50000,\n      \"description\": \"Pembayaran tertunda bulan maret\",\n      \"cardName\": \"IRWAN HADI\",\n      \"batchNo\": \"200123\",\n      \"printDate\": \"2018-02-12T08:11:47.000Z\"\n    },\n    {\n      \"typeCode\": \"C\",\n      \"amount\": 50000,\n      \"description\": \"Pembayaran tertunda bulan maret\",\n      \"cardName\": \"IRWAN HADI\",\n      \"batchNo\": \"200123\",\n      \"printDate\": \"2018-02-12T08:11:47.000Z\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{uri}}payment/some",
+							"host": [
+								"{{uri}}payment"
+							],
+							"path": [
+								"some"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "05. Cancel Payment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 8,\n\t\"storeId\": 2,\n\t\"transNo\": \"FJ/0218/0009\",\n\t\"memo\": \"Kurang uang\"\n}"
+						},
+						"url": {
+							"raw": "{{uri}}payment/cancel",
+							"host": [
+								"{{uri}}payment"
+							],
+							"path": [
+								"cancel"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "06. Get Payment Options",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{uri}}payment/option",
+							"host": [
+								"{{uri}}payment"
+							],
+							"path": [
+								"option"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

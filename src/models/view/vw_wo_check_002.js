@@ -1,0 +1,45 @@
+"use strict";
+
+module.exports = function (sequelize, DataTypes) {
+  var Data = sequelize.define("vw_wo_check_002", {
+    id: { type: DataTypes.INTEGER, primaryKey: true },
+    categoryCode: { type: DataTypes.STRING },
+    categoryName: { type: DataTypes.STRING },
+    categoryImage: { type: DataTypes.STRING },
+    categoryParentId: { type: DataTypes.INTEGER },
+    categoryParentCode: { type: DataTypes.STRING },
+    categoryParentName: { type: DataTypes.STRING },
+    categoryParentImage: { type: DataTypes.STRING },    
+    value: { type: DataTypes.INTEGER },
+    memo: { type: DataTypes.STRING },
+    createdBy: { type: DataTypes.STRING },
+    createdAt: { type: DataTypes.DATE },
+    updatedBy: { type: DataTypes.STRING },
+    updatedAt: { type: DataTypes.DATE },
+    deletedBy: { type: DataTypes.STRING },
+    deletedAt: { type: DataTypes.DATE },
+    storeId: { type: DataTypes.INTEGER },
+    woNo: { type: DataTypes.STRING },
+    woReference: { type: DataTypes.STRING },
+    transNo: { type: DataTypes.STRING },
+    woDate: { type: DataTypes.DATE },
+    transDate: { type: DataTypes.DATE },
+    cashierName: { type: DataTypes.STRING },
+    technicianName: { type: DataTypes.STRING },
+    memberId: { type: DataTypes.INTEGER },
+    memberCode: { type: DataTypes.STRING },
+    memberName: { type: DataTypes.STRING },
+    policeNoId: { type: DataTypes.INTEGER },
+    policeNo: { type: DataTypes.STRING },
+    merk: { type: DataTypes.STRING },
+    model: { type: DataTypes.STRING },
+    type: { type: DataTypes.STRING },
+    chassisNo: { type: DataTypes.STRING },
+    machineNo: { type: DataTypes.STRING },
+    takeaway: { type: DataTypes.STRING },
+    timeIn: { type: DataTypes.DATE },
+    timeOut: { type: DataTypes.STRING },
+    status: { type: DataTypes.INTEGER }
+  }, { tableName: 'vw_wo_check_002' })
+  return Data
+}

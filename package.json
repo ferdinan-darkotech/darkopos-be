@@ -1,0 +1,110 @@
+{
+  "name": "server-api",
+  "productName": "ElectronAPI",
+  "version": "0.0.1",
+  "description": "EPiAi server",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "better-npm-run start-api",
+    "start-dev": "better-npm-run start-api-dev",
+    "test": "set NODE_ENV=test && jest --coverage",
+    "test:watch": "set NODE_ENV=test && jest --watchAll",
+    "build": "if exist .\\dist (rmdir /s /q .\\dist) && npx babel src -d dist --minified --compact --no-comments --copy-files",
+    "serve": "node --prof dist/bin/server.js"
+  },
+  "betterScripts": {
+    "start-api": {
+      "command": "nodemon dist/bin/server.js --exec babel-node",
+      "env": {
+        "NODE_ENV": "production",
+        "DEBUG": "app:*"
+      }
+    },
+    "start-api-dev": {
+      "command": "nodemon src/bin/server.js --exec babel-node",
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "app:*"
+      }
+    }
+  },
+  "dependencies": {
+    "auto-launch": "5.0.1",
+    "axios": "^0.19.2",
+    "babel-loader": "6.4.1",
+    "babel-runtime": "6.23.0",
+    "better-npm-run": "0.0.15",
+    "bluebird": "3.5.0",
+    "body-parser": "^1.16.0",
+    "cloudinary": "^1.13.2",
+    "cookie-parser": "1.4.3",
+    "cookie-session": "2.0.0-beta.1",
+    "cors": "2.8.3",
+    "cron": "^1.8.2",
+    "crypto": "0.0.3",
+    "crypto-js": "^4.0.0",
+    "debug": "2.6.3",
+    "dotenv": "4.0.0",
+    "errorhandler": "1.5.0",
+    "express": "^4.14.1",
+    "express-interceptor": "1.2.0",
+    "ip": "1.1.5",
+    "jquery": "3.2.1",
+    "js-yaml": "3.8.4",
+    "jsonwebtoken": "^7.2.1",
+    "keymaster": "1.6.2",
+    "lodash": "4.17.4",
+    "moment": "2.18.1",
+    "mongoose": "^6.3.5",
+    "multer": "1.3.0",
+    "mysql": "^2.13.0",
+    "mysql2": "^1.4.2",
+    "passport": "0.3.2",
+    "passport-jwt": "2.2.1",
+    "passport-local": "1.0.0",
+    "passport-totp": "0.0.2",
+    "path-to-regexp": "^0.1.5",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.3",
+    "pretty-error": "2.1.0",
+    "pug": "2.0.0-beta11",
+    "qrcode": "0.9.0",
+    "request": "2.81.0",
+    "sequelize": "^4.22.5",
+    "serve-favicon": "2.4.2",
+    "short-unique-id": "^4.4.4",
+    "shortid": "^2.2.16",
+    "socket.io": "^1.7.2",
+    "speakeasy": "2.0.0",
+    "swagger-jsdoc": "1.9.4",
+    "thirty-two": "1.0.2",
+    "ua-parser-js": "^1.0.35",
+    "uuid": "3.1.0",
+    "yargs": "7.0.2"
+  },
+  "devDependencies": {
+    "asar": "0.13.0",
+    "babel-cli": "6.26.0",
+    "babel-jest": "23.6.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-polyfill": "6.23.0",
+    "babel-preset-babili": "0.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "6.24.1",
+    "extract-text-webpack-plugin": "3.0.0",
+    "jest": "23.6.0",
+    "nodemon": "1.11.0",
+    "piping": "1.0.0-rc.4",
+    "pretty-error": "2.1.0",
+    "webpack": "3.4.1",
+    "webpack-target-electron-renderer": "0.4.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "testRegex": "tests/.*\\.test\\.js$"
+  }
+}
