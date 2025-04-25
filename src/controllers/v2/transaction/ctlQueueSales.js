@@ -64,7 +64,10 @@ const remapProduct = x => ({
 	salestype: x.salestype || 'I',
 	additionalpricenominal: x.additionalpricenominal || 0,
 	additionalpricepercent: x.additionalpricepercent || 0,
-	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0
+	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
+
+	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+	transnopurchase: x.transnopurchase || null
 })
 
 const remapService = x => ({
@@ -109,6 +112,9 @@ const remapService = x => ({
 	additionalpricenominal: x.additionalpricenominal || 0,
 	additionalpricepercent: x.additionalpricepercent || 0,
 	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
+
+	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+	transnopurchase: x.transnopurchase || null
 })
 
 

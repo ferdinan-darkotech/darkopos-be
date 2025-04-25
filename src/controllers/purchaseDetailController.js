@@ -1,10 +1,34 @@
 import { ApiError } from '../services/v1/errorHandlingService'
 import {
     setPurchaseDetailInfo, setReturnDetailInfo, getPurchaseDetailByCode, getPurchaseDetailData,
-    createPurchaseDetail, updatePurchaseDetail, createPurchaseVoidDetail
+    createPurchaseDetail, updatePurchaseDetail, createPurchaseVoidDetail,
+    getPurchaseDetailService
 }
     from '../services/purchaseDetailService'
 import { extractTokenProfile } from '../services/v1/securityService'
+
+// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+exports.getPurchaseDetailService = function (req, res, next) {
+  console.log('Requesting-getPurchaseDetailService: ' + req.body + ' ...')
+  const { storeid, productid } = req.params
+
+  let { pageSize, page, ...other } = req.query
+  const pagination = {
+    pageSize,
+    page
+  }
+
+  getPurchaseDetailService(storeid, productid, pagination, other).then((data) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      pageSize: pageSize || 10,
+      page: page || 1,
+      total: data.count,
+      data: JSON.parse(JSON.stringify(data.rows))
+    })
+  }).catch(err => next(new ApiError(422, err + ` - Couldn't find Purchase Detail.`, err)))
+}
 
 // Retrive list a purchase
 exports.getPurchaseDetail = function (req, res, next) {

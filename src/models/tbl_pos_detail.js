@@ -145,7 +145,10 @@ module.exports = function (sequelize, DataTypes) {
         salestype: { type: DataTypes.STRING(1) },
         additionalpricenominal: { type: DataTypes.INTEGER },
         additionalpricepercent: { type: DataTypes.INTEGER },
-        additionalpriceroundingdigit: { type: DataTypes.INTEGER }
+        additionalpriceroundingdigit: { type: DataTypes.INTEGER },
+
+        // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+        transnopurchase: { type: DataTypes.STRING, allowNull: true },
     }, {
             tableName: 'tbl_pos_detail'
         })

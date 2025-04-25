@@ -50,6 +50,12 @@ module.exports = function (sequelize, DataTypes) {
     branch_name: { type: DataTypes.STRING },
     verification_status: { type: DataTypes.STRING },
     verif_request_at: { type: DataTypes.DATE },
-    verif_approved_at: { type: DataTypes.DATE }
+    verif_approved_at: { type: DataTypes.DATE },
+    
+    // [ITCF MEMBER]: FERDINAN - 2025-04-21
+    referralcode: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, { tableName: 'vw_member' })
 }

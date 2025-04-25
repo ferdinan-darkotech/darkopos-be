@@ -161,6 +161,12 @@ module.exports = function (sequelize, DataTypes) {
     verif_approved_at: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+
+    // [ITCF MEMBER]: FERDINAN - 2025-04-21
+    referralcode: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
       tableName: 'tbl_member'

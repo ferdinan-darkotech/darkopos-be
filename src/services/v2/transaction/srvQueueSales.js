@@ -96,7 +96,10 @@ const mappingCreateDetail = (x, info) => ({
 	salestype: x.salestype || 'I',
 	additionalpricenominal: x.additionalpricenominal || 0,
 	additionalpricepercent: x.additionalpricepercent || 0,
-	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0
+	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
+
+	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+	transnopurchase: x.transnopurchase || null
 })
 /* --------------- LOCAL FUNCTION  ---------------- */ 
 
@@ -182,7 +185,10 @@ async function srvUpdateQueueSalesDetail (data, info, transaction) {
 			salestype: data[x].salestype || 'I',
 			additionalpricenominal: data[x].additionalpricenominal || 0,
 			additionalpricepercent: data[x].additionalpricepercent || 0,
-			additionalpriceroundingdigit: data[x].additionalpriceroundingdigit || 0
+			additionalpriceroundingdigit: data[x].additionalpriceroundingdigit || 0,
+
+			// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+			transnopurchase: data[x].transnopurchase || null
 		}
 		if(data[x].action === 'edit') {
 			await tblQueueSalesDetail.update(

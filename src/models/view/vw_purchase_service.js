@@ -2,8 +2,8 @@
 import moment from 'moment'
 
 module.exports = function (sequelize, DataTypes) {
-    var Purchase = sequelize.define("vw_purchase_detail", {
-        id: { type: DataTypes.INTEGER, primaryKey: true },
+    var Purchase = sequelize.define("vw_purchase_service", {
+    id: { type: DataTypes.INTEGER, primaryKey: true },
     status: { type: DataTypes.STRING },
     storeId: { type: DataTypes.INTEGER },
     supplierId: { type: DataTypes.INTEGER },
@@ -27,7 +27,6 @@ module.exports = function (sequelize, DataTypes) {
     invoiceDate: { type: DataTypes.DATE },
     dueDate: { type: DataTypes.DATE },
     productId: { type: DataTypes.INTEGER },
-    productCode: { type: DataTypes.STRING },
     productName: { type: DataTypes.STRING },
     qty: { type: DataTypes.NUMERIC },
     purchasePrice: { type: DataTypes.NUMERIC },
@@ -61,7 +60,7 @@ module.exports = function (sequelize, DataTypes) {
     // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
     purchaseType: { type: DataTypes.STRING },
     }, {
-        tableName: 'vw_purchase_detail'
+        tableName: 'vw_purchase_service'
     })
 
     return Purchase

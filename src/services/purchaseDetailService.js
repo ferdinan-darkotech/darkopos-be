@@ -7,12 +7,60 @@ const PurchaseDetail = db.tbl_purchase_detail
 const PurchaseDetailVoid = db.tbl_purchase_detail_cancel
 const PurchaseDetailView = dbv.vw_purchase_detail
 
+// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+const PurchaseServiceView = dbv.vw_purchase_service
+
 const purchaseDetail = ['id', 'supplierId', 'transNo', 'productId', 'productCode',
   'productName', 'qty', 'purchasePrice', 'total', 'discp1', 'discp2', 'discp3', 'discp4', 'discp5',
   'discNominal', 'discInvoice', 'discItem', ['DPP', 'dpp'], ['PPN', 'ppn'], 'totalDiscount', 'roundingItem', 'netto', 'grandtotal',
   'taxPercent', 'invoiceDate', 'dueDate', 'rounding_dpp', 'rounding_ppn', 'rounding_netto'
 ]
 const purchaseDetailLog= ['transNo', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt']
+
+// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+export function getPurchaseDetailService(storeid, productid, pagination, query) {
+    const { pageSize, page } = pagination
+    let querying = []
+    if (query['q']) {
+      for (let key in attrMainWo) {
+        const id = Object.assign(attrMainWo)[key]
+        if (id === 'transNo' || id === 'productId' || id === 'productName') {
+          let obj = {}
+          obj[id] = { $iRegexp: query['q'] }
+          querying.push(obj)
+        }
+      }
+    }
+
+    const attributes = [...purchaseDetail.filter(x => x !== 'productCode'), 'purchaseType', 'transDate']
+    const filtering = {
+        storeId: storeid,
+        productId: productid,
+        purchaseType: '02',
+        qty: { $gt: 0 }
+    }
+
+    if (querying.length > 0) {
+        return PurchaseServiceView.findAndCountAll({
+            attributes,
+            where: {
+                $or: querying,
+                $and: filtering
+            },
+            order: [['transDate']],
+            limit: parseInt(pageSize || 10, 10),
+            offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
+        })
+    } else {
+        return PurchaseServiceView.findAndCountAll({
+            attributes,
+            where: { $and: filtering },
+            order: [['transDate']],
+            limit: parseInt(pageSize || 10, 10),
+            offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
+        })
+    }
+}
 
 
 //getPurchaseDetailByCode,

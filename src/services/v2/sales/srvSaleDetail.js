@@ -10,7 +10,10 @@ const viewSaleDetailMainFields = ['id', 'typeCode', 'transNo', 'bundlingId', 'bu
   'sellPrice', 'sellingPrice', 'DPP', 'PPN', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3',
 
   // [NEW]: FERDINAN - 2025-03-26
-  'salestype', 'additionalpricepercent', 'additionalpricenominal'
+  'salestype', 'additionalpricepercent', 'additionalpricenominal',
+
+  // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+  'transnopurchase'
 ]
 const viewSaleDetailMinFields01 = ['transNo', 'productCode', 'serviceCode']
 const viewSaleDetailMinFields02 = ['typeCode', 'transNo', 'trade_in_id',
@@ -18,7 +21,10 @@ const viewSaleDetailMinFields02 = ['typeCode', 'transNo', 'trade_in_id',
   'sellPrice', 'sellingPrice', 'DPP', 'PPN', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3', 'keterangan',
 
   // [NEW]: FERDINAN - 2025-03-26
-  'salestype', 'additionalpricepercent', 'additionalpricenominal'
+  'salestype', 'additionalpricepercent', 'additionalpricenominal',
+
+  // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+  'transnopurchase'
 ]
 
 export async function srvGetSaleDetailByStoreTransNo (storeId, transNo, query = {}) {

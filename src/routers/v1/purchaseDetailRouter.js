@@ -1,7 +1,7 @@
 import express from 'express'
 import project from '../../../config/project.config'
 import { requireAuth } from '../../services/v1/usersService'
-import { getPurchaseDetail, getAllPurchaseDetail, insertPurchaseDetail, insertReturnDetail, insertPurchaseVoidDetail, updatePurchaseDetail }
+import { getPurchaseDetail, getAllPurchaseDetail, insertPurchaseDetail, insertReturnDetail, insertPurchaseVoidDetail, updatePurchaseDetail, getPurchaseDetailService }
   from '../../controllers/purchaseDetailController'
 
 const router = express.Router()
@@ -12,10 +12,16 @@ const apiRouter = [
     apiRoute + '/:id',
     apiRoute + '/purchase',
     apiRoute + '/return',
-    apiRoute + '/void'
+    apiRoute + '/void',
+    
+    // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+    apiRoute + '/service/store/:storeid/product/:productid',
 ]
 
 // MAIN //
+// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+router.get(apiRouter[5], requireAuth, getPurchaseDetailService)
+
 router.get(apiRouter[1], requireAuth, getPurchaseDetail)
 
 router.get(apiRouter[0], requireAuth, getAllPurchaseDetail)

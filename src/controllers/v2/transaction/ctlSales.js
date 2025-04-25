@@ -1,7 +1,7 @@
 import { ApiError } from '../../../services/v1/errorHandlingService'
 import * as srv from '../../../services/v2/transaction/srvSales'
 
-import { srvGetSaleByStoreTransNo } from '../../../services/v2/sales/srvSaleHead'
+import { srvGetSaleByStoreOneDay, srvGetSaleByStoreTransNo } from '../../../services/v2/sales/srvSaleHead'
 import { srvGetSaleDetailByStoreTransNo } from '../../../services/v2/sales/srvSaleDetail'
 import { srvGetSalePaymentByStoreTransNo } from '../../../services/v2/sales/srvSalePayment'
 import { srvGetAllStockProductTradeIn } from '../../../services/v2/master/stocks/srvProductTradeIN'
@@ -80,6 +80,20 @@ export function ctlGetSaleByStoreTransNo (req, res, next) {
       data: values[0],
       detail: newDetailSales,
       edc: values[2]
+    })
+  }).catch(err => next(new ApiError(422,`ZCSP-00001: Couldn't find Sale`, err)))
+}
+
+// [POS SALES ONE DAY]: FERDINAN - 2025-04-24
+export function ctlGetSaleByStoreInOneDay (req, res, next) {
+  console.log('Requesting-getSaleByStoreInOneDay: ' + JSON.stringify(req.params) + ' ...')
+  let { store, date } = req.params
+
+  srvGetSaleByStoreOneDay(store, date).then(rs => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: rs
     })
   }).catch(err => next(new ApiError(422,`ZCSP-00001: Couldn't find Sale`, err)))
 }

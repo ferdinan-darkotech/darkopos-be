@@ -110,7 +110,10 @@ export function reArrangedPosDetail (sequence, pos, posDetail, createdBy, detail
         salestype: dataPosDetail.salestype || 'I',
         additionalpricenominal: dataPosDetail.additionalpricenominal || 0,
         additionalpricepercent: dataPosDetail.additionalpricepercent || 0,
-        additionalpriceroundingdigit: dataPosDetail.additionalpriceroundingdigit || 0
+        additionalpriceroundingdigit: dataPosDetail.additionalpriceroundingdigit || 0,
+
+        // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
+        transnopurchase: dataPosDetail.transnopurchase || null
       }
   })
 }

@@ -33,13 +33,13 @@ const mainFields = [
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'membercategorycode', 'membercategoryname',
   'prov_nama', 'kab_nama', 'kec_nama', 'kel_nama', 'kel_id', 'active', 'verifications', 'npwp_address',
   'dept_id', 'dept_code', 'dept_name', 'branch_id', 'branch_name', 'verification_status', 'verif_request_at',
-  'verif_approved_at'
+  'verif_approved_at', 'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
 ]
 const mainViewFields = [
   'memberCode', 'memberName', 'address01', 'address02', 'cityName', 'state', 'zipCode',
   'mobileNumber', 'phoneNumber', 'idType', 'idNo', 'birthDate', 'gender', 'taxId', 'cashback',
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'verifications', 'npwp_address',
-  'dept_code', 'dept_name', 'branch_name'
+  'dept_code', 'dept_name', 'branch_name', 'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
 ]
 
 const attrMemberVerify = [
@@ -152,7 +152,8 @@ export async function srvGetCustomers (query, filter = false) {
   return view.findAndCountAll({
     attributes,
     where,
-    order: sort,
+    // order: sort,
+    order: [['createdAt', 'DESC']],
     ...limitQuery,
     raw: false
   })
@@ -305,7 +306,10 @@ export async function srvCreateCustomer (data, createdBy, next) {
       createdAt: moment(),
       verification_status: data.verification_status,
       verif_request_at: data.verif_request_at,
-      verif_approved_at: data.verif_approved_at
+      verif_approved_at: data.verif_approved_at,
+
+      // [ITCF MEMBER]: FERDINAN - 2025-04-21
+      referralcode: data.referralcode
     }, { transaction })
     await transaction.commit()
 
@@ -353,7 +357,10 @@ export async function srvUpdateCustomer (data, updatedBy, next) {
       updatedAt: moment(),
       verification_status: data.verification_status,
       verif_request_at: data.verif_request_at,
-      verif_approved_at: data.verif_approved_at
+      verif_approved_at: data.verif_approved_at,
+
+      // [ITCF MEMBER]: FERDINAN - 2025-04-21
+      referralcode: data.referralcode
     }, {
       where: {
         memberCode: data.code
