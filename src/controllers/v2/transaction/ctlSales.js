@@ -87,9 +87,9 @@ export function ctlGetSaleByStoreTransNo (req, res, next) {
 // [POS SALES ONE DAY]: FERDINAN - 2025-04-24
 export function ctlGetSaleByStoreInOneDay (req, res, next) {
   console.log('Requesting-getSaleByStoreInOneDay: ' + JSON.stringify(req.params) + ' ...')
-  let { store, date } = req.params
+  let { store } = req.params
 
-  srvGetSaleByStoreOneDay(store, date).then(rs => {
+  srvGetSaleByStoreOneDay(store, req.query.date).then(rs => {
     res.xstatus(200).json({
       success: true,
       message: 'Ok',

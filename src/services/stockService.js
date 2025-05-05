@@ -542,7 +542,7 @@ export function createStockGlobal (stockcode, stock, createdBy, next, transactio
     categoryId: stock.categoryId,
     trackQty: +stock.trackQty,
     alertQty: stock.alertQty,
-    active: +stock.active,
+    active: Number(stock.active),
     exception01: +stock.exception01,
     productImage: stock.stockImage,
     dummyCode: stockcode,

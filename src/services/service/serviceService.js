@@ -116,7 +116,7 @@ export function getServicesData (query, pagination) {
       $or: [{ servicecode: { $iRegexp: q } }, { servicename: { $iRegexp: q } }],
       $and: { ...other, reg_id }
     },
-    order: order ? sequelize.literal(order) : null,
+    order: [['createdAt', 'DESC']],
     limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
     offset: type !== 'all' ? parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10) : null
   })

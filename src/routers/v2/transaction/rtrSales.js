@@ -13,7 +13,7 @@ const apiRouter = [
   apiRoute + '/trans/:store/:transNo',
 
   // [POS SALES ONE DAY]: FERDINAN - 2025-04-24
-  apiRoute + '/trans/:store/date/:date',
+  apiRoute + '/date/:store',
 ]
 
 
@@ -22,6 +22,6 @@ router.put(apiRouter[1], requireAuth, ctl.ctlRegenerateTaxSeries)
 router.get(apiRouter[2], requireAuth, ctl.ctlGetSaleByStoreTransNo)
 
 // [POS SALES ONE DAY]: FERDINAN - 2025-04-24
-router.get(apiRouter[2], requireAuth, ctl.ctlGetSaleByStoreTransNo)
+router.get(apiRouter[3], requireAuth, ctl.ctlGetSaleByStoreInOneDay)
 
 export default router

@@ -3,6 +3,8 @@ import { switchModeField } from '../function/srvUtils'
 
 // must be refactor
 const viewSaleHead = dbv.vw_pos
+
+// [POS SALES ONE DAY]: FERDINAN - 2025-04-24
 const viewSaleHeadDay = dbv.vw_pos_report_day
 
 const idField = ['id']
@@ -36,8 +38,8 @@ export async function srvGetSaleByStoreTransNo (storeId, transNo, query = {}) {
 
 // [POS SALES ONE DAY]: FERDINAN - 2025-04-24
 export async function srvGetSaleByStoreOneDay(storeid, date) {
-  console.log("date >>> ", date)
   return viewSaleHeadDay.findAll({
+    attributes: ['transDate', 'storeId', 'data', 'detail', 'edc'],
     where: {
       storeid: storeid,
       transdate: date

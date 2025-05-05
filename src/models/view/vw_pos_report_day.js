@@ -1,3 +1,4 @@
+// [POS SALES ONE DAY]: FERDINAN - 2025-04-24
 "use strict";
 import moment from 'moment'
 
