@@ -28,7 +28,8 @@ export async function srvGetStocksCategory (query) {
   return stocksCategory.findAndCountAll({
     attributes: mode[m || 'lov'],
     ...queryDefault,
-    raw: false
+    raw: false,
+    order: [['id', 'DESC']]
   })
 }
 

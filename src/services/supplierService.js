@@ -100,7 +100,7 @@ export function getData (query, pagination) {
       where: {
         $or: querying
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['id', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
       offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
     })

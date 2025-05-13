@@ -196,7 +196,11 @@ export function insertPosHeader (pos, sequence, lastCashback, gettingCashback, c
     total_netto: pos.total_netto,
     total_products: pos.total_products,
     total_services: pos.total_services,
-    stat_tax_series: (pos.stat_tax_series || '00')
+    stat_tax_series: (pos.stat_tax_series || '00'),
+
+    // [TGL JATUH TEMPO]: FERDINAN - 2025-05-09
+    topday: pos.topday,
+    topdate: pos.topdate
   }, { transaction }).then(rs => {
     return { success: true, data: rs }
   }) .catch(er => {

@@ -138,7 +138,7 @@ export function getData (query, pagination) {
           $eq: null
         }
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['id', 'DESC']], 
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
       offset: type !== 'all' ? parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10) : null
     })

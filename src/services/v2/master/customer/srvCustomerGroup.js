@@ -31,7 +31,7 @@ const mainViewFields = mainFields
 
 export async function srvGetCustomerGroups (query, filter = false) {
   let { pageSize, page, order, q, ...other } = query
-  let sort = (order) ? getSelectOrder(order) : null
+  let sort = (order) ? getSelectOrder(order) : [['id', 'DESC']]
   const { m, activeOnly, ...condition } = other
   const includeActive = (activeOnly || '').toString() === 'true' ? { active: true } : {}
   let where = { ...includeActive } // let where = { deletedAt: { [Op.eq]: null } }

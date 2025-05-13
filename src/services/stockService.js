@@ -171,6 +171,7 @@ export function getStockPurchasePrice (storeid) {
     where: {
       storeid
     },
+    order: [['productid', 'DESC']],
     raw: false
   })
 }
@@ -345,7 +346,7 @@ export function getProductsData (query, pagination) {
         $or: querying,
         $and: [...other, [{ storecode: store }]]
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['productCode', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
       offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
     })
@@ -356,7 +357,7 @@ export function getProductsData (query, pagination) {
         ...other,
         storecode: store
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['productCode', 'DESC']],
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
       offset: type !== 'all' ? parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10) : null
     })

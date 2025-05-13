@@ -121,7 +121,7 @@ export async function srvGetEmployees (query, filter = false) {
         (store ? {'': sequelize.literal(`jsonb_extract_path(storelistid, ${store}::text) is not null`)} : {})
       ],
     },
-    order: [['id', 'asc']],
+    order: [['id', 'desc']],
     ...limitQuery,
     raw: false
   })

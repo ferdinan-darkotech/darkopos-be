@@ -4,7 +4,7 @@ import moment from 'moment'
 
 module.exports = function (sequelize, DataTypes) {
   const viewwo = sequelize.define("vw_wo", {
-    id: { type: DataTypes.INTEGER, primaryKey: true },
+    id: { type: DataTypes.INTEGER },
     woNo: { type: DataTypes.STRING },
     storeId: { type: DataTypes.INTEGER },
     memberId: { type: DataTypes.INTEGER },

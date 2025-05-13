@@ -32,7 +32,8 @@ exports.srvGetStocksBrand = function (query) {
     attributes,    
     where,
     ...(m !== 'lov' ? limitQuery : {}),
-    raw: false
+    raw: false,
+    order: [['id', 'DESC']]
   })
 }
 

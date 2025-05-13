@@ -183,7 +183,17 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     createdAt: { type: DataTypes.DATE, allowNull: false },
-    updatedAt: { type: DataTypes.DATE, allowNull: true }
+    updatedAt: { type: DataTypes.DATE, allowNull: true },
+
+    // [TGL JATUH TEMPO]: FERDINAN - 2025-05-09
+    topday: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    topdate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    }
   }, {
       tableName: 'tbl_pos'
     })

@@ -25,7 +25,6 @@ const generateNumber = async () => {
 
     // Template awal nomor
     const prefix = `RQO${month}${year}`;
-    console.log("prefix", prefix)
 
     const lastRecord = await tblRequestStockOut.findOne({
         where: {

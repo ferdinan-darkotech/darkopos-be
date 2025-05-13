@@ -9,7 +9,6 @@ import { getSettingByCodeV2 } from '../../../services/settingService'
 import cryptojs, { format } from 'crypto-js'
 import customeSequelize from '../../../native/sequelize'
 import sequelize from 'sequelize'
-import { changeStatusCancel, fetchTransactionRequestStockOut } from '../../requestStockOutService.js'
 
 const formatDate = 'YYYY-MM-DD'
 const formatDateTime = 'YYYY-MM-DD HH:mm:ss'
@@ -352,7 +351,6 @@ export async function srvUpdateApproval (data, user) {
     return getNativeQuery(sSql,false, 'RAW').then(rs => {
       return resolve({ success: true, data: JSON.parse(JSON.stringify(rs))[0][0].fn_bulk_update_system_approval })
     }).catch(er => reject({ success: false, message: er.message }))
-    return { success: false, message: 'Not implemented' }
   })
 }
 

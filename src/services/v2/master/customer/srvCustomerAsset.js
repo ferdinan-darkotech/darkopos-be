@@ -46,7 +46,8 @@ export function srvGetAsset (query, rawMode = 'Y') {
   return view.findAndCountAll({
     attributes: rawMode === 'Y' ? mainFieldsV2 : mainFields,
     ...queryDefault,
-    raw: rawMode === 'Y'
+    raw: rawMode === 'Y',
+    order: [['memberCode', 'DESC']]
   })
 }
 

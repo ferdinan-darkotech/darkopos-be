@@ -350,7 +350,7 @@ export function getDataMainWo (query, pagination) {
         storeId: store,
         ...(query.wo_status ? { wo_status: query.wo_status } : {})
       },
-      order: [['createdAt']],
+      order: [['woNo', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
       offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
     })
@@ -365,7 +365,7 @@ export function getDataMainWo (query, pagination) {
         storeId: store,
         ...(query.wo_status ? { wo_status: query.wo_status } : {})
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['woNo', 'DESC']],
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
       offset: type !== 'all' ? parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10) : null
     })

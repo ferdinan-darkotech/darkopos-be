@@ -4,7 +4,7 @@
 module.exports = function (sequelize, DataTypes) {
     var requestStockOutDetail = sequelize.define("vw_request_stock_out_detail", {
         transactionnumber: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
             unique: true,
@@ -13,11 +13,11 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         productcode: {
-            type: DataTypes.STRING(60),
+            type: DataTypes.STRING,
             allowNull: false,
         },
         productname: {
-            type: DataTypes.STRING(60),
+            type: DataTypes.STRING,
             allowNull: false,
         },
         qtytrans: {
@@ -33,18 +33,18 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         createdBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i
             }
         },
         created_by_fullname: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING,
             allowNull: false
         },
         updatedBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: true,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i

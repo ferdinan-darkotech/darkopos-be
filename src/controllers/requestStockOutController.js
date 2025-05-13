@@ -63,7 +63,6 @@ exports.updateStatusCancelRequestStockOut = async function (req, res, next) {
     console.log('Requesting-UpdateStatusCancelRequestStockOut: ' + req.url + ' ...')
     const transactionnumber = req.params.id
     const userLogIn = extractTokenProfile(req)
-    console.log("req.body >>> ", req.body)
     return changeStatusCancel(transactionnumber, req.body, userLogIn.userid).then((result) => {
         res.xstatus(200).json(result)
     }).catch(err => next(new ApiError(501, `Couldn't update stock.`, err)))

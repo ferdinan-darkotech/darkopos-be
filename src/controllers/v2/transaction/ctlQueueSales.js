@@ -379,7 +379,6 @@ export function ctlInsertQueueSales (req, res, next) {
 					})
 				})
 			} else {
-				console.log("packdata >> ", packData)
 				return srvInsertQueueSales(packData, spk, next).then(rs => {
 					if(rs.success) {
 						if(rs.wono) {
@@ -420,7 +419,6 @@ export function ctlUpdateQueueSales (req, res, next) {
 	const userLogin = req.$userAuth
 	const storeid = req.params.store
 	const { cashier_trans, service_detail, bundle, restrictItem, ...other } = req.body
-	console.log("req.body >>> ", req.body)
 	let packData = {
 		...other,
 		headerid,
@@ -462,8 +460,6 @@ export function ctlUpdateQueueSales (req, res, next) {
 				...remapService(x),
 				action: (existsService || []).filter(y => y.code === x.code)[0] ? 'edit' : 'add'
 			}))
-			console.log("products >> ", products)
-			console.log("services >> ", services)
 			packData.detail = [...products, ...services]
 			packData.otherInformations = otherInformations
 			

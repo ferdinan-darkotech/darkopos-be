@@ -24,7 +24,8 @@ const lovFields01 = [
 const minFields01 = [
   'memberCode',
   'memberName',
-  'verifications'
+  'verifications',
+  'npwp_address'
 ]
 const mainFields = [
   'id', 'memberCode', 'memberName', 'address01', 'address02', 'cityCode', 'cityName', 'email', 'state',
@@ -153,7 +154,7 @@ export async function srvGetCustomers (query, filter = false) {
     attributes,
     where,
     // order: sort,
-    order: [['createdAt', 'DESC']],
+    order: [['id', 'DESC']],
     ...limitQuery,
     raw: false
   })

@@ -18,7 +18,8 @@ export function srvGetSomeDataLov (types, query) {
   return tbMemberLov.findAndCountAll({
     attributes: (attribute[m] || attribute.mnf),
     ...queryDefault,
-    raw: true
+    raw: true,
+    order: [['id', 'desc']]
   })
 }
 

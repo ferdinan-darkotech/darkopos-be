@@ -4,7 +4,7 @@
 module.exports = function (sequelize, DataTypes) {
     var requestStockOutDetail = sequelize.define("tbl_request_stock_out_detail", {
         transactionnumber: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
             unique: true,
@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         productcode: {
-            type: DataTypes.STRING(60),
+            type: DataTypes.STRING,
             allowNull: false,
         },
         qtyrequest: {
@@ -29,14 +29,14 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         createdBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i
             }
         },
         updatedBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: true,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i

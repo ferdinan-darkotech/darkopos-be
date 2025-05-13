@@ -66,7 +66,13 @@ module.exports = function (sequelize, DataTypes) {
     paymentVia: { type: DataTypes.STRING },
     current_duplicate: { type: DataTypes.INTEGER },
     total_duplicate: { type: DataTypes.INTEGER },
-    no_tax_series: { type: DataTypes.STRING }
+    no_tax_series: { type: DataTypes.STRING },
+
+    // [NPWP]: FERDINAN - 2025-05-07
+    npwp_address: { type: DataTypes.STRING },
+
+    // [TGL JATUH TEMPO]: FERDINAN - 2025-05-09
+    topdate: { type: DataTypes.DATE }
   }, {tableName: 'vw_pos'})
   return Pos
 }

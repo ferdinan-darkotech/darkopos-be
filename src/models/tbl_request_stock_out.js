@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         transactionnumber: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
             unique: true,
@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         queuenumber: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
             unique: true,
@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         status: {
-            type: DataTypes.STRING(1),
+            type: DataTypes.STRING,
             allowNull: true
         },
         exitdate: {
@@ -34,14 +34,14 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
         createdBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i
             }
         },
         updatedBy: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
             allowNull: true,
             validate: {
                 is: /^[a-z0-9\_\-]{3,30}$/i
