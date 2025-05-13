@@ -25,6 +25,7 @@ import { generateLinkDynamicForm } from './v2/other/Dynamic-Form/connections'
 import { srvGetTemplateMessageByCode } from './v2/other/srvMessageTemplate'
 
 import sockets from '../utils/socket'
+import { Op } from 'sequelize'
 
 
 const tableMemberCashback = db.tbl_member_cashback
@@ -67,7 +68,7 @@ export function getLastTrans (query) {
     attributes: ['transNo'],
     where: {
       transNo: {
-        $like: 'FJ%'
+        [Op.like]: 'FJ%'
       },
     }
   })
@@ -85,7 +86,7 @@ export function getPosData (query) {
   if (query) {
     // postgresql required
     const extCondition = query.type === 'PERIOD' ? { '': sequelize.literal(`to_char(transdate, 'YYYY-MM') = '${period}'`) } : { transDate: {
-      $between: [start, end],
+      [Op.between]: [start, end],
     } }
     return PosView.findAll({
       attributes: field ? field.split(',') : posViewField,

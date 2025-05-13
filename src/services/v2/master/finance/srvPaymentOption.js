@@ -71,7 +71,7 @@ const mainFields = [
 export function srvGetSomePaymentOptionByCode (listCode) {
   return table.findAll({
     attributes: [ 'id', 'code' ],
-    where: { code: { $in: listCode } },
+    where: { code: { [Op.in]: listCode } },
     raw: true
   })
 }

@@ -1,6 +1,7 @@
 import db from '../../models'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import sequelize from '../../native/sequelize'
+import { Op } from 'sequelize'
 
 let table = db.tbl_loyalty
 
@@ -39,16 +40,16 @@ export function getDataCode (data) {
       attributes: Fields,
       where: {
         active: '1',
-        $or: {
+        [Op.or]: {
           startDate: {
-            $between: [data.startDate, data.endDate]
+            [Op.between]: [data.startDate, data.endDate]
           },
           endDate: {
-            $between: [data.startDate, data.endDate]
+            [Op.between]: [data.startDate, data.endDate]
           }
         },
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
       },
       raw: false
@@ -59,13 +60,13 @@ export function getDataCode (data) {
       where: {
         active: '1',
         startDate: {
-          $lte: sequelize.literal('current_date')
+          [Op.lte]: sequelize.literal('current_date')
         },
         endDate: {
-          $gte: sequelize.literal('current_date')
+          [Op.gte]: sequelize.literal('current_date')
         },
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
       },
       raw: false
@@ -98,7 +99,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -115,11 +116,11 @@ export function countData (query) {
   if (querying.length > 0) {
     return table.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
-        $and: other
+        [Op.and]: other
       },
     })
   } else {
@@ -127,7 +128,7 @@ export function countData (query) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       }
     })
@@ -157,11 +158,11 @@ export function getData (query, pagination) {
     return table.findAll({
       attributes: Fields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
-        $and: other
+        [Op.and]: other
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -173,7 +174,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,

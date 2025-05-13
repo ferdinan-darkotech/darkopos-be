@@ -52,7 +52,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: true
     },
-    kelid: { type: DataTypes.INTEGER(10), allowNull: false },
+    kelid: { type: DataTypes.INTEGER, allowNull: false },
     mobileNumber: {
       type: DataTypes.STRING(20),
       allowNull: false,

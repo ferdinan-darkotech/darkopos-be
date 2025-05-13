@@ -5,7 +5,7 @@ import dbvr from '../models/viewR'
 import { ApiError } from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
 import sequelize from '../native/sequelize'
-import Sequelize from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 import native from '../native/product/sqlStockQty'
 import { getNativeQuery } from '../native/nativeUtils'
 import { setDefaultQuery } from '../utils/setQuery'
@@ -124,7 +124,7 @@ export function srvGetSomeUpdateLogStockPrice ({ priceType, store, from, to = ''
     if(priceType === 'local') {
       where = { storeid: store }
     } else if (priceType === 'global') {
-      where = { storeid: { $eq: null } }
+      where = { storeid: { [Op.eq]: null } }
     } else {
       throw new Error('Type price is not found.')
     }
@@ -134,7 +134,7 @@ export function srvGetSomeUpdateLogStockPrice ({ priceType, store, from, to = ''
     queryDefault.where = {
       ...queryDefault.where,
       ...where,
-      createdat: { $between: [new Date(+from), new Date(+to)] }
+      createdat: { [Op.between]: [new Date(+from), new Date(+to)] }
     }
     
     return vwLogUpdateStockPrice.findAndCountAll({
@@ -160,7 +160,7 @@ export function srvGetBroadcastLogProductsUpdate () {
 export function srvSetBroadcastProducts (createdAt = moment()) {
   return tbLogUpdateStockPrice.destroy({
     where: {
-      createdat: { $lte: createdAt }
+      createdat: { [Op.lte]: createdAt }
     } 
   })
 }
@@ -187,7 +187,7 @@ export function getStockByCode (stockcode) {
 
 export function checkBarcodeExists (stockcode, barcode) {
   return Stock.findOne({
-    where: { productCode: { $ne: stockcode }, $and: [{ barCode01: barcode },{ barCode01: { $ne: null }, barCode01: { $ne: '' } }] },
+    where: { productCode: { [Op.ne]: stockcode }, [Op.and]: [{ barCode01: barcode },{ barCode01: { [Op.ne]: null }, barCode01: { [Op.ne]: '' } }] },
     raw: true
   })
 }
@@ -218,12 +218,12 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   if (lov === 'variant') {
     other.productParentId = {
-      $eq: sequelize.literal('id')
+      [Op.eq]: sequelize.literal('id')
     }
   }
   let querying = []
@@ -240,8 +240,8 @@ export function countData (query) {
   if (querying.length > 0) {
     return vwStock.count({
       where: {
-        $or: querying,
-        $and: other
+        [Op.or]: querying,
+        [Op.and]: other
       },
     })
   } else {
@@ -263,7 +263,7 @@ export function getStocksData (query, pagination) {
   const { pageSize, page } = pagination
   if (lov === 'variant') {
     other.productParentId = {
-      $eq: sequelize.literal('id')
+      [Op.eq]: sequelize.literal('id')
     }
   }
   let querying = []
@@ -272,7 +272,7 @@ export function getStocksData (query, pagination) {
       const id = Object.assign(stockFieldsNormalize)[key]
       if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type' || id === 'id' || id === 'active')) {
         let obj = {}
-        obj[id] = { $iRegexp: query['q'] }
+        obj[id] = { [Op.iRegexp]: query['q'] }
         querying.push(obj)
       }
     }
@@ -286,8 +286,8 @@ export function getStocksData (query, pagination) {
     return vwStock.findAndCountAll({
       attributes: stockFieldsNormalize,
       where: {
-        $or: querying,
-        $and: [...other, extendableFilter]
+        [Op.or]: querying,
+        [Op.and]: [...other, extendableFilter]
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -314,7 +314,7 @@ export function getProductsData (query, pagination) {
   */
   const { type, field, lov, order, q, active, storecode: store, ...other } = query
   if (other.hasOwnProperty('createdAt')) {
-    if (other.createdAt.length === 2) other.createdAt = { $between: other.createdAt }
+    if (other.createdAt.length === 2) other.createdAt = { [Op.between]: other.createdAt }
   }
   for (let key in query) {
     if (key === 'createdAt' || key === 'updatedAt') {
@@ -324,7 +324,7 @@ export function getProductsData (query, pagination) {
   const { pageSize, page } = pagination
   if (lov === 'variant') {
     other.productParentId = {
-      $eq: sequelize.literal('id')
+      [Op.eq]: sequelize.literal('id')
     }
   }
   let querying = []
@@ -334,7 +334,7 @@ export function getProductsData (query, pagination) {
       if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type')) {
         let obj = {}
         // obj[id] = query['q']
-        obj[id] = { $iRegexp: query['q'] }
+        obj[id] = { [Op.iRegexp]: query['q'] }
         querying.push(obj)
       }
     }
@@ -343,8 +343,8 @@ export function getProductsData (query, pagination) {
     return vw_products.findAndCountAll({
       attributes: stockFieldsV2, //stockFieldsLocal,
       where: {
-        $or: querying,
-        $and: [...other, [{ storecode: store }]]
+        [Op.or]: querying,
+        [Op.and]: [...other, [{ storecode: store }]]
       },
       order: order ? sequelize.literal(order) : [['productCode', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
@@ -379,14 +379,14 @@ export function getProductsDataLocal (storeId, query, pagination) {
   const { pageSize, page } = pagination
   if (lov === 'variant') {
     other.productParentId = {
-      $eq: sequelize.literal('id')
+      [Op.eq]: sequelize.literal('id')
     }
   }
   let querying = []
   if (query['q']) {
     querying.push(
-      { productCode: { $iRegexp: query['q'] } },
-      { productName: { $iRegexp: query['q'] } }
+      { productCode: { [Op.iRegexp]: query['q'] } },
+      { productName: { [Op.iRegexp]: query['q'] } }
     )
     // for (let key in stockFieldsLocal) {
     //   const id = Object.assign(stockFieldsLocal)[key]
@@ -402,10 +402,10 @@ export function getProductsDataLocal (storeId, query, pagination) {
     return vwProductLocal.findAndCountAll({
       attributes: field ? field.split(',') : stockFieldsLocal,
       where: {
-        $and: [
-          { $or: [{ storeId }, { storeId: { $eq: null} }] },
-          { $or: querying },
-          { $and: condition }
+        [Op.and]: [
+          { [Op.or]: [{ storeId }, { storeId: { [Op.eq]: null} }] },
+          { [Op.or]: querying },
+          { [Op.and]: condition }
         ]
         ,
       },
@@ -755,7 +755,7 @@ export function srvSyncProductPrice (query) {
 export function srvGetSomeProductById (id = [], storeId) {
   return vwProductLocal.findAll({
     attributes: ['id', 'productCode', 'productName','costPrice', 'costPriceLocal'],
-    where: { id: { $in: id }, storeId },
+    where: { id: { [Op.in]: id }, storeId },
     raw: true
   })
 }
@@ -763,7 +763,7 @@ export function srvGetSomeProductById (id = [], storeId) {
 export function srvGetSomeProductByCode (code = []) {
   return vw_product.findAll({
     attributes: [['id', 'productid'], 'productcode', 'productname'],
-    where: { productcode: { $in: code } },
+    where: { productcode: { [Op.in]: code } },
     raw: true
   })
 }
@@ -771,7 +771,7 @@ export function srvGetSomeProductByCode (code = []) {
 export function srvGetSomeProductPriceByCode (code = []) {
   return vw_product.findAll({
     attributes: [['id', 'productid'], 'productcode', 'costprice', 'sellprice', 'distprice01', 'distprice02'],
-    where: { productcode: { $in: code } },
+    where: { productcode: { [Op.in]: code } },
     raw: true
   })
 }

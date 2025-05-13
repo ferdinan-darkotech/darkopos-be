@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models'
 import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'
@@ -65,7 +66,7 @@ export function getPosReportData (query) {
             attributes: posReportField,
             where: {
                 transDate: {
-                    $between: [query.from, query.to]
+                    [Op.between]: [query.from, query.to]
                 },
                 storeId: query.storeId,
                 cashierTransId: query.cashierTransId ? query.cashierTransId : null

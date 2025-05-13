@@ -1,5 +1,5 @@
 import { map } from 'bluebird'
-import Sequelize from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 import db from '../../../../models'
 import dbr from '../../../../models/tableR'
 import dbv from '../../../../models/view'
@@ -52,7 +52,7 @@ export function srvFindAllStoreByParent (parent = -1, flat = null) {
 export function srvFindAllStoresByCode (codes = []) {
   return tbStore.findAll({
     attributes: ['id', 'storecode', 'storename'],
-    where: { storecode: { $in: codes } },
+    where: { storecode: { [Op.in]: codes } },
     raw: true
   })
 }
@@ -62,8 +62,8 @@ export function srvGetStoreBranch (store = null) {
   return storeBranch.findOne({
     attributes: ['store_id', 'store_code', 'parent_store_id', 'parent_store_code'],
     where: {
-      status: { $eq: true },
-      $or: [{ store_code: (store || '').toString() }, { '': Sequelize.literal(`store_id::text = '${(store || '').toString()}'`) }],
+      status: { [Op.eq]: true },
+      [Op.or]: [{ store_code: (store || '').toString() }, { '': Sequelize.literal(`store_id::text = '${(store || '').toString()}'`) }],
     },
     raw: true
   })
@@ -75,7 +75,7 @@ export async function srvGetGroupStoreBranchByID (store, includeParentSetting = 
     const current = await storeBranch.findOne({
       attributes: ['store_id', 'parent_store_id'],
       where: {
-        status: { $eq: true },
+        status: { [Op.eq]: true },
         store_id: store
       },
       raw: true
@@ -86,7 +86,7 @@ export async function srvGetGroupStoreBranchByID (store, includeParentSetting = 
     const lists = await storeBranch.findAll({
       attributes: ['store_id', 'parent_store_id'],
       where: {
-        status: { $eq: true },
+        status: { [Op.eq]: true },
         parent_store_id: current.parent_store_id
       },
       raw: true
@@ -121,7 +121,7 @@ export function srvGetStoreBranchSetting (store = null) {
     
     return storeBranch.findOne({
       attributes: ['store_code', 'parent_store_code'],
-      where: { status: { $eq: true }, ...storeFilter },
+      where: { status: { [Op.eq]: true }, ...storeFilter },
       raw: true
     }).then(store => {
       if(!store) throw new Error('Store branch is not defined.')
@@ -180,7 +180,7 @@ export async function srvGetAllStore (query, userid = null) {
         attributes,
         where: {
           ...(
-            isOwnedOnly ? { storeid: { $in: listOwned.map(x => x.userstoreid.toString()) } } : {}
+            isOwnedOnly ? { storeid: { [Op.in]: listOwned.map(x => x.userstoreid.toString()) } } : {}
           )
         },
         order: orders,

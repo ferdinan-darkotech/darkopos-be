@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../models/view'
 import sequelize from '../native/sequelize'
 
@@ -36,7 +37,7 @@ export function countData (query) {
         if (key === 'createdAt' || key === 'updatedAt' || key === 'transDate') {
             query[key] = { between: query[key] }
         } else if (type !== 'all' && query['q'] && key !== 'order' && key !== 'storeId' && key !== 'active') {
-            query[key] = { $iRegexp: query[key] }
+            query[key] = { [Op.iRegexp]: query[key] }
         }
     }
     let querying = []
@@ -53,8 +54,8 @@ export function countData (query) {
     if (querying.length > 0) {
         return vwTransferOut.count({
             where: {
-                $or: querying,
-                $and: other
+                [Op.or]: querying,
+                [Op.and]: other
             },
         })
     } else {
@@ -89,8 +90,8 @@ export function getData (query, pagination) {
         return vwTransferOut.findAndCountAll({
             attributes: Fields,
             where: {
-                $or: querying,
-                $and: other
+                [Op.or]: querying,
+                [Op.and]: other
             },
             order: order ? sequelize.literal(order) : null,
             limit: parseInt(pageSize || 10, 10),

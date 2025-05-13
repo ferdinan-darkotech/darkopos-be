@@ -12,11 +12,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     bundleId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     productId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     sellingPrice: {
@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: 0.00
     },
     serviceId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     qty: {

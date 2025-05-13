@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
   var vwEmployee = sequelize.define("vw_employee", {
     id: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     employeeId: {
       type: DataTypes.STRING(10),
@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
     },
     cityId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     cityName: {
       type: DataTypes.STRING(25),

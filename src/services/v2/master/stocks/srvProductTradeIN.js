@@ -86,7 +86,7 @@ export function srvGetExistsTradeInByStoreProducts (clause = [{ store: null, pro
 
   return tbProductTradeIn.findAll({
     attributes: ['product_trd_id', 'store_id', 'product_id'],
-    where: { $or: filtering },
+    where: { [Op.or]: filtering },
     raw: true
   })
 }
@@ -97,7 +97,7 @@ export function srvGetExistsTradeInByIdStore (clause = [{ id: null, store: null 
   return vwProductTradeIn.findAll({
     attributes: ['product_trd_id', 'store_id', 'product_id'],
     where: {
-      $and: [{ $or: filtering }, ...((activeOnly || false).toString() === 'true' ? [{ status: true }] : [])]
+      [Op.and]: [{ [Op.or]: filtering }, ...((activeOnly || false).toString() === 'true' ? [{ status: true }] : [])]
     },
     raw: true
   })
@@ -111,7 +111,7 @@ export function srvGetProductTradeIn (query = {}, store = null) {
   queryDefault.where = {
     ...queryDefault.where,
     store_code: store,
-    ...((activeOnly || false).toString() === 'true' ? { status: { $eq: true } } : {})
+    ...((activeOnly || false).toString() === 'true' ? { status: { [Op.eq]: true } } : {})
   }
 
   return vwProductTradeIn.findAndCountAll({
@@ -243,7 +243,7 @@ export function srvGetExistingStockProductTradeInById (listID = []) {
 
   return tbBuyProductTradeIn.findAll({
     attributes: attrBuyProductTradeIn.mf,
-    where: { $or: mappingID, status: '01' },
+    where: { [Op.or]: mappingID, status: '01' },
     raw: true
   })
 }
@@ -255,7 +255,7 @@ export function srvGetStockProductTradeIn (query = {}, store = []) {
   let queryDefault = setDefaultQuery(attrStockProductTradeIN.bf, { ...other }, true)
   queryDefault.where = {
     ...queryDefault.where,
-    store_code: { $in: store },
+    store_code: { [Op.in]: store },
     ...((activeOnly || false).toString() === 'true' ? { status: '01' } : {})
   }
 
@@ -271,8 +271,8 @@ export function srvGetStockProductSecond (query = {}, store = []) {
   let queryDefault = setDefaultQuery(attrProductSecond, { ...other }, true)
   queryDefault.where = {
     ...queryDefault.where,
-    store_code: { $in: store },
-    ...((onhand || false).toString() === 'true' ? { qty_onhand: { $gt: 0 } } : {})
+    store_code: { [Op.in]: store },
+    ...((onhand || false).toString() === 'true' ? { qty_onhand: { [Op.gt]: 0 } } : {})
   }
 
   return vwStockProductSecond.findAndCountAll({

@@ -70,16 +70,16 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(10),
     },
     brandId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     brandName: {
-      type: DataTypes.INTEGER(25),
+      type: DataTypes.INTEGER,
     },
     categoryId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     categoryName: {
-      type: DataTypes.INTEGER(25),
+      type: DataTypes.INTEGER,
     },
     trackQty: {
       type: DataTypes.BOOLEAN,
@@ -97,10 +97,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN
     },
     usageTimePeriod: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     usageMileage: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     productImage: {
       type: DataTypes.STRING(60),

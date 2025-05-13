@@ -6,6 +6,7 @@ import { getSequenceFormatByCode } from '../../sequenceService'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import sequelize from '../../../native/sequelize'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const cashEntry = db.tbl_cash_entry
 const cashEntryDetail = db.tbl_cash_entry_detail
@@ -119,7 +120,7 @@ export function srvGetOneHeaderCashEntry (storeid, transno) {
 export function srvGetHeaderCashEntry (query, condPeriod = []) {
   const { m, storeid, ...other } = query
   let queryDefault = setDefaultQuery(attributeHeader, other, true)
-  queryDefault.where = { ...queryDefault.where, storeid, $or: condPeriod }
+  queryDefault.where = { ...queryDefault.where, storeid, [Op.or]: condPeriod }
   return vwCashEntryHeader.findAndCountAll({
     attributes: attributeHeader,
     ...queryDefault,
@@ -205,7 +206,7 @@ export async function srvGetSummaryCashEntry (transkind = null, query) {
   //     where: {
   //       storecode: store,
   //       ...(cashier ? { cashierid: cashier } : {}),
-  //       transdateval: { $between: [newStartAt, newEndAt] },
+  //       transdateval: { [Op.between] [newStartAt, newEndAt] },
   //       transkindcode: transkind
   //     },
   //     raw: true

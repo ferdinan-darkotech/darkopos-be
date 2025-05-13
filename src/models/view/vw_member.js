@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     memberGroupId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     memberGroupName: {
@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     memberTypeId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     memberTypeName: {

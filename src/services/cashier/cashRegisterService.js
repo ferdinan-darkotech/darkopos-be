@@ -6,6 +6,7 @@ import sequelize from '../../native/sequelize'
 import stringSQLNative from '../../native/sqlSequence'
 import { getNativeQuery, getSelectOrder } from '../../native/nativeUtils'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const CashierTrans = db.tbl_cashier_trans
 const tbl_sequence = db.tbl_sequence
@@ -181,7 +182,7 @@ export function srvCashRegisterIdStatusExists (id, status) {
 export function srvGetCashRegisters (query, pagination) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { $between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   const { pageSize, page, order } = pagination
@@ -189,12 +190,12 @@ export function srvGetCashRegisters (query, pagination) {
   if (order) sort = getSelectOrder(order)
 
   if ((query.hasOwnProperty('from')) && (query.hasOwnProperty('to'))) {
-    query.period = { $between: [query.from, query.to] }
+    query.period = { [Op.between]: [query.from, query.to] }
     delete query.from
     delete query.to
   }
   if (query.hasOwnProperty('from')) {
-    query.period = { $between: [query.from, query.from] }
+    query.period = { [Op.between]: [query.from, query.from] }
     delete query.from
   }
   if (query.status === 'R') {
@@ -321,7 +322,7 @@ export function srvCloseOtherCashRegister (id, status, register, updateBy, next)
         ...registerValue,
         updatedBy: updateBy
       },
-        { where: { storeId: register.storeId, cashierId: register.cashierId, status: 'O', id: { $ne: id } } }
+        { where: { storeId: register.storeId, cashierId: register.cashierId, status: 'O', id: { [Op.ne]: id } } }
       ).catch(err => {
         const errObj = JSON.parse(JSON.stringify(err))
         const { parent, original, sql, ...other } = errObj

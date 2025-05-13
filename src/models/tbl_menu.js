@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true
         },
         menuId: {
-            type: DataTypes.INTEGER(5),
+            type: DataTypes.INTEGER,
             allowNull: false,
             unique: true,
         },
@@ -21,11 +21,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         bpid: {
-            type: DataTypes.INTEGER(5),
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         mpid: {
-            type: DataTypes.INTEGER(5),
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         sorting: {

@@ -4,6 +4,7 @@ import { ApiError } from '../../services/v1/errorHandlingService'
 import { isEmpty } from '../../utils/check'
 import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
+import { Op } from 'sequelize'
 
 const vw_payment_005 = dbv.vw_payment_005
 const vw_payment_006 = dbv.vw_payment_006
@@ -38,9 +39,9 @@ export function getTransByNo5 (query) {
     return vw_payment_005.findAll({
       where: {
         invoiceDate: {
-          $and: {
-            $gte: from,
-            $lte: to
+          [Op.and]: {
+            [Op.gte]: from,
+            [Op.lte]: to
           }
         },
         ...other
@@ -99,8 +100,8 @@ export function getTransByNo6 (query) {
       attributes: reportSaldoAWalFields(from, to),
       where: {
         invoiceDate: {
-          $gte: from,
-          $lte: to,
+          [Op.gte]: from,
+          [Op.lte]: to,
         },
         ...other
       },
@@ -134,10 +135,10 @@ export function getPaymentReportARGroup (query) {
       attributes: query.field ? query.field.split(',') : reportSaldoAWalFields(from, to),
       where: {
         invoiceDate: {
-          $lt: from
+          [Op.lt]: from
         },
         status: {
-          $ne: 'PAID'
+          [Op.ne]: 'PAID'
         },
         ...other
       },

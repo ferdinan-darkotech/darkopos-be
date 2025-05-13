@@ -5,6 +5,7 @@ import sequelize from '../../native/sequelize'
 import {
   ApiError
 } from '../../services/v1/errorHandlingService'
+import { Op } from 'sequelize'
 
 const tbl_payment_ap = db.tbl_payment_ap
 const vw_payment_ap_001 = dbv.vw_payment_ap_001
@@ -64,7 +65,7 @@ export function getTransByNo (query) {
     return vw_payment_ap_003.findAll({
       where: {
         transDate: {
-          $between: [from, to]
+          [Op.between]: [from, to]
         },
         ...other
       },
@@ -94,9 +95,9 @@ export function getTransByNo5 (query) {
     return vw_payment_ap_005.findAll({
       where: {
         invoiceDate: {
-          $and: {
-            $gte: from,
-            $lte: to
+          [Op.and]: {
+            [Op.gte]: from,
+            [Op.lte]: to
           }
         },
         ...other
@@ -125,9 +126,9 @@ export function getTransByNo6 (query) {
     return vw_payment_ap_006.findAll({
       where: {
         invoiceDate: {
-          $and: {
-            $gte: from,
-            $lte: to
+          [Op.and]: {
+            [Op.gte]: from,
+            [Op.lte]: to
           }
         },
         ...other

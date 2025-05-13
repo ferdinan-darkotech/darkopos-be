@@ -2,6 +2,7 @@ import db from '../../models'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import sequelize from '../../native/sequelize'
 import stringSQL from '../../native/sqlSequence'
+import { Op } from 'sequelize'
 
 const tbl_sequence = db.tbl_sequence
 const tbl_cash_entry = db.tbl_cash_entry
@@ -64,7 +65,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -81,7 +82,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return tbl_cash_entry.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -116,7 +117,7 @@ export function srvGetExpenses (query, pagination) {
     return tbl_cash_entry.findAll({
       attributes: query.field ? query.field.split(',') : Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),

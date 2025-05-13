@@ -1,6 +1,7 @@
 import db from '../../models'
 import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
+import { Op } from 'sequelize'
 
 export const getGroupByParams = (params) => (Number(params) ? 'categoryId' : 'brandId')
 
@@ -145,7 +146,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   let querying = []
@@ -162,7 +163,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return tableCategory.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
     })
@@ -181,7 +182,7 @@ export function countDataBrand (query) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   let querying = []
@@ -198,7 +199,7 @@ export function countDataBrand (query) {
   if (querying.length > 0) {
     return tableBrand.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
     })
@@ -217,7 +218,7 @@ export function getData (query, pagination) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   const { pageSize, page } = pagination
@@ -236,7 +237,7 @@ export function getData (query, pagination) {
     return tableCategory.findAll({
       attributes: Fields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
       raw: false,
@@ -264,7 +265,7 @@ export function getDataBrand (query, pagination) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   const { pageSize, page } = pagination
@@ -283,7 +284,7 @@ export function getDataBrand (query, pagination) {
     return tableBrand.findAll({
       attributes: FieldsBrand,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
       raw: false,

@@ -13,6 +13,7 @@ import nativeMA from '../../native/member/sqlMemberAsset'
 import nativeMOB from '../../native/member/sqlMemberMobile'
 // import { getSequenceFormatByCode } from '../sequenceService'
 import { getDataByStoreAndCode, increaseSequence } from '../sequencesService'
+import { Op } from 'sequelize'
 
 const MemberMobile = db.tmp_user_mobile
 const MemberMobileAsset = db.tmp_user_mobile_asset
@@ -140,7 +141,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -157,7 +158,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return vwMember.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -192,7 +193,7 @@ export function getMembersData (query, pagination) {
     return vwMember.findAll({
       attributes: mbrFields01,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       limit: parseInt(pageSize || 10, 10),
       offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
@@ -565,7 +566,7 @@ export function countDataMemberAsset (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: q }
+      query[key] = { [Op.iRegexp]: q }
     }
   }
   let querying = []
@@ -574,7 +575,7 @@ export function countDataMemberAsset (query) {
       const id = Object.assign(memberUnitFieldsForAssetSearch)[key]
       if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt')) {
         let obj = {}
-        obj[id] = { $iRegexp: query['q'] }
+        obj[id] = { [Op.iRegexp]: query['q'] }
         querying.push(obj)
       }
     }
@@ -582,8 +583,8 @@ export function countDataMemberAsset (query) {
   if (querying.length > 0) {
     return vwMemberUnit.count({
       where: {
-        $or: querying,
-        $and: other
+        [Op.or]: querying,
+        [Op.and]: other
       },
     })
   } else {
@@ -604,7 +605,7 @@ export function getDataMemberAsset (query, pagination) {
       const id = Object.assign(memberUnitFieldsForAssetSearch)[key]
       if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt')) {
         let obj = {}
-        obj[id] = { $iRegexp: query['q'] }
+        obj[id] = { [Op.iRegexp]: query['q'] }
         querying.push(obj)
       }
     }
@@ -613,8 +614,8 @@ export function getDataMemberAsset (query, pagination) {
     return vwMemberUnit.findAll({
       attributes: memberUnitFieldsForAsset,
       where: {
-        $or: querying,
-        $and: other
+        [Op.or]: querying,
+        [Op.and]: other
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),

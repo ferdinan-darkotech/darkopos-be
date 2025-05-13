@@ -5,6 +5,7 @@ import { isEmpty } from '../../utils/check'
 import sequelize from '../../native/sequelize'
 import { getSelectOrder } from '../../native/nativeUtils'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 let CashierShift = db.tbl_cashier_shift
 let vwCashierShift = dbv.vw_cashier_shift
@@ -68,7 +69,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -85,7 +86,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return vwCashierShift.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -100,7 +101,7 @@ export function countData (query) {
 export function srvGetShifts (query, pagination) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { $between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   const { pageSize, page, order } = pagination
@@ -118,10 +119,10 @@ export function srvGetShifts (query, pagination) {
         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
       ],
       where: {
-        $or: [
+        [Op.or]: [
           {
             shiftName: {
-              $iRegexp: query.shiftName,
+              [Op.iRegexp]: query.shiftName,
             }
           }
         ]

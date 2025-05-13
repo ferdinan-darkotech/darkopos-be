@@ -3,12 +3,12 @@
 module.exports = function (sequelize, DataTypes) {
     var AdjustDetail = sequelize.define("tbl_adjust_detail", {
         id: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         storeId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         transNo: {
@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         productId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         productCode: {
@@ -32,11 +32,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         adjInQty: {
-            type: DataTypes.INTEGER(19),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         adjOutQty: {
-            type: DataTypes.INTEGER(19),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         sellingPrice: {

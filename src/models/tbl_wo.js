@@ -80,15 +80,15 @@ module.exports = function (sequelize, DataTypes) {
     },
     // [NEW]: FERDINAN - 2025-02-27
     employeecode: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(30),
       allowNull: true
     },
     noreference: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: true
     },
     drivername: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(60),
       allowNull: true
     },
   }, {

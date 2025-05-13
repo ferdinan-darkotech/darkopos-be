@@ -8,6 +8,7 @@ import { switchModeField } from '../../function/srvUtils'
 import { srvGetCustomerByCode } from './srvCustomerList'
 import { setDefaultQuery } from '../../../../utils/setQuery'
 import moment from 'moment'
+import { Op as OpSequelize } from 'sequelize'
 
 const table = tb.tbl_member_unit
 const view = vw.vw_member_asset
@@ -40,7 +41,7 @@ let member = { id: null }
 
 export function srvGetAsset (query, rawMode = 'Y') {
   const { activeOnly, ...otherQuery } = query
-  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { $eq: true } } : {}
+  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { [OpSequelize.eq]: true } } : {}
   let queryDefault = setDefaultQuery(mainFieldsV2, otherQuery, true)
   queryDefault.where = { ...queryDefault.where, ...activeStatus }
   return view.findAndCountAll({
@@ -52,7 +53,7 @@ export function srvGetAsset (query, rawMode = 'Y') {
 }
 
 export function srvGetAssetByPoliceNo (policeNo, activeOnly = false) {
-  const activeStatus = activeOnly ? { active: { $eq: true } } : {}
+  const activeStatus = activeOnly ? { active: { [OpSequelize.eq]: true } } : {}
   return view.findOne({
     attributes: mainFieldsV2,
     where: { policeNo, ...activeStatus },
@@ -61,7 +62,7 @@ export function srvGetAssetByPoliceNo (policeNo, activeOnly = false) {
 }
 
 export function srvGetAssetByMemberAndNo (membercode, policeno, activeOnly = false) {
-  const activeStatus = activeOnly ? { active: { $eq: true } } : {}
+  const activeStatus = activeOnly ? { active: { [OpSequelize.eq]: true } } : {}
   return view.findOne({
     attributes: ['id', 'memberid', ...mainFieldsV2],
     where: { membercode, policeno, ...activeStatus },
@@ -78,11 +79,11 @@ export async function srvGetCustomerAssets (params, query, filter = false) {
   let where = {
     ...members,
     ...(other.policeNo && !filter ? { policeNo: other.policeNo } : {}),
-    deletedAt: { [Op.eq]: null },
+    deletedAt: { [OpSequelize.eq]: null },
     ...activeStatus
-  } // let where = { deletedAt: { [Op.eq]: null } }
+  } // let where = { deletedAt: { [OpSequelize.eq]: null } }
   let remapWhere = []
-  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { $eq: true } } : {}
+  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { [OpSequelize.eq]: true } } : {}
   if (filter && !isEmptyObject(condition)) {
     remapWhere = remapFilter(condition)
     for (const key in where) {
@@ -137,10 +138,10 @@ export async function srvGetCustomerAssetByNo (params, query = {}, mode = '') {
   let { code: memberCode, no: policeNo } = params
   let { pageSize, page, order, q, activeOnly, ...other } = query
   let attributes = minViewFields01
-  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { $eq: true } } : {}
+  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { [OpSequelize.eq]: true } } : {}
 
-  let where = { memberCode, policeNo, deletedAt: { [Op.eq]: null }, ...activeStatus }
-  if (mode === 'undelete') where.deletedAt =  { [Op.ne]: null }
+  let where = { memberCode, policeNo, deletedAt: { [OpSequelize.eq]: null }, ...activeStatus }
+  if (mode === 'undelete') where.deletedAt =  { [OpSequelize.ne]: null }
 
   const modeField = switchModeField(other)
 
@@ -163,7 +164,7 @@ export async function srvGetCustomerAssetByNo (params, query = {}, mode = '') {
 }
 
 export async function srvGetCustomerAssetById (id, activeOnly = false) {
-  const activeStatus = activeOnly ? { active: { $eq: true } } : {}
+  const activeStatus = activeOnly ? { active: { [OpSequelize.eq]: true } } : {}
   return table.findOne({
     attributes: minFields01,
     where: { id, ...activeStatus },
@@ -292,8 +293,8 @@ export async function srvGetCustomerByAsset (params, query = {}, mode = '') {
   let { no: policeNo } = params
   let { pageSize, page, order, q, ...other } = query
   let attributes = mainViewFields
-  let where = { policeNo, deletedAt: { [Op.eq]: null } }
-  if (mode === 'undelete') where.deletedAt =  { [Op.ne]: null }
+  let where = { policeNo, deletedAt: { [OpSequelize.eq]: null } }
+  if (mode === 'undelete') where.deletedAt =  { [OpSequelize.ne]: null }
 
   const modeField = switchModeField(other)
   let limitQuery = {

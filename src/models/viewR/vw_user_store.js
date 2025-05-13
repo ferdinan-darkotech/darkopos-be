@@ -4,7 +4,7 @@ import moment from 'moment'
 module.exports = function (sequelize, DataTypes) {
   var adjust = sequelize.define("vw_user_store", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },

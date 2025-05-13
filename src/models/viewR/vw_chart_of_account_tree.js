@@ -4,7 +4,7 @@ import moment from 'moment'
 module.exports = function (sequelize, DataTypes) {
   var COA = sequelize.define("vw_chart_of_account_tree", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },

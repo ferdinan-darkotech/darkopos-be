@@ -30,11 +30,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(10),
     },
     memberCode: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     cashierTransId: {
-      type: DataTypes.INTEGER(10)
+      type: DataTypes.INTEGER
     },
     transDate: {
       type: DataTypes.DATEONLY,
@@ -110,7 +110,7 @@ module.exports = function (sequelize, DataTypes) {
     //   allowNull: true
     // },
     policeNoId: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     status: {

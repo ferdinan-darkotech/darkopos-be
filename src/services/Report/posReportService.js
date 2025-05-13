@@ -7,6 +7,7 @@ import stringSQL from '../../native/sqlPosReport'
 import { getNativeQuery } from '../../native/nativeUtils'
 import dbv from '../../models/view'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const vw_report_pos_trans = dbv.vw_report_pos_trans
 const vw_report_pos_trans_cancel = dbv.vw_report_pos_trans_cancel
@@ -82,9 +83,9 @@ export function getReportPosTrans (query) {
       attributes: reportTrans,
       where: {
         transDate: {
-          $and: {
-            $gte: query.from,
-            $lte: query.to
+          [Op.and]: {
+            [Op.gte]: query.from,
+            [Op.lte]: query.to
           }
         },
         storeId: query.storeId,
@@ -93,10 +94,10 @@ export function getReportPosTrans (query) {
       },
       // where: {
       //   transDate: {
-      //     $between: [query.from, query.to]
+      //     [Op.between]: [query.from, query.to]
       //   },
       //   storeId: query.storeId,
-      //   $and: {
+      //   [Op.and]: {
       //     status: 'A'
       //   }
       // },
@@ -184,7 +185,7 @@ export function getReportTransAll (query) {
   //   where: {
   //     ...(cashierTransId ? { cashierTransId } : {}),
   //     transDate: {
-  //       $between: [from, to]
+  //       [Op.between]: [from, to]
   //     },
   //     storeId
   //   },
@@ -440,7 +441,7 @@ export function getReportPosTransCancel (query) {
       attributes: reportTrans,
       where: {
         transDate: {
-          $between: [query.from, query.to]
+          [Op.between]: [query.from, query.to]
         },
         storeId: query.storeId,
         status: 'C',
@@ -478,7 +479,7 @@ export function getReportPosTransMemberHistory (query) {
         attributes: mobileCustomerFields,
         where: {
           transDate: {
-            $between: [from, to]
+            [Op.between]: [from, to]
           },
           ...other
         },
@@ -502,7 +503,7 @@ export function getReportPosTransMemberHistory (query) {
       return vw_member_sales_by_unit.findAll({
         where: {
           transDate: {
-            $between: [from, to]
+            [Op.between]: [from, to]
           },
           ...other
         },
@@ -518,7 +519,7 @@ export function getReportHourlyCustomer (queryBetween, other, next) {
   let { type, transDate, transTime } = queryBetween
   if (transDate) {
     transDate = {
-      $between: [transDate.from, transDate.to]
+      [Op.between]: [transDate.from, transDate.to]
     }
   }
   if (type === 'all' && other && transDate) {
@@ -548,7 +549,7 @@ export function getReportHourCustomer (queryBetween, other, next) {
   let { type, transDate, transTime } = queryBetween
   if (transDate) {
     transDate = {
-      $between: [transDate.from, transDate.to]
+      [Op.between]: [transDate.from, transDate.to]
     }
   }
   if (other && transDate) {
@@ -568,7 +569,7 @@ export function getReportHourInterval (queryBetween, other, next) {
   let { type, transDate, transTime } = queryBetween
   if (transDate) {
     transDate = {
-      $between: [transDate.from, transDate.to]
+      [Op.between]: [transDate.from, transDate.to]
     }
   }
   if (other && transDate) {
@@ -595,7 +596,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -612,7 +613,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return vw_member_sales_by_unit_group.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -645,7 +646,7 @@ export function getMemberAssetsReport (query) {
     return vw_member_sales_by_unit_group.findAll({
       attributes: mbrFields01,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {

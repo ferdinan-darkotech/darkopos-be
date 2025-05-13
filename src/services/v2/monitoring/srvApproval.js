@@ -8,7 +8,7 @@ import { getMiscByCodeName } from '../../../services/v1/miscService'
 import { getSettingByCodeV2 } from '../../../services/settingService'
 import cryptojs, { format } from 'crypto-js'
 import customeSequelize from '../../../native/sequelize'
-import sequelize from 'sequelize'
+import sequelize, { Op } from 'sequelize'
 
 const formatDate = 'YYYY-MM-DD'
 const formatDateTime = 'YYYY-MM-DD HH:mm:ss'
@@ -132,12 +132,12 @@ async function approvalPack (options, type, storeCurrent) {
   let data = []
   try {
     const groups = await srvGetGroupStoreBranchByID(storeCurrent, type === 'STOCKPRICE')
-    const filterSiblings = { storeid: { $in: groups.siblings.split(',') } }
+    const filterSiblings = { storeid: { [Op.in]: groups.siblings.split(',') } }
 
     if(type === 'STOCKPRICE') {
       if(!groups.parentSetting) throw new Error('Setting parent is not found.')
       const localPrice = (((groups.parentSetting.inventory || {}).separate || {}).price || false)
-      data = [vwApprovalSP, attrStockPrice, (localPrice ? filterSiblings : { storeid: { $eq: null } })]
+      data = [vwApprovalSP, attrStockPrice, (localPrice ? filterSiblings : { storeid: { [Op.eq]: null } })]
     } else if (type === 'CUSTDATA') {
       data = [vwApprovalCust, attrCustData, { ...filterSiblings }]
     } else if (type === 'ADJUSTMENT') {
@@ -206,7 +206,7 @@ export function srvFindOneApprovalPurchase (appvid, otherFilter = {}) {
 export function srvFindDataByPayloadType (approvaltype, keys, values, status = ['A', 'P', 'R']) {
   return approvalSign.findOne({
     attributes: tblAttribute,
-    where: { appvtype: approvaltype, appvstatus: { $in: status }, '': sequelize.literal(`(appvpayload ->> '${keys}')::text = '${values}'::text`) },
+    where: { appvtype: approvaltype, appvstatus: { [Op.in]: status }, '': sequelize.literal(`(appvpayload ->> '${keys}')::text = '${values}'::text`) },
     raw: true
   })
 }
@@ -315,7 +315,7 @@ export async function srvGetApproval (query, storeCurrent) {
     }
     const datas = await objectView.findAndCountAll({
       attributes: attribute,
-      where: { appvstatus: { $in: stat }, ...extendFilter, ...extraFilter },
+      where: { appvstatus: { [Op.in]: stat }, ...extendFilter, ...extraFilter },
       limit: +pageSize,
       offset: (+page - 1) * +pageSize,
       raw: true
@@ -557,7 +557,7 @@ export async function srvEditApprovalAdjustment (current, data, detail, user) {
     }
 
     await approvalAdjustDetail.bulkCreate(afterUpdated, { transaction })
-    await approvalAdjustDetail.destroy({ where: { appvid: data.appvid, productid: { $notIn: undeletedRecord } } }, { transaction })
+    await approvalAdjustDetail.destroy({ where: { appvid: data.appvid, productid: { [Op.notIn]: undeletedRecord } } }, { transaction })
     await transaction.commit()
     return { success: true }
   } catch (er) {
@@ -796,7 +796,7 @@ export async function srvEditApprovalPurchase (current, data, detail, user) {
       }
     }
     await approvalPurchaseDetail.bulkCreate(afterUpdated, { transaction })
-    await approvalPurchaseDetail.destroy({ where: { appvid: data.appvid, productid: { $notIn: undeletedRecord } } }, { transaction })
+    await approvalPurchaseDetail.destroy({ where: { appvid: data.appvid, productid: { [Op.notIn]: undeletedRecord } } }, { transaction })
     await transaction.commit()
     return { success: true }
   } catch (er) {

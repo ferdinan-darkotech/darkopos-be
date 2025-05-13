@@ -3,6 +3,7 @@ import db from '../../../../models/tableR'
 import dbv from '../../../../models/viewR'
 import { setDefaultQuery } from '../../../../utils/setQuery'
 import sequelize from '../../../../native/sequelize'
+import { Op } from 'sequelize'
 
 const tbCustRewards = db.tbl_customer_rewards
 const tbCustRewardsProd = db.tbl_customer_rewards_product
@@ -166,7 +167,7 @@ export function srvGetAllCustRewardsProdByRewardId (_id, mode = 'mf') {
     attributes: mode === 'mf' ? attrCustRewardsProd : [
       'product_code', 'product_name', 'qty_receive', 'point_needed'
     ],
-    where: { reward_id: _id, status: { $eq: true } },
+    where: { reward_id: _id, status: { [Op.eq]: true } },
     raw: true
   })
 }
@@ -176,7 +177,7 @@ export function srvGetAllCustRewardsServByRewardId (_id, mode = 'mf') {
     attributes: mode === 'mf' ? attrCustRewardsServ : [
       'service_code', 'service_name', 'qty_receive', 'point_needed'
     ],
-    where: { reward_id: _id, status: { $eq: true } },
+    where: { reward_id: _id, status: { [Op.eq]: true } },
     raw: true
   })
 }

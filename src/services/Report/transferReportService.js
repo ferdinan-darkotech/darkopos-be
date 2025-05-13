@@ -7,6 +7,7 @@ import {
 import {
   isEmpty
 } from '../../utils/check'
+import { Op } from 'sequelize'
 
 const vw_transfer_in_detail = dbv.vw_transfer_in_detail
 
@@ -108,12 +109,12 @@ export function getTransferIn (query) {
       attributes: reportTrans,
       where: {
         // transDate: {
-        //   $between: [query.from, query.to]
+        //   [Op.between] [query.from, query.to]
         // },
         storeId: query.storeId,
         status: 1,
         active: 1,
-        $and: [
+        [Op.and]: [
           sequelize.literal(`extract(month from transdate) = ${+query.period}`),
           sequelize.literal(`extract(year from transdate) = ${+query.year}`)
         ]
@@ -139,7 +140,7 @@ export function getTransferInTransit (query) {
     return vw_transfer_out_detail.findAll({
       attributes: reportInTransit,
       where: {
-        $and: [
+        [Op.and]: [
           sequelize.literal(`extract(month from transDate) = ${query.period}`),
           sequelize.literal(`extract(year from transDate) = ${query.year}`)
         ],

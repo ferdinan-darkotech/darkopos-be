@@ -32,7 +32,7 @@ const stringSQL = {
 
 export function countUserRole (userid, listRole = []) {
   return UserRole.findAll({
-    where: { userid, userrole: { $in: listRole } },
+    where: { userid, userrole: { [Op.in]: listRole } },
     raw: true
   }).then(rs => {
     return rs.length
@@ -350,7 +350,7 @@ export function createUserRole (userId, userRole, createdBy, next) {
 
 export function removeUserRole (userId, userRole, createdBy, next) {
   return UserRole.destroy({
-    where: { userId: userId, $and: { userRole: { in: userRole } } }
+    where: { userId: userId, [Op.and]: { userRole: { in: userRole } } }
   }).catch(err => (next(new ApiError(501, err, err))))
 }
 

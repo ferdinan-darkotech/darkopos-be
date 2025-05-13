@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true,
     },
     year: {
-      type: DataTypes.INTEGER(4),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     chassisNo: {

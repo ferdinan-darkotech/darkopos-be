@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models/tableR'
 import { ApiError} from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
@@ -36,7 +37,7 @@ export function getCitiesData (query) {
       ],
       where: {
         cityName: {
-          $iRegexp: query.userName
+          [Op.iRegexp]: query.userName
         }
       }
     })

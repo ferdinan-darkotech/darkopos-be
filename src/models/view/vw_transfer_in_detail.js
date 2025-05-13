@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true
         },
         storeId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
         },
         storeCode: {
             type: DataTypes.STRING,
@@ -39,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(5),
         },
         productId: {
-            type: DataTypes.INTEGER(11)
+            type: DataTypes.INTEGER
         },
         productCode: {
             type: DataTypes.STRING(50)

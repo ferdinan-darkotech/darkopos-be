@@ -5,6 +5,7 @@ import {
   cancelData, dataExists, dataExistsCode
 } from '../../services/master/bundlingService'
 import sequelize from '../../native/sequelize'
+import { Op } from 'sequelize'
 
 // Retrieve list a row
 exports.getDataId = function (req, res, next) {
@@ -36,64 +37,64 @@ exports.getData = function (req, res, next) {
   }
   if (other.name) {
     other.name = {
-      $iRegexp: other.name
+      [Op.iRegexp]: other.name
     }
   }
   other.type = 'all'
   other.status = '1'
   if (storeId) {
     other.availableStore = {
-      $or: [
+      [Op.or]: [
         {
-          $like: `${storeId}`
+          [Op.like]: `${storeId}`
         },
         {
-          $like: `%,${storeId},%`
+          [Op.like]: `%,${storeId},%`
         },
         {
-          $like: `%,${storeId}`
+          [Op.like]: `%,${storeId}`
         },
         {
-          $like: `${storeId},%`
+          [Op.like]: `${storeId},%`
         },
         {
-          $eq: null
+          [Op.eq]: null
         }
       ]
     }
   }
   if (day) {
     other.availableDate = {
-      $or: [
+      [Op.or]: [
         {
-          $like: `${day}`
+          [Op.like]: `${day}`
         },
         {
-          $like: `%,${day},%`
+          [Op.like]: `%,${day},%`
         },
         {
-          $like: `%,${day}`
+          [Op.like]: `%,${day}`
         },
         {
-          $like: `${day},%`
+          [Op.like]: `${day},%`
         },
         {
-          $eq: null
+          [Op.eq]: null
         }
       ]
     }
   }
   other.endDate = {
-    $gte: sequelize.literal('current_date')
+    [Op.gte]: sequelize.literal('current_date')
   }
   other.startDate = {
-    $lte: sequelize.literal('current_date')
+    [Op.lte]: sequelize.literal('current_date')
   }
   other.endHour = {
-    $gte: sequelize.literal('current_time')
+    [Op.gte]: sequelize.literal('current_time')
   }
   other.startHour = {
-    $lte: sequelize.literal('current_time')
+    [Op.lte]: sequelize.literal('current_time')
   }
 
   countData(other).then((count) => {
@@ -127,64 +128,64 @@ exports.countData = function (req, res, next) {
   }
   if (other.name) {
     other.name = {
-      $like: `%${other.name}%`
+      [Op.like]: `%${other.name}%`
     }
   }
   other.type = 'all'
   other.status = '1'
   if (storeId) {
     other.availableStore = {
-      $or: [
+      [Op.or]: [
         {
-          $like: `${storeId}`
+          [Op.like]: `${storeId}`
         },
         {
-          $like: `%,${storeId},%`
+          [Op.like]: `%,${storeId},%`
         },
         {
-          $like: `%,${storeId}`
+          [Op.like]: `%,${storeId}`
         },
         {
-          $like: `${storeId},%`
+          [Op.like]: `${storeId},%`
         },
         {
-          $eq: null
+          [Op.eq]: null
         }
       ]
     }
   }
   if (day) {
     other.availableDate = {
-      $or: [
+      [Op.or]: [
         {
-          $like: `${day}`
+          [Op.like]: `${day}`
         },
         {
-          $like: `%,${day},%`
+          [Op.like]: `%,${day},%`
         },
         {
-          $like: `%,${day}`
+          [Op.like]: `%,${day}`
         },
         {
-          $like: `${day},%`
+          [Op.like]: `${day},%`
         },
         {
-          $eq: null
+          [Op.eq]: null
         }
       ]
     }
   }
   other.endDate = {
-    $gte: sequelize.literal('current_date')
+    [Op.gte]: sequelize.literal('current_date')
   }
   other.startDate = {
-    $lte: sequelize.literal('current_date')
+    [Op.lte]: sequelize.literal('current_date')
   }
   other.endHour = {
-    $gte: sequelize.literal('current_time')
+    [Op.gte]: sequelize.literal('current_time')
   }
   other.startHour = {
-    $lte: sequelize.literal('current_time')
+    [Op.lte]: sequelize.literal('current_time')
   }
 
   countData(other).then((count) => {

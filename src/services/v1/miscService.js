@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../models'
 import dbv from '../../models/view'
 import { ApiError} from '../../services/v1/errorHandlingService'
@@ -71,7 +72,7 @@ export function getEveryMiscByCode (miscCode) {
 
 export function getAllMiscByCodeNames (miscCode, miscNames = []) {
   return Misc.findAll({
-    where: { misccode: miscCode, miscname: { $in: miscNames } },
+    where: { misccode: miscCode, miscname: { [Op.in]: miscNames } },
     attributes: ['miscname', 'miscdesc'],
     raw: true
   })

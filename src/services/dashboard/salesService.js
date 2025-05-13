@@ -1,6 +1,7 @@
 import { ApiError } from '../../services/v1/errorHandlingService'
 import dbv from '../../models/view'
 import sequelize from '../../native/sequelize'
+import { Op } from 'sequelize'
 
 const vw_pos_report_trans = dbv.vw_pos_report_trans
 const vw_report_purchase_trans = dbv.vw_report_purchase_trans
@@ -19,9 +20,9 @@ export function getReportPosTrans (query) {
       raw: true,
       where: {
         transDate: {
-          $and: {
-            $gte: query.from,
-            $lte: query.to
+          [Op.and]: {
+            [Op.gte]: query.from,
+            [Op.lte]: query.to
           }
         },
         storeId: query.storeId,
@@ -40,9 +41,9 @@ export function getReportPurchaseTrans (query) {
       raw: true,
       where: {
         transDate: {
-          $and: {
-            $gte: query.from,
-            $lte: query.to
+          [Op.and]: {
+            [Op.gte]: query.from,
+            [Op.lte]: query.to
           }
         },
         storeId: query.storeId,

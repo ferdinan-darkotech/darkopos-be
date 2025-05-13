@@ -5,6 +5,7 @@ import sequelize from '../../native/sequelize'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import { srvGetPaymentOptionByCode } from '../../services/v2/master/finance/srvPaymentOption'
 import { srvGetEDCMachineByCode } from '../../services/v2/master/finance/srvEDCMachine'
+import { Op } from 'sequelize'
 
 const tbl_payment = db.tbl_payment
 const tbl_payment_history = db.tbl_payment_history
@@ -59,7 +60,7 @@ export function getTransByNo (query) {
         return vw_payment_003.findAll({
             where: {
                 transDate: {
-                    $between: [from, to]
+                    [Op.between]: [from, to]
                 },
                 ...other,
                 active: 1
@@ -95,9 +96,9 @@ export function getTransByNo5 (query) {
         return vw_payment_005.findAll({
             where: {
                 invoiceDate: {
-                    $and: {
-                        $gte: from,
-                        $lte: to
+                    [Op.and]: {
+                        [Op.gte]: from,
+                        [Op.lte]: to
                     }
                 },
                 ...other

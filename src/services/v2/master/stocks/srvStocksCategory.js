@@ -23,7 +23,7 @@ export async function srvGetStocksCategory (query) {
   let queryDefault = setDefaultQuery(tmpAttrs, { ...other }, !((m || 'lov') === 'lov'))
   queryDefault.where = { 
     ...queryDefault.where,
-    ...(type && type === 'parent' ? { categoryparentid: { $eq: null } } : {})
+    ...(type && type === 'parent' ? { categoryparentid: { [Op.eq]: null } } : {})
   }
   return stocksCategory.findAndCountAll({
     attributes: mode[m || 'lov'],

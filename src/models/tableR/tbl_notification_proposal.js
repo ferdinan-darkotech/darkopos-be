@@ -15,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     storeId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     dataContact: {

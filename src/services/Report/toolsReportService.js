@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../models'
 import dbv from '../../models/view'
 import sequelize from '../../native/sequelize'
@@ -41,7 +42,7 @@ export function getChangeSellpriceHeader (query, createdBy) {
     return vwh_change_sellprice.findAll({
       attributes: headerFields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         status: 0
       },
       order: [
@@ -84,7 +85,7 @@ export function getChangeSellpriceData (query, pagination, createdBy) {
     return vwd_change_sellprice.findAll({
       attributes: changesFields,
       where: {
-        $or: querying
+        [Op.or]: querying
       }
     })
   } else {

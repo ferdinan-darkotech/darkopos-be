@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../../models/viewR'
 import { setDefaultQuery } from '../../../utils/setQuery'
 import moment from 'moment'
@@ -41,7 +42,7 @@ export function srvReminderCustomerChecks (query) {
     where: {
       membercode: member,
       policeno: policeno,
-      ...(type !== 'include' ? {actualnextcheck: { $lte: moment().format('YYYY-MM-DD') }} : {})
+      ...(type !== 'include' ? {actualnextcheck: { [Op.lte]: moment().format('YYYY-MM-DD') }} : {})
     },
     raw: false
   })
@@ -55,7 +56,7 @@ export function srvReminderCustomerProducts (query) {
     where: {
       membercode: member,
       policeno: policeno,
-      ...(type !== 'include' ? {actualnextusage: { $lte: moment().format('YYYY-MM-DD') }} : {})
+      ...(type !== 'include' ? {actualnextusage: { [Op.lte]: moment().format('YYYY-MM-DD') }} : {})
     },
     raw: false
   })

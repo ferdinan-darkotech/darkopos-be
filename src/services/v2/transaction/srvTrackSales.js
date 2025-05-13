@@ -1,6 +1,6 @@
 import db from '../../../models/tableR'
 import moment, { now } from 'moment'
-import sequelize from 'sequelize'
+import sequelize, { Op } from 'sequelize'
 import sequelizeDB from '../../../native/sequelize'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import { setDefaultQuery } from '../../../utils/setQuery'
@@ -41,8 +41,8 @@ export function srvGetUnreadQueueActivity (listQueue = []) {
 	return tbQueueActivity.findAll({
 		attributes: ['store_id', 'queue_no'],
 		where: {
-			queue_no: { $in: listQueue },
-			has_read: { $eq: false }
+			queue_no: { [Op.in]: listQueue },
+			has_read: { [Op.eq]: false }
 		},
 		group: ['store_id', 'queue_no'],
 		raw: true
@@ -75,7 +75,7 @@ export function srvGetAllConfirmMechanicById (confirmId = []) {
 	return tbConfirmMechanics.findAll({
 		attributes: attrConfirmMechanics,
 		where: {
-			confirm_id: { $in: confirmId }
+			confirm_id: { [Op.in]: confirmId }
 		},
 		raw: true
 	})

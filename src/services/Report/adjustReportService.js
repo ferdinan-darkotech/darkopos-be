@@ -1,6 +1,7 @@
 /**
  * Created by Veirry on 29/09/2017.
  */
+import { Op } from 'sequelize'
 import dbv from '../../models/view'
 
 const vw_report_in_trans = dbv.vw_report_adjust_in
@@ -18,7 +19,7 @@ export function getReportAdjInTrans (query) {
             attributes: reportAdjIn,
             where: {
                 transDate: {
-                    $between: [query.from, query.to]
+                    [Op.between]: [query.from, query.to]
                 },
                 storeId: query.storeId
             },
@@ -45,7 +46,7 @@ export function getReportAdjOutTrans (query) {
             attributes: reportAdjOut,
             where: {
                 transDate: {
-                    $between: [query.from, query.to]
+                    [Op.between]: [query.from, query.to]
                 },
                 storeId: query.storeId
             },
@@ -66,7 +67,7 @@ export function getReportReturnOutTrans (query) {
             attributes: reportReturnOut,
             where: {
                 transDate: {
-                    $between: [query.from, query.to]
+                    [Op.between]: [query.from, query.to]
                 },
                 storeId: query.storeId
             },

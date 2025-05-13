@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models'
 import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'
@@ -26,7 +27,7 @@ export function getPurchaseDetailService(storeid, productid, pagination, query) 
         const id = Object.assign(attrMainWo)[key]
         if (id === 'transNo' || id === 'productId' || id === 'productName') {
           let obj = {}
-          obj[id] = { $iRegexp: query['q'] }
+          obj[id] = { [Op.iRegexp]: query['q'] }
           querying.push(obj)
         }
       }
@@ -37,15 +38,15 @@ export function getPurchaseDetailService(storeid, productid, pagination, query) 
         storeId: storeid,
         productId: productid,
         purchaseType: '02',
-        qty: { $gt: 0 }
+        qty: { [Op.gt]: 0 }
     }
 
     if (querying.length > 0) {
         return PurchaseServiceView.findAndCountAll({
             attributes,
             where: {
-                $or: querying,
-                $and: filtering
+                [Op.or]: querying,
+                [Op.and]: filtering
             },
             order: [['transDate']],
             limit: parseInt(pageSize || 10, 10),
@@ -54,7 +55,7 @@ export function getPurchaseDetailService(storeid, productid, pagination, query) 
     } else {
         return PurchaseServiceView.findAndCountAll({
             attributes,
-            where: { $and: filtering },
+            where: { [Op.and]: filtering },
             order: [['transDate']],
             limit: parseInt(pageSize || 10, 10),
             offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
@@ -68,7 +69,7 @@ export function getPurchaseDetailByCode (number, storeId, showOnly) {
   return PurchaseDetailView.findAll({
     attributes: (showOnly === 'log') ? purchaseDetailLog : purchaseDetail,
     where: {
-      $and: {
+      [Op.and]: {
         transNo: number,
         storeId: storeId,
         void: '0'

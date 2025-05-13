@@ -62,10 +62,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(10),
     },
     brandId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     categoryId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     trackQty: {
       type: DataTypes.TINYINT,
@@ -80,10 +80,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TINYINT
     },
     usageTimePeriod: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     usageMileage: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
     },
     use_warranty: {
       type: DataTypes.BOOLEAN,

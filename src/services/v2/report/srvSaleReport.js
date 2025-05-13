@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../../models/viewR'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import moment from 'moment'
@@ -18,7 +19,7 @@ export async function srvGetSaleReport (query) {
     where: {
       paymentOptionCode: query.paymentOptionCode,
       storeCode: query.storeCode,
-      transDate: { '$between': query.transDate} 
+      transDate: { [Op.between]: query.transDate} 
     },
     order: [
       ['storeCode', 'ASC'],
@@ -31,13 +32,13 @@ export async function srvGetSaleReport (query) {
 export async function srvGetSalesReportPerMechanic (query) {
   let employeeFilter = {}
   if(query.employee) {
-    employeeFilter = query.employee !== 'getAllEmployee' ? {employeeCode: { $in: (query.employee || '').split(',') }} : {}
+    employeeFilter = query.employee !== 'getAllEmployee' ? {employeeCode: { [Op.in]: (query.employee || '').split(',') }} : {}
   }
   return salesPerMechanic.findAll({
     attributes: fullAttributeSaleMcn,
     where: {
-      storeCode: { $in: (query.store || '').split(',') },
-      transDate: { $between: query.transDate },
+      storeCode: { [Op.in]: (query.store || '').split(',') },
+      transDate: { [Op.between]: query.transDate },
       ...employeeFilter
     },
     order: [

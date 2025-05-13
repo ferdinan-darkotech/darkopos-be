@@ -4,11 +4,11 @@ import moment from 'moment'
 module.exports = function (sequelize, DataTypes) {
   var adjust = sequelize.define("vw_adjust", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    storeId: { type: DataTypes.INTEGER(11) },
+    storeId: { type: DataTypes.INTEGER },
     storeCode: { type: DataTypes.STRING },
     storeName: { type: DataTypes.STRING },
     transNo: { type: DataTypes.STRING(25) },

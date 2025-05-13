@@ -68,21 +68,21 @@ export function srvGetRequestOrderDetailByTransNo (storeid, transno, type = 'IN'
 
 export function srvGetSomeRequestOrderDetail (query, store) {
   const { type, transdate, statusdate, status } = query
-  const defaultQuery = { where: { statuscode: { $in: (status || '').split('') } } }
+  const defaultQuery = { where: { statuscode: { [Op.in]: (status || '').split('') } } }
   // const defaultQuery = {}
   const format = 'YYYY-MM-DD'
   let date = {}
   if(transdate) {
     date = { 
       transdate: {
-        $between: [moment(transdate).format(format), moment(transdate).endOf('month').format(format)]
+        [Op.between]: [moment(transdate).format(format), moment(transdate).endOf('month').format(format)]
       }
     }
   }
   else if(statusdate) {
     date = { 
       transdate: {
-        $between: [moment(statusdate).format(format), moment(statusdate).endOf('month').format(format)]
+        [Op.between]: [moment(statusdate).format(format), moment(statusdate).endOf('month').format(format)]
       }
     }
   }

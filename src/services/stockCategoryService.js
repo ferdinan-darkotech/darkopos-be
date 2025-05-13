@@ -6,6 +6,7 @@ import sequelize from '../native/sequelize'
 import { getNativeQuery } from '../native/nativeUtils'
 import native from '../native/product/sqlStockCategory'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const stringSQL = {
   s00001: native.sqlCategoryProducts
@@ -47,10 +48,10 @@ export function getStockCategoriesParent (id) {
     return vwStockCategory.findAll({
       where: {
         categoryParentId: {
-          $ne: id
+          [Op.ne]: id
         },
         id: {
-          $ne: id
+          [Op.ne]: id
         }
       },
     })

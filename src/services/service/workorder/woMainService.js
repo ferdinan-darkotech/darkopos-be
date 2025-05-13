@@ -14,6 +14,7 @@ import moment from 'moment'
 import { getSettingByCode } from '../../settingService'
 import { srvGetAccessSPKFields } from '../../v2/setting/srvAccessGranted'
 import { modifyDataChecksFieldsWO, modifyDataCustomeFieldsWO } from './woService'
+import { Op } from 'sequelize'
 
 let table = db.tbl_wo
 let tableWoProduct = db.tbl_wo_product // [NEW]: FERDINAN - 2025-03-03
@@ -46,7 +47,7 @@ export function srvGetAllRelationByField (fieldId) {
     attributes: ['fieldid', 'relationfieldid'],
     where: {
       fieldid: fieldId,
-      deletedAt: { $eq: null }
+      deletedAt: { [Op.eq]: null }
     },
     raw: true
   })
@@ -56,9 +57,9 @@ export async function srvModifyRelationField (fieldId, listRelationId = [], user
   const deletedRelation = await relationField.update({
     deletedBy: user,
     deletedAt: moment()
-  }, { where: { fieldid: fieldId, relationfieldid: { $notIn: listRelationId } } }, { transaction })
+  }, { where: { fieldid: fieldId, relationfieldid: { [Op.notIn]: listRelationId } } }, { transaction })
 
-  // const filterRelation = { deletedAt: { $ne: null } }
+  // const filterRelation = { deletedAt: { [Op.ne] null } }
   const findRelation = await checkRelationFieldsByCondition(fieldId)
   const listDeletedRelation = []
   let listNewRelation = listRelationId
@@ -81,7 +82,7 @@ export async function srvModifyRelationField (fieldId, listRelationId = [], user
     await relationField.update({
       deletedBy: null,
       deletedAt: null
-    }, { where: { id: { $in: listDeletedRelation } } }, { transaction })
+    }, { where: { id: { [Op.in]: listDeletedRelation } } }, { transaction })
   }
 }
 //

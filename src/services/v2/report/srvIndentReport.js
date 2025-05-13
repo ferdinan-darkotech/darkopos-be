@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../../models/viewR'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import moment from 'moment'
@@ -33,7 +34,7 @@ export function srvRecapReportIndent ({ fromDate = '', toDate = '', stores = [],
   return vwIndent.findAll({
     attributes: attrRecapIndent,
     where: {
-      $and: [{ transdate: { $gte: fromDate } }, { transdate: { $lte: toDate } }, { storecode: { $in: stores } }]
+      [Op.or]: [{ transdate: { [Op.gte]: fromDate } }, { transdate: { [Op.lte]: toDate } }, { storecode: { [Op.in]: stores } }]
     },
     order: sortBy
   })
@@ -43,7 +44,7 @@ export function srvDetailReportIndent ({ fromDate = '', toDate = '', stores = []
   return vwIndentDetail.findAll({
     attributes: attrDetailIndent,
     where: {
-      $and: [{ transdate: { $gte: fromDate } }, { transdate: { $lte: toDate } }, { storecode: { $in: stores } }]
+      [Op.or]: [{ transdate: { [Op.gte]: fromDate } }, { transdate: { [Op.lte]: toDate } }, { storecode: { [Op.in]: stores } }]
     },
     order: sortBy
   })
@@ -53,7 +54,7 @@ export function srvRecapReportReturIndent ({ fromDate = '', toDate = '', stores 
   return vwReportReturIndent.findAll({
     attributes: attrRecapReturIndent,
     where: {
-      $and: [{ cancelat: { $gte: fromDate } }, { cancelat: { $lte: toDate } }, { storecode: { $in: stores } }]
+      [Op.or]: [{ cancelat: { [Op.gte]: fromDate } }, { cancelat: { [Op.lte]: toDate } }, { storecode: { [Op.in]: stores } }]
     },
     order: sortBy
   })
@@ -63,7 +64,7 @@ export function srvDetailReportReturIndent ({ fromDate = '', toDate = '', stores
   return vwReportReturIndentDetail.findAll({
     attributes: attrDetailReturIndent,
     where: {
-      $and: [{ cancelat: { $gte: fromDate } }, { cancelat: { $lte: toDate } }, { storecode: { $in: stores } }]
+      [Op.or]: [{ cancelat: { [Op.gte]: fromDate } }, { cancelat: { [Op.lte]: toDate } }, { storecode: { [Op.in]: stores } }]
     },
     order: sortBy
   })

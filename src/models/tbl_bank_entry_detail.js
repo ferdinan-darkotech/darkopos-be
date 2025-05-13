@@ -8,11 +8,11 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true
     },
     transNoId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     accountId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     amountIn: {

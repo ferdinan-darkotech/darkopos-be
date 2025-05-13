@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         productId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
                 is: /^[a-z0-9\-_ ]{1,30}$/i

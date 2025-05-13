@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models'
 import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'
@@ -33,15 +34,15 @@ export function getBrandsData (query) {
         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
       ],
       where: {
-        $or: [
+        [Op.or]: [
           {
             brandCode: {
-              $iRegexp: query.brandName,
+              [Op.iRegexp]: query.brandName,
             }
           },
           {
             brandName: {
-              $iRegexp: query.brandName,
+              [Op.iRegexp]: query.brandName,
             }
           }
         ]

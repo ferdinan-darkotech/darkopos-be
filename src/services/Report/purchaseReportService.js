@@ -7,6 +7,7 @@ import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
 import moment from 'moment'
 import stringSQL from '../../native/sqlPurchaseReport'
+import { Op } from 'sequelize'
 
 const vw_report_purchase_trans = dbv.vw_report_purchase_trans
 const vwInTransit = dbvr.vw_report_in_transit
@@ -27,7 +28,7 @@ export function getReportPurchaseTrans (query) {
       attributes: reportTrans,
       where: {
         transDate: {
-          $between: [query.from, query.to]
+          [Op.between]: [query.from, query.to]
         },
         storeId: query.storeId
       },

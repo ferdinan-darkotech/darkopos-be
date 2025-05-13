@@ -4,6 +4,7 @@ import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 let Supplier = db.tbl_supplier
 let table = dbv.vw_supplier
@@ -45,7 +46,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -62,7 +63,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return table.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -88,7 +89,7 @@ export function getData (query, pagination) {
       const id = Object.assign(searchField)[key]
       if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt')) {
         let obj = {}
-        obj[id] = { $iRegexp: query['q'] || '' }
+        obj[id] = { [Op.iRegexp]: query['q'] || '' }
         querying.push(obj)
       }
     }
@@ -98,7 +99,7 @@ export function getData (query, pagination) {
     return table.findAndCountAll({
       attributes: query.field ? query.field.split(',') : Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : [['id', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
@@ -130,15 +131,15 @@ export function getData (query, pagination) {
 //         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
 //       ],
 //       where: {
-//         $or: [
+//         [Op.or]: [
 //           {
 //             supplierCode: {
-//               $like: `%${query.userName}%`
+//               [Op.like]: `%${query.userName}%`
 //             }
 //           },
 //           {
 //             supplierName: {
-//               $like: `%${query.userName}%`
+//               [Op.like]: `%${query.userName}%`
 //             }
 //           },
 //         ]

@@ -5,6 +5,7 @@ import sequelize from '../../../native/sequelize'
 import { setDefaultQuery } from '../../../utils/setQuery'
 import { increaseSequence, getDataByStoreAndCode } from '../../sequencesService'
 import { getSequenceFormatByCode } from '../../sequenceService'
+import { Op } from 'sequelize'
 
 const tblVCRegister = db.tbl_voucher_register
 const tblVCRegisterProduct = db.tbl_voucher_register_product
@@ -45,7 +46,7 @@ export function srvGetVoucherHeader (query) {
 
 export function srvGetVoucherHeaderByCode (code, type = 'one') {
   const typeFetch = type === 'one' ? 'findOne' : 'findAll'
-  const whereClause = type === 'one' ? { vouchercode: code } : { vouchercode: { $in: code } }
+  const whereClause = type === 'one' ? { vouchercode: code } : { vouchercode: { [Op.in]: code } }
   return vwVCRegister[typeFetch]({
     attributes: attrRegister,
     where: whereClause,

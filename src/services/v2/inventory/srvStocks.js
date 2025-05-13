@@ -84,12 +84,12 @@ export function srvGetStockOnHand (query) {
     }
   }
   Object.getOwnPropertyNames(other || {}).map(att => {
-    if(attrStkOnHand.mf.indexOf(att) !== -1) extendWhere[att] = { $iRegexp: other[att] }
+    if(attrStkOnHand.mf.indexOf(att) !== -1) extendWhere[att] = { [Op.iRegexp]: other[att] }
   })
   const newAttr = type === 'report' ? [...attrStkOnHand.bf, 'qtyin', 'qtyout', 'active'] : attrStkOnHand.bf
   let newClause = type === 'report' ? { storeid: query.store } :
-    { $and: [ { storeid: query.store }, { ...extendWhere, active: 1 } ]  }
-  newClause = { ...newClause, ...((existsqty || false).toString() === 'true' ? { qtyonhand: { $gt: 0 } } : {}) }
+    { [Op.and]: [ { storeid: query.store }, { ...extendWhere, active: 1 } ]  }
+  newClause = { ...newClause, ...((existsqty || false).toString() === 'true' ? { qtyonhand: { [Op.gt]: 0 } } : {}) }
   return vStockList.findAndCountAll({
     attributes: newAttr,
     where: newClause,
@@ -101,11 +101,11 @@ export function srvGetStockOnHand (query) {
 export function srvGetStockExists (data, allowDetail) {
   let otherProps = {}
   if((data.existsqty || false).toString() === 'true') {
-    otherProps = { qtyonhand: { $gt: 0 } }
+    otherProps = { qtyonhand: { [Op.gt]: 0 } }
   }
   return vStockList.findAll({
     attributes: allowDetail ? attrStkOnHand.existsStock.concat(attrStkOnHand.bf) : attrStkOnHand.existsStock,
-    where: { productcode: data.productcode, storeid: { $ne: data.store }, ...otherProps },
+    where: { productcode: data.productcode, storeid: { [Op.ne]: data.store }, ...otherProps },
     raw: true,
     order: [['qtyonhand', 'desc'], ['storeid','asc']]
   })
@@ -115,7 +115,7 @@ export function srvValidationActiveOnhand (data, otherFilter = {}) {
   return vStockList.findAll({
     attributes: attrStkOnHand.existsStock,
     where: {
-      $and: [{ productcode: data.productcode, active: 1, qtyonhand: { $gt: 0 } }, { active: { $ne: data.active } }, otherFilter]
+      [Op.and]: [{ productcode: data.productcode, active: 1, qtyonhand: { [Op.gt]: 0 } }, { active: { [Op.ne]: data.active } }, otherFilter]
     },
     raw: true,
     order: [['qtyonhand', 'desc'], ['storeid','asc']]
@@ -125,7 +125,7 @@ export function srvValidationActiveOnhand (data, otherFilter = {}) {
 export function srvGetSomeStockOnHand (product, storeid, mode) {
   return vStockList.findAll({
     attributes: mode ? attrStkOnHand[mode] : attrStkOnHand.mf,
-    where: { $and: [ { productcode: { $in: product } }, { storeid } ]  },
+    where: { [Op.and]: [ { productcode: { [Op.in]: product } }, { storeid } ]  },
     raw: true
   })
 }
@@ -134,7 +134,7 @@ export function srvGetStockOnHandByScanner (product, storeid) {
   return vStockList.findOne({
     attributes: attrStkOnHand.bf,
     where: {
-      $or: [{ productcode: product }, { barcode01: product }],
+      [Op.or]: [{ productcode: product }, { barcode01: product }],
       storeid
     },
     raw: true
@@ -226,7 +226,7 @@ export function srvFindStockByCode (list_prod = '') {
   return tbStock.findAll({
     attributes: attrStock.lov,
     where: {
-      $or: [{ productcode: { $in: newListProd } }]
+      [Op.or]: [{ productcode: { [Op.in]: newListProd } }]
     },
     raw: true
   })

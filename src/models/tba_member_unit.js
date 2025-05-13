@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(30),
     },
     year: {
-      type: DataTypes.INTEGER(4),
+      type: DataTypes.INTEGER,
     },
     chassisNo: {
       type: DataTypes.STRING(20),

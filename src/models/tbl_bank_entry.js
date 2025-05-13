@@ -39,10 +39,10 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     cashierTransId: {
-      type: DataTypes.INTEGER(10)
+      type: DataTypes.INTEGER
     },
     transType: {
-      type: DataTypes.INTEGER(10)
+      type: DataTypes.INTEGER
     },
     description: {
       type: DataTypes.STRING(60),

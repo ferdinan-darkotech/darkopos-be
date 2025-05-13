@@ -9,6 +9,7 @@ import { getDataByStoreAndCode, increaseSequence } from '../sequencesService'
 import { getSettingByCode } from '../settingService'
 import { srvGetStoreBranch } from '../v2/master/store/srvStore'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const Service = db.tbl_service
 const utilityService = dbr.tbl_spr_service
@@ -42,7 +43,7 @@ export async function getSomeServiceByCode (serviceCode, store) {
         attributes: serviceField,
         where: {
           reg_id: currBranch.parent_store_id,
-          serviceCode: { $in: serviceCode }
+          serviceCode: { [Op.in]: serviceCode }
         },
         raw: false
       })
@@ -59,7 +60,7 @@ export function getSomeServiceByCodeReg (serviceCode, regID) {
     attributes: serviceField,
     where: {
       reg_id: regID,
-      serviceCode: { $in: serviceCode }
+      serviceCode: { [Op.in]: serviceCode }
     },
     raw: false
   })
@@ -71,7 +72,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -88,8 +89,8 @@ export function countData (query) {
   if (querying.length > 0) {
     return vwService.count({
       where: {
-        $or: querying,
-        $and: other
+        [Op.or]: querying,
+        [Op.and]: other
       },
     })
   } else {
@@ -113,8 +114,8 @@ export function getServicesData (query, pagination) {
   return vwService.findAndCountAll({
     attributes: serviceField,
     where: {
-      $or: [{ servicecode: { $iRegexp: q } }, { servicename: { $iRegexp: q } }],
-      $and: { ...other, reg_id }
+      [Op.or]: [{ servicecode: { [Op.iRegexp]: q } }, { servicename: { [Op.iRegexp]: q } }],
+      [Op.and]: { ...other, reg_id }
     },
     order: [['serviceCode', 'DESC']],
     limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,

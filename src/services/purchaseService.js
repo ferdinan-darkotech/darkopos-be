@@ -52,7 +52,7 @@ export function getPurchaseByCode (transNo, query, useTable = false) {
   }
   if(query.intransit) {
     // where.receivestatus = false
-    where.receiveDate = { $eq: null }
+    where.receiveDate = { [Op.eq]: null }
   }
   return PurchaseView.findOne({
     // attributes: (query.showOnly==='log') ? purchaseFieldsLog : purchaseFields,
@@ -63,7 +63,7 @@ export function getPurchaseByCode (transNo, query, useTable = false) {
 }
 
 export function getPurchaseByReference (reference, transno = null) {
-    const extraFilter = transno ? { transno: { $ne: transno } } : {}
+    const extraFilter = transno ? { transno: { [Op.ne]: transno } } : {}
     return Purchase.findOne({
         // attributes: purchase,
         where: { reference, ...extraFilter },
@@ -105,7 +105,7 @@ export function getPurchaseData (query) {
         attributes: purchase,
         order: [['transDate', 'ASC'], ['transNo', 'ASC']],
 		where: {
-            $and: [...querying, { storeId }, { status: '1' }],
+            [Op.and]: [...querying, { storeId }, { status: '1' }],
             
 		}
 	})

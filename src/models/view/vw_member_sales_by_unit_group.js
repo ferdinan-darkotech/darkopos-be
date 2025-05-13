@@ -26,13 +26,13 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
     },
     grandTotal: {
-      type: DataTypes.DOUBLE(19, 2),
+      type: DataTypes.DOUBLE,
     },
     totalDiscount: {
-      type: DataTypes.DOUBLE(19, 2),
+      type: DataTypes.DOUBLE,
     },
     nettoTotal: {
-      type: DataTypes.DOUBLE(19, 2),
+      type: DataTypes.DOUBLE,
     },
   }, {
       timestamps: false,

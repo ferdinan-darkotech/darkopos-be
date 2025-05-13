@@ -3,7 +3,7 @@ import db from '../../models'
 import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
 import moment from 'moment'
-import { Sequelize } from 'sequelize'
+import { Op, Sequelize } from 'sequelize'
 
 const Store = db.tbl_store
 
@@ -212,8 +212,8 @@ export function getAllStorePositionByPrefix (prefix) {
   return Store.findAll({
     attributes: ['storecode', 'storename', 'latitude', 'longitude'],
     where: {
-      latitude: { $ne: null },
-      longitude: { $ne: null },
+      latitude: { [Op.ne]: null },
+      longitude: { [Op.ne]: null },
       '': Sequelize.literal(`jsonb_extract_path_text(settingvalue::jsonb, variadic array['notifSetting', 'prefix']) = '${prefix}'`)
     },
     raw: true
@@ -233,7 +233,7 @@ export function getStore (id) {
 export function getAllStoreByCode (listStore = []) {
   return Store.findAll({
     where: {
-      storecode: { $in: listStore }
+      storecode: { [Op.in]: listStore }
     },
     raw: true
   })
@@ -245,7 +245,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -262,7 +262,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return Store.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -270,7 +270,7 @@ export function countData (query) {
       where: {
         ...other,
         storeParentId: {
-          $ne: null
+          [Op.ne]: null
         }
       }
     })
@@ -300,7 +300,7 @@ export function getData (query, pagination) {
     return Store.findAll({
       attributes: query.field ? query.field.split(',') : null,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -312,7 +312,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         storeParentId: {
-          $ne: null
+          [Op.ne]: null
         }
       },
       order: order ? sequelize.literal(order) : null,

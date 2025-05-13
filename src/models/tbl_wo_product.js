@@ -103,7 +103,7 @@ module.exports = function (sequelize, DataTypes) {
     },
 
     // [NEW]: FERDINAN - 2025-03-25
-    salestype: { type: DataTypes.STRIN },
+    salestype: { type: DataTypes.STRING(30) },
     additionalpricenominal: { type: DataTypes.INTEGER },
     additionalpricepercent: { type: DataTypes.INTEGER },
     additionalpriceroundingdigit: { type: DataTypes.INTEGER },

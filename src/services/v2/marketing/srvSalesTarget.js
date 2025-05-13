@@ -21,7 +21,7 @@ const vDTarget003 = dbv.vw_target_detail
 exports.srvGetTargetHeader = function (query) {
   const { date: qDate, m, mode, ...other } = query
   let queryDefault = setDefaultQuery(fullAttributesHeader, other, true)
-  queryDefault.where = { ...queryDefault.where, startDate: { $gte: qDate } }
+  queryDefault.where = { ...queryDefault.where, startDate: { [sequelize.Op.gte]: qDate } }
   return vwHeader.findAndCountAll({
     attributes: fullAttributesHeader,
     ...queryDefault,

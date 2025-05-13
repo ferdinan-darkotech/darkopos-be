@@ -28,13 +28,13 @@ export function getCashierTransData() {
 export function getCashierTransById(cashierId, cashierNo, shift, storeId, transDate, status) {
   return CashierTrans.findOne({
     where: {
-      $and: [
-        { storeId: { $iRegexp: storeId } },
-        { cashierId: { $iRegexp: cashierId } },
-        { cashierNo: { $iRegexp: cashierNo } },
-        { shift: { $iRegexp: shift } },
-        { transDate: { $eq: transDate } },
-        { status: { $eq: status } },
+      [sequelize.Op.and]: [
+        { storeId: { [sequelize.Op.iRegexp]: storeId } },
+        { cashierId: { [sequelize.Op.iRegexp]: cashierId } },
+        { cashierNo: { [sequelize.Op.iRegexp]: cashierNo } },
+        { shift: { [sequelize.Op.iRegexp]: shift } },
+        { transDate: { [sequelize.Op.eq]: transDate } },
+        { status: { [sequelize.Op.eq]: status } },
       ]
     },
     raw: false
@@ -69,25 +69,25 @@ export function updateCashierTrans(cashierTrans) {
     },
     {
       where: {
-        $and: [
+        [Op.and]: [
           {
             storeId: {
-              $eq: dataTrans.storeId
+              [sequelize.Op.eq]: dataTrans.storeId
             }
           },
           {
             cashierNo: {
-              $eq: dataTrans.cashierNo
+              [sequelize.Op.eq]: dataTrans.cashierNo
             }
           },
           {
             shift: {
-              $eq: dataTrans.shift
+              [sequelize.Op.eq]: dataTrans.shift
             }
           },
           {
             transDate: {
-              $eq: dataTrans.transDate
+              [sequelize.Op.eq]: dataTrans.transDate
             }
           }
         ]

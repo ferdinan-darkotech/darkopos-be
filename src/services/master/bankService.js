@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../models'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import moment from 'moment'
@@ -40,7 +41,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -57,7 +58,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return Bank.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         status: '1'
       },
     })
@@ -94,7 +95,7 @@ export function getBankData (query, pagination) {
     return Bank.findAll({
       attributes: queryFields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         status: '1'
       },
       limit: parseInt(pageSize || 10, 10),

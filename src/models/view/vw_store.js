@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     storeParentId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     storeParentCode: {
@@ -38,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     cityId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     state: {

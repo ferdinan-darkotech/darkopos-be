@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../../models/tableR'
 import { setDefaultQuery } from '../../../utils/setQuery'
 
@@ -41,7 +42,7 @@ export function srvGetSomeIntegrationSystems (code = null) {
 export function srvGetOneIntegrationSystems (code = null, key) {
   return tblIntegration.findOne({
     attributes: attributes.lov,
-    where: { code, key, active: { $eq: true } },
+    where: { code, key, active: { [Op.eq]: true } },
     raw: true
   })
 }

@@ -2,6 +2,7 @@ import { ApiError } from '../../services/v1/errorHandlingService'
 import db from '../../models'
 import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
+import { Op } from 'sequelize'
 
 const Store = db.tbl_store
 
@@ -151,7 +152,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all') {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -168,7 +169,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return Store.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -176,7 +177,7 @@ export function countData (query) {
       where: {
         ...other,
         storeParentId: {
-          $ne: null
+          [Op.ne]: null
         }
       }
     })
@@ -206,7 +207,7 @@ export function getData (query, pagination) {
     return Store.findAll({
       attributes: query.field ? query.field.split(',') : null,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -218,7 +219,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         storeParentId: {
-          $ne: null
+          [Op.ne]: null
         }
       },
       order: order ? sequelize.literal(order) : null,

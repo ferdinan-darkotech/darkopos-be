@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(5),
     },
     showAsDiscount: {
-      type: DataTypes.INTEGER(1),
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
     },

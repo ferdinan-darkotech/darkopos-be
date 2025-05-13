@@ -4,7 +4,7 @@ import moment from 'moment'
 module.exports = function (sequelize, DataTypes) {
   let MemberVerify = sequelize.define("vw_member_verify", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },

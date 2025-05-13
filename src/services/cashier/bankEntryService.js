@@ -2,6 +2,7 @@ import db from '../../models'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import sequelize from '../../native/sequelize'
 import stringSQL from '../../native/sqlSequence'
+import { Op } from 'sequelize'
 
 const tbl_sequence = db.tbl_sequence
 const tbl_bank_entry = db.tbl_bank_entry
@@ -78,7 +79,7 @@ export function srvGetExpenses (query, pagination) {
     return tbl_bank_entry.findAll({
       attributes: query.field ? query.field.split(',') : Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),

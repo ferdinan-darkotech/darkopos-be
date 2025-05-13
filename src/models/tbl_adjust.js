@@ -3,12 +3,12 @@
 module.exports = function (sequelize, DataTypes) {
   var Ajin = sequelize.define("tbl_adjust", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
     storeId: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     transNo: {

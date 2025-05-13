@@ -72,18 +72,18 @@ export function setDefaultQueryNoSQL (attributes = [], query = {}, pagings) {
       const fromDate = others[tmpItem][0] || ''
       const toDate = others[tmpItem][1] || ''
       if(attr) {
-        tmpWhere = { [attr]: { $gte: new Date(moment(fromDate)), $lte: new Date(moment(toDate)) } }
+        tmpWhere = { [attr]: { [Op.gte]: new Date(moment(fromDate)), [Op.lte]: new Date(moment(toDate)) } }
       }
     } else if (!!tmpItem.match(/\$[PERIOD]+/g)) { // check if item is contains Single Period
       attr = tmpItem.split(':')[1]
       const fromDate = others[tmpItem] ? new Date(moment(others[tmpItem]).startOf('month')) : null
       const toDate = others[tmpItem] ? new Date(moment(others[tmpItem]).endOf('month')) : null
-      tmpWhere = { [attr]: { $gte: new Date(moment(fromDate).startOf('day')), $lte: new Date(moment(toDate).endOf('day')) } }
+      tmpWhere = { [attr]: { [Op.gte]: new Date(moment(fromDate).startOf('day')), [Op.lte]: new Date(moment(toDate).endOf('day')) } }
     } else if (!!tmpItem.match(/\$[BOOL]+/g)) { // check if item is contains Boolean
       attr = tmpItem.split(':')[1]
       const trueStatus = (others[tmpItem] || '').match(/Y/g) ? [true] : []
       const falseStatus = (others[tmpItem] || '').match(/N/g) ? [false] : [] 
-      tmpWhere = { [attr]: { $in: [...trueStatus, ...falseStatus] } }
+      tmpWhere = { [attr]: { [Op.in]: [...trueStatus, ...falseStatus] } }
     } else {
       const newVal = (others[tmpItem] || '').replace(/(\(|\{|\[).*/g, '')
       tmpWhere = { [attr]: { $regex: new RegExp(`${newVal}`, 'i') } }

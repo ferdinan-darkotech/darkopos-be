@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../../models'
 import dbv from '../../../models/view'
 import sequelize from '../../../native/sequelize'
@@ -48,7 +49,7 @@ export function getDataCode (data) {
       fieldName: data.fieldName,
       fieldParentId: data.fieldParentId,
       deletedBy: {
-        $eq: null
+        [Op.eq]: null
       }
     },
     raw: false
@@ -57,7 +58,7 @@ export function getDataCode (data) {
 
 export function getDataFieldById (fieldid) {
   return table.findAll({
-    where: { id: { $in: fieldid } },
+    where: { id: { [Op.in]: fieldid } },
     raw: true
   })
 }
@@ -67,7 +68,7 @@ export function getDataCodeMax (data) {
     attributes: [[sequelize.literal('max(sortingIndex)'), 'sortingIndex']],
     where: {
       deletedBy: {
-        $eq: null
+        [Op.eq]: null
       }
     },
     raw: false
@@ -99,7 +100,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -116,9 +117,9 @@ export function countData (query) {
   if (querying.length > 0) {
     return vw_wo_field.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
     })
@@ -127,7 +128,7 @@ export function countData (query) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       }
     })
@@ -157,9 +158,9 @@ export function getData (query, pagination) {
     return vw_wo_field.findAll({
       attributes: [...Fields, 'relationid', 'usageperiod', 'usagemileage'],
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,
@@ -172,7 +173,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,
@@ -245,7 +246,7 @@ export function swapIndex (id, oldData, data, updateBy) {
       where: {
         sortingIndex: data.sortingIndex,
         id: {
-          $ne: id
+          [Op.ne]: id
         }
       }
     }

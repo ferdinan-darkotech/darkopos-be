@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../../../models/tableR'
 import { setDefaultQuery } from '../../../../utils/setQuery'
 import moment from 'moment'
@@ -40,8 +41,8 @@ export function srvGetDataMemberLovByType (type = null, search = '') {
     attributes: attribute.lov,
     where: {
       lov_type: type,
-      active: { $eq: true },
-      lov_desc: { $iRegexp: search }
+      active: { [Op.eq]: true },
+      lov_desc: { [Op.iRegexp]: search }
     },
     limit: 10,
     raw: true
@@ -51,7 +52,7 @@ export function srvGetDataMemberLovByType (type = null, search = '') {
 export function srvGetDataMemberLovByID (type = null, _id = null) {
   return tbMemberLov.findOne({
     attributes: attribute.mnf,
-    where: { lov_type: type, lov_id: _id, active: { $eq: true } },
+    where: { lov_type: type, lov_id: _id, active: { [Op.eq]: true } },
     raw: true
   })
 }

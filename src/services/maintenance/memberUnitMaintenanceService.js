@@ -2,6 +2,7 @@ import db from '../../models'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import sequelize from '../../native/sequelize'
 import { updateMemberUnitById } from '../member/memberUnitService'
+import { Op } from 'sequelize'
 
 let table = db.tba_member_unit
 
@@ -52,7 +53,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -69,7 +70,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return table.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -104,7 +105,7 @@ export function getData (query, pagination) {
     return table.findAll({
       attributes: Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),

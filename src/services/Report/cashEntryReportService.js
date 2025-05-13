@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../models/view'
 import sequelize from '../../native/sequelize'
 
@@ -79,7 +80,7 @@ export function getByTrans (query) {
       attributes: newAttr,
       where: {
         transDate: {
-          $between: [from, to]
+          [Op.between]: [from, to]
         },
         storeId: storeId,
         ...other
@@ -113,7 +114,7 @@ export function getByDetail (query) {
       attributes: newAttr,
       where: {
         transDate: {
-          $between: [from, to]
+          [Op.between]: [from, to]
         },
         storeId: storeId,
         ...other

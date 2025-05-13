@@ -1,6 +1,6 @@
 import moment from 'moment'
 import crypto from 'crypto'
-import Sequelize from 'sequelize'
+import Sequelize, { Op } from 'sequelize'
 import sequelize from '../../../native/sequelize'
 import db from '../../../models'
 import dbr from '../../../models/tableR'
@@ -288,7 +288,7 @@ export async function srvUpdateUserStoreInfo (data = {}, wheres = {}, infos = {}
     }
 
     // destroy the list of store user first
-    if(deleted.length > 0) await tbUserStore.destroy({ where: { userId: wheres.userid, userstoreid: { $in: deleted } } }, { transaction })
+    if(deleted.length > 0) await tbUserStore.destroy({ where: { userId: wheres.userid, userstoreid: { [Op.in]: deleted } } }, { transaction })
 
     // updating user store if exists
     if(updated.length > 0) {
@@ -362,7 +362,7 @@ export async function srvUpdateUserRolesInfo (data = {}, wheres = {}, infos = {}
     }
 
     // destroy the list of roles user first
-    if(deleted.length > 0) await tbUserRole.destroy({ where: { userId: wheres.userid, userrole: { $in: deleted } } }, { transaction })
+    if(deleted.length > 0) await tbUserRole.destroy({ where: { userId: wheres.userid, userrole: { [Op.in]: deleted } } }, { transaction })
 
     // updating user roles if exists
     if(updated.length > 0) {

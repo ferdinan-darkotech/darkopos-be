@@ -9,7 +9,7 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true
     },
     storeId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     closing: {
@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     year: {
-      type: DataTypes.INTEGER(4),
+      type: DataTypes.INTEGER,
       allowNull: false,
       unique: true
     },

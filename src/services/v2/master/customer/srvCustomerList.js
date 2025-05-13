@@ -11,6 +11,7 @@ import { srvGetCustomerGroupByCode } from './srvCustomerGroup'
 import { srvCreateDataMemberLov, srvGetDataMemberLovByID } from './srvCustomerLov'
 import { srvGetCustomerTypeByCode } from './srvCustomerType'
 import moment from 'moment'
+import { Op as OpSequelize } from 'sequelize'
 
 const table = tb.tbl_member
 const view = vw.vw_member
@@ -98,7 +99,7 @@ export function srvGetListOfVerifiedMember (query) {
   return vwVerifyMember.findAll({
     attributes: attrMemberVerify,
     where: {
-      verify_at: { $between: [newFrom, newTo] }
+      verify_at: { [OpSequelize.between]: [newFrom, newTo] }
     },
     raw: false
   })
@@ -107,13 +108,13 @@ export function srvGetListOfVerifiedMember (query) {
 export async function srvGetCustomers (query, filter = false) {
   let { pageSize, page, order, q, qType, ...other } = query
   let sort = (order) ? getSelectOrder(order) : null
-  let where = {} // let where = { deletedAt: { [Op.eq]: null } }
+  let where = {} // let where = { deletedAt: { [OpSequelize.eq]: null } }
   const { m, activeOnly, ...condition } = other
   const includeActive = (activeOnly || '').toString() === 'true' ? { active: true } : {}
   if (filter && !isEmptyObject(condition)) {
     where = [...remapFilter(condition), includeActive]
   } else if (!!q && !!qType) {
-    where = { [qType]: { $iRegexp: q }, ...includeActive }
+    where = { [qType]: { [OpSequelize.iRegexp]: q }, ...includeActive }
   } else {
     where = { ...includeActive }
   }
@@ -132,12 +133,12 @@ export async function srvGetCustomers (query, filter = false) {
     if (mode.includes('ar')) limitQuery = {}
     if (mode.includes('lov')) { modeField = 'lov'; limitQuery = {}; sort = [] }
 
-    const whereExcept01 = { $or: { memberName: { [Op.notRegexp] : 'CUSTOMER|UMUM' }, memberCode: 'CU00000001' } }
+    const whereExcept01 = { [OpSequelize.or]: { memberName: { [OpSequelize.notRegexp] : 'CUSTOMER|UMUM' }, memberCode: 'CU00000001' } }
     if (mode.includes('f1')) {
       if (where !== 'undefined') {
-        where = { $and: [ where[0], whereExcept01, includeActive ] }
+        where = { [OpSequelize.and]: [ where[0], whereExcept01, includeActive ] }
       } else {
-        where = { $and: [ whereExcept01, includeActive ] }
+        where = { [OpSequelize.and]: [ whereExcept01, includeActive ] }
       }
     }
   }

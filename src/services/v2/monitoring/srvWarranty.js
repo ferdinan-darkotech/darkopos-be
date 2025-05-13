@@ -4,6 +4,7 @@ import moment from 'moment'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import { setDefaultQuery } from '../../../utils/setQuery'
 import customeSequelize from '../../../native/sequelize'
+import { Op } from 'sequelize'
 
 const tbWarrantyProduct = tbl.tbl_warranty_products
 const vwWarrantyProduct = vw.vw_warranty_products
@@ -41,7 +42,7 @@ export function srvGetWarrantyProducts (query, listStore = []) {
 
   const defaultQuery = setDefaultQuery(attrWarrantyProducts.bf, other, false)
 
-  defaultQuery.where = { ...defaultQuery.where, store_code: { $in: listStore } }
+  defaultQuery.where = { ...defaultQuery.where, store_code: { [Op.in]: listStore } }
   return vwWarrantyProduct.findAndCountAll({
     attributes: tmpAttr,
     raw: true,

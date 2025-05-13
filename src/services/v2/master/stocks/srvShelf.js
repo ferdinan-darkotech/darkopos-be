@@ -1,4 +1,4 @@
-import sequelize from 'sequelize'
+import sequelize, { Op } from 'sequelize'
 import NSequelize from '../../../../native/sequelize'
 import db from '../../../../models/tableR'
 import dbv from '../../../../models/viewR'
@@ -68,7 +68,7 @@ export function srvGetSomeShelfItems (stores, query, root = false) {
   
   queryDefault.where = {
     ...queryDefault.where,
-    store_code: { $in: stores }
+    store_code: { [Op.in]: stores }
   }
 
   return vwShelfItem.findAndCountAll({
@@ -88,7 +88,7 @@ export function srvGetSomeShelfs (stores = [], query, root = false) {
   
   queryDefault.where = {
     ...queryDefault.where,
-    store_code: { $in: stores }
+    store_code: { [Op.in]: stores }
   }
 
   return vwShelf.findAndCountAll({
@@ -104,7 +104,7 @@ export function srvGetAllShelfItems01 (store, products = []) {
   return vwShelfItem.findAll({
     attributes: attrShelfItems.mnf,
     where: {
-       product_code: { $or: products },
+       product_code: { [Op.or]: products },
       store_code: store
     },
     raw: true
@@ -185,9 +185,9 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
       const existShelfs = await tbShelf.findAll({
         attributes: ['shelf_id', 'store_code', 'shelf_numbers', 'row_numbers'],
         where: {
-          $or: mappingFilters01,
-          store_code: { $in: storeAccess },
-          status: { $eq: true }
+          [Op.or]: mappingFilters01,
+          store_code: { [Op.in]: storeAccess },
+          status: { [Op.eq]: true }
         },
         raw: true
       })
@@ -198,7 +198,7 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
   
       const existProducts = await vwStock.findAll({
         attributes: ['productCode'],
-        where: { productCode: { $in: productCodes } }, // Batasi pencarian ke produk yang ada di `data`
+        where: { productCode: { [Op.in]: productCodes } }, // Batasi pencarian ke produk yang ada di `data`
         raw: true
       });
   
@@ -279,7 +279,7 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
   
       const existShelfItems = await tbShelfItem.findAll({
         attributes: ['reg_id', 'shelf_id', 'product_code', 'store_code'],
-        where: { $or: mappingFilters02 },
+        where: { [Op.or]: mappingFilters02 },
         raw: true
       })
   
@@ -327,9 +327,9 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
     // const existShelfs = await tbShelf.findAll({
     //   attributes: ['shelf_id', 'store_code', 'shelf_numbers', 'row_numbers'],
     //   where: {
-    //     $or: mappingFilters01,
-    //     store_code: { $in: storeAccess },
-    //     status: { $eq: true }
+    //     [Op.or]: mappingFilters01,
+    //     store_code: { [Op.in]: storeAccess },
+    //     status: { [Op.eq]: true }
     //   },
     //   raw: true
     // })
@@ -368,7 +368,7 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
 
     // const existShelfItems = await tbShelfItem.findAll({
     //   attributes: ['reg_id', 'shelf_id', 'product_code'],
-    //   where: { $or: mappingFilters02 },
+    //   where: { [Op.or]: mappingFilters02 },
     //   raw: true
     // })
 
@@ -392,8 +392,8 @@ export async function srvBulkDeleteShelfItems (storeAccess = [], items = []) {
     const existShelfItems = await vwShelfItem.findAll({
       attributes: ['shelf_id'],
       where: {
-        reg_id: { $in: items },
-        store_code: { $in: storeAccess }
+        reg_id: { [Op.in]: items },
+        store_code: { [Op.in]: storeAccess }
       },
       raw: true
     })

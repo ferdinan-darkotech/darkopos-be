@@ -6,25 +6,25 @@
 module.exports = function (sequelize, DataTypes) {
     var Payment = sequelize.define("tbl_payment", {
         id: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         cashierTransId: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: true,
             defaultValue: null
         },
         reference: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         storeId: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         storeIdPayment: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         transDate: {
@@ -37,11 +37,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
         },
         paymentOptionId: {
-            type: DataTypes.INTEGER(2),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         edcId: {
-            type: DataTypes.INTEGER(2),
+            type: DataTypes.INTEGER,
             allowNull: true,
         },
         amount: {

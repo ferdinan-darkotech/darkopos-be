@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../models/view'
 import sequelize from '../../native/sequelize'
 
@@ -61,8 +62,8 @@ export function getTransByNo6 (query) {
       attributes: reportSaldoAWalFields(from, to),
       where: {
         invoiceDate: {
-          $gte: from,
-          $lte: to,
+          [Op.gte]: from,
+          [Op.lte]: to,
         },
         ...other
       },
@@ -96,10 +97,10 @@ export function getTransByNoSaldoAwal (query) {
       attributes: query.field ? query.field.split(',') : reportSaldoAWalFields(from, to),
       where: {
         invoiceDate: {
-          $lt: from
+          [Op.lt]: from
         },
         statusPaid: {
-          $ne: 'PAID'
+          [Op.ne]: 'PAID'
         },
         ...other
       },

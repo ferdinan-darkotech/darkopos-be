@@ -6,6 +6,7 @@ import sequelize from '../../native/sequelize'
 import { getNativeQuery } from '../../native/nativeUtils'
 import native from '../../native/dashboard/sqlHeader'
 import dbv from '../../models/viewR'
+import { Op } from 'sequelize'
 
 const attrNotifReminder = ['notifcode','notifname','total','redirectto']
 const vwNotifReminder = dbv.vw_notif_reminder
@@ -37,9 +38,9 @@ export function srvGetNotifReminderByStoreRole (store, role) {
   return vwNotifReminder.findAll({
     attributes: attrNotifReminder,
     where: {
-      $or: [{ [`'${role}'`]: sequelize.literal(`'${role}'=any(string_to_array(notifaccess,','))`)}, { notifaccess: '*' }],
+      [Op.or]: [{ [`'${role}'`]: sequelize.literal(`'${role}'=any(string_to_array(notifaccess,','))`)}, { notifaccess: '*' }],
       storeid: {
-        $in: [store, -1]
+        [Op.in]: [store, -1]
       }
     }
   })

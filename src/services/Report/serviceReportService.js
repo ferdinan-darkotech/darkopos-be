@@ -1,6 +1,7 @@
 /**
  * Created by Veirry on 17/09/2017.
  */
+import { Op } from 'sequelize'
 import dbv from '../../models/view'
 import dbv2 from '../../models/viewR'
 import sequelize from '../../native/sequelize'
@@ -87,7 +88,7 @@ export function countDataServiceDetail (query) {
             query[key] = { between: query[key] }
             other[key] = query[key]
         } else if (type !== 'all' && query['q']) {
-            query[key] = { $iRegexp: query[key] }
+            query[key] = { [Op.iRegexp]: query[key] }
         }
     }
     let querying = []
@@ -104,7 +105,7 @@ export function countDataServiceDetail (query) {
     if (querying.length > 0) {
         return vwd_pos_sales.count({
             where: {
-                $or: querying
+                [Op.or]: querying
             },
         })
     } else {
@@ -134,7 +135,7 @@ export function getDataServiceDetail (query, pagination) {
         return vwd_pos_sales.findAll({
             attributes: Fields,
             where: {
-                $or: querying
+                [Op.or]: querying
             },
             order: order ? sequelize.literal(order) : null,
             limit: parseInt(pageSize || 10, 10),
@@ -161,8 +162,8 @@ export function getReportServiceTrans (query) {
             attributes: reportTrans,
             where: {
                 transDate: {
-                    $gte: query.from,
-                    $lte: query.to
+                    [Op.gte]: query.from,
+                    [Op.lte]: query.to
                 },
                 ...other
             },
@@ -180,7 +181,7 @@ export function getReportServiceMechanic (query) {
             attributes: reportTransMechanic,
             where: {
                 transDate: {
-                    $between: [from, to]
+                    [Op.between]: [from, to]
                 },
                 storeId: storeId,
                 status: 'A',
@@ -198,7 +199,7 @@ export function getReportServiceByItem (query) {
         attributes: fieldsServiceByItem,
         where: {
             storeid: storeId,
-            $and: [ { transDate: { $gte: startdate } }, { transDate: { $lte: enddate } } ]
+            [Op.and]: [ { transDate: { [Op.gte]: startdate } }, { transDate: { [Op.lte]: enddate } } ]
         }
     })
 }

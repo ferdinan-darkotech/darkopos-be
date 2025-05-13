@@ -5,6 +5,7 @@ import dbvr from '../../../models/viewR'
 import db from '../../../models'
 import moment from 'moment'
 import { setDefaultQuery } from '../../../utils/setQuery'
+import { Op } from 'sequelize'
 
 const Purchase = db.tbl_purchase
 const PurchaseView = dbv.vw_purchase
@@ -55,7 +56,7 @@ export function srvGetListPurchaseDetail (query) {
   const newAttr = attrPurchaseDetail[!!attrPurchaseDetail[m] ? m : 'lov']
 
   let queryDefault = setDefaultQuery(newAttr, { ...other }, true)
-  const renderStatus = !!activeOnly ? { status: { $eq: true } } : {}
+  const renderStatus = !!activeOnly ? { status: { [Op.eq]: true } } : {}
   queryDefault.where = { ...queryDefault.where, storecode: store, ...renderStatus }
 
   return vwdPurchase.findAndCountAll({
@@ -70,7 +71,7 @@ export function srvGetListPurchaseDetailBySupplier (query) {
   const newAttr = attrPurchaseDetail[!!attrPurchaseDetail[m] ? m : 'lov']
 
   let queryDefault = setDefaultQuery(newAttr, { ...other }, true)
-  const renderStatus = !!activeOnly ? { status: { $eq: true } } : {}
+  const renderStatus = !!activeOnly ? { status: { [Op.eq]: true } } : {}
   queryDefault.where = { suppliercode: supplier, storecode: store, ...renderStatus }
 
   return vwdPurchase.findAndCountAll({
@@ -86,10 +87,10 @@ export function srvGetTransitData (query) {
       attributes: purchase,
       where: {
           storeid: query.store,
-          // receivestatus: { $eq: false },
+          // receivestatus: { [Op.eq]: false },
           status: '1',
-          receiveDate: { $eq: null },
-          invoiceDate: { $lte: moment().format(formatDate) }
+          receiveDate: { [Op.eq]: null },
+          invoiceDate: { [Op.lte]: moment().format(formatDate) }
       },
       raw: true
   })
@@ -100,5 +101,5 @@ export function srvReceiveStockPurchase ({ transno, store, receivedate, memo }, 
       receiveDate: moment(receivedate),
       receiveby: userid,
       memo_receive: memo
-  }, { where: { transno, storeid: store, receiveDate: { $eq: null } } })
+  }, { where: { transno, storeid: store, receiveDate: { [Op.eq]: null } } })
 }

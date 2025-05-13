@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbr from '../../../models/tableR'
 import moment from 'moment'
 
@@ -20,7 +21,7 @@ export function srvGetAllRelationByField (fieldId) {
     attributes: ['fieldid', 'linktype', 'target'],
     where: {
       fieldid: fieldId,
-      deletedAt: { $eq: null }
+      deletedAt: { [Op.eq]: null }
     },
     raw: true
   })
@@ -55,13 +56,13 @@ export async function srvModifylinkField (fieldId, listRelationId = [], user, tr
       await linkField.update({
         deletedBy: user,
         deletedAt: moment()
-      }, { where: { fieldid: fieldId, id: { $in: toDisabled } } }, { transaction })
+      }, { where: { fieldid: fieldId, id: { [Op.in]: toDisabled } } }, { transaction })
     }
     if(toEnabled.length > 0) {
       await linkField.update({
         deletedBy: null,
         deletedAt: null
-      }, { where: { fieldid: fieldId, id: { $in: toEnabled } } }, { transaction })
+      }, { where: { fieldid: fieldId, id: { [Op.in]: toEnabled } } }, { transaction })
     }
   } catch (er) {
     throw new Error(er.message)

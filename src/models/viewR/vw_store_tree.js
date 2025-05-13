@@ -4,7 +4,7 @@ import moment from 'moment'
 module.exports = function (sequelize, DataTypes) {
   var StoreTree = sequelize.define("vw_lov_store_tree", {
     id: {
-      type: DataTypes.INTEGER(11),
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },

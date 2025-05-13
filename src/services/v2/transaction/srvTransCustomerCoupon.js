@@ -4,6 +4,7 @@ import moment from 'moment'
 import sequelize from '../../../native/sequelize'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import { setDefaultQuery } from '../../../utils/setQuery'
+import { Op } from 'sequelize'
 
 const tbCustCoupon = db.tbl_customer_coupon
 const tbCustCouponClaim = db.tbl_customer_coupon_claim
@@ -68,9 +69,9 @@ export function srvGetAllCouponByVerifyWA (waNo) {
 export function srvGetReportCustomerPointReceived (ho_id, query) {
   const { fromDate, toDate, member = [], policeno = [], orderBy = {}, store } = query
   const otherWhere = {
-    ...(member.length !== 0 && typeof member === 'object' ? { member_code: { $in: member } } : {}),
-    ...(policeno.length !== 0 && typeof policeno === 'object' ? { policeno: { $in: policeno } } : {}),
-    ...(store.length !== 0 && typeof store === 'object' ? { store_code: { $in: store } } : {})
+    ...(member.length !== 0 && typeof member === 'object' ? { member_code: { [Op.in]: member } } : {}),
+    ...(policeno.length !== 0 && typeof policeno === 'object' ? { policeno: { [Op.in]: policeno } } : {}),
+    ...(store.length !== 0 && typeof store === 'object' ? { store_code: { [Op.in]: store } } : {})
   }
   const tmpOrderBy = Object.getOwnPropertyNames(orderBy)
   const mapOrder = tmpOrderBy.map(x => [x, orderBy[x]])
@@ -78,8 +79,8 @@ export function srvGetReportCustomerPointReceived (ho_id, query) {
     attributes: attrReportCustomerPointReceive,
     where: {
       ho_id,
-      sales_date: { $between: [fromDate, toDate] },
-      cancel_trans: { $eq: false },
+      sales_date: { [Op.between]: [fromDate, toDate] },
+      cancel_trans: { [Op.eq]: false },
       ...otherWhere
     },
     order: mapOrder,
@@ -90,9 +91,9 @@ export function srvGetReportCustomerPointReceived (ho_id, query) {
 export function srvGetReportCustomerPointUsed (ho_id, query) {
   const { fromDate, toDate, member = [], policeno = [], store, orderBy = {} } = query
   const otherWhere = {
-    ...(member.length !== 0 && typeof member === 'object' ? { member_code: { $in: member } } : {}),
-    ...(policeno.length !== 0 && typeof policeno === 'object' ? { policeno: { $in: policeno } } : {}),
-    ...(store.length !== 0 && typeof store === 'object' ? { store_code: { $in: store } } : {})
+    ...(member.length !== 0 && typeof member === 'object' ? { member_code: { [Op.in]: member } } : {}),
+    ...(policeno.length !== 0 && typeof policeno === 'object' ? { policeno: { [Op.in]: policeno } } : {}),
+    ...(store.length !== 0 && typeof store === 'object' ? { store_code: { [Op.in]: store } } : {})
   }
   const tmpOrderBy = Object.getOwnPropertyNames(orderBy)
   const mapOrder = tmpOrderBy.map(x => [x, orderBy[x]])
@@ -100,8 +101,8 @@ export function srvGetReportCustomerPointUsed (ho_id, query) {
     attributes: attrReportCustomerPointUsed,
     where: {
       ho_id,
-      sales_date: { $between: [fromDate, toDate] },
-      cancel_trans: { $eq: false },
+      sales_date: { [Op.between]: [fromDate, toDate] },
+      cancel_trans: { [Op.eq]: false },
       ...otherWhere
     },
     order: mapOrder,
@@ -135,7 +136,7 @@ export function srvGetCustomerCouponByMemberCode (ho_id, member_code, m) {
 export function srvGetHistorySalesIncludeCoupon (coupon_id, activeOnly = false) {
   return vwCustCouponSalesTrans.findAll({
     attributes: attrCouponSalesTrans,
-    where: { coupon_id, ...(activeOnly ? { cancel_trans: { $eq: false } } : {}) },
+    where: { coupon_id, ...(activeOnly ? { cancel_trans: { [Op.eq]: false } } : {}) },
     raw: true
   })
 }
@@ -143,7 +144,7 @@ export function srvGetHistorySalesIncludeCoupon (coupon_id, activeOnly = false) 
 export function srvGetHistoryCouponClaim (coupon_id, activeOnly = false) {
   return vwCustCouponClaim.findAll({
     attributes: attrCouponClaim,
-    where: { coupon_id, ...(activeOnly ? { cancel_trans: { $eq: false } } : {}) },
+    where: { coupon_id, ...(activeOnly ? { cancel_trans: { [Op.eq]: false } } : {}) },
     raw: true
   })
 }

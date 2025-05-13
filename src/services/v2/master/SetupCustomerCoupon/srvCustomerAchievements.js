@@ -3,6 +3,7 @@ import db from '../../../../models/tableR'
 import dbv from '../../../../models/viewR'
 import { setDefaultQuery } from '../../../../utils/setQuery'
 import sequelize from '../../../../native/sequelize'
+import { Op } from 'sequelize'
 
 const tbCustAchievements = db.tbl_customer_achievements
 const tbCustAchievementsProd = db.tbl_customer_achievements_product
@@ -166,7 +167,7 @@ export function srvGetAllCustAchievementsProdByAchieveId (_id, mode = 'mf') {
     attributes: mode === 'mf' ? attrCustAchievementsProd : [
       'product_code', 'product_name', 'qty_sales', 'point_receive'
     ],
-    where: { achievement_id: _id, status: { $eq: true } },
+    where: { achievement_id: _id, status: { [Op.eq]: true } },
     raw: true
   })
 }
@@ -176,7 +177,7 @@ export function srvGetAllCustAchievementsServByAchieveId (_id, mode = 'mf') {
     attributes: mode === 'mf' ? attrCustAchievementsServ : [
       'service_code', 'service_name', 'qty_sales', 'point_receive'
     ],
-    where: { achievement_id: _id, status: { $eq: true } },
+    where: { achievement_id: _id, status: { [Op.eq]: true } },
     raw: true
   })
 }

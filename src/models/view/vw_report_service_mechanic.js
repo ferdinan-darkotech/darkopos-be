@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(30),
         },
         productId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
         },
         serviceCode: {
             type: DataTypes.STRING(30),

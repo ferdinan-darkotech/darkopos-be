@@ -2,6 +2,7 @@ import db from '../../../models'
 import { ApiError } from '../../../services/v1/errorHandlingService'
 import sequelize from '../../../native/sequelize'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 let table = db.tbl_member_asset_category
 
@@ -54,7 +55,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -71,7 +72,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return table.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -98,7 +99,7 @@ export function getData (query, pagination) {
       const id = Object.assign(Fields)[key]
       if (id === 'categoryCode' || id === 'categoryName') {
         let obj = {}
-        obj[id] = { $iRegexp: other['q'] }
+        obj[id] = { [Op.iRegexp]: other['q'] }
         querying.push(obj)
       }
     }
@@ -107,7 +108,7 @@ export function getData (query, pagination) {
     return table.findAndCountAll({
       attributes: Fields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...((activeOnly || '').toString() === 'true' ? { active: true } : {})
       },
       order: order ? sequelize.literal(order) : null,

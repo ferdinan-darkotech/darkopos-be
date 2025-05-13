@@ -8,11 +8,11 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true
         },
         storeId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         storeIdSender: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         transNo: {
@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         productId: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         qty: {

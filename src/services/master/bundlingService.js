@@ -5,6 +5,7 @@ import sequelize from '../../native/sequelize'
 import stringSQL from '../../native/sqlSequence'
 import moment from 'moment'
 import { getTotalDisc } from '../../utils/pos'
+import { Op } from 'sequelize'
 
 let table = db.tbl_bundling
 let tbl_sequence = db.tbl_sequence
@@ -40,8 +41,8 @@ export function checkIfBundlingNeedUniqueKey (listCode = []) {
   return table.findAll({
     attributes: ['id', 'code'],
     where: {
-      code: { $in: listCode },
-      generate_key_number: { $gt: 0 }
+      code: { [Op.in]: listCode },
+      generate_key_number: { [Op.gt]: 0 }
     },
     raw: true
   })
@@ -90,7 +91,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' || (key !== 'id' && tmpId)) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -104,21 +105,21 @@ export function countData (query) {
       } else if (key === 'id' || tmpId) {
         querying.push({ id: query['q'] })
       } else if (key === 'status' && !!JSON.parse(activeOnly || 'false')) {
-        querying.push({ status: { $eq: true } })
+        querying.push({ status: { [Op.eq]: true } })
       }
     }
   }
   if (querying.length > 0) {
     return table.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else if (other.text !== undefined || other.text !== null) {
     const statusActiveOnly = !!JSON.parse(activeOnly || 'false') ? { status: 'true' } : {}
     return table.count({
       where: {
-        $and: [{$or: { code: { $iRegexp: other.text }, name: { $iRegexp: other.text } }}, statusActiveOnly]
+        [Op.and]: [{[Op.or]: { code: { [Op.iRegexp]: other.text }, name: { [Op.iRegexp]: other.text } }}, statusActiveOnly]
       }
     })
   } else {
@@ -149,7 +150,7 @@ export function getData (query, pagination) {
       } else if (key === 'id' || tmpId) {
         querying.push({ id: query['q'] })
       } else if (key === 'status' && !!JSON.parse(activeOnly || 'false')) {
-        querying.push({ status: { $eq: true } })
+        querying.push({ status: { [Op.eq]: true } })
       }
     }
   }
@@ -158,7 +159,7 @@ export function getData (query, pagination) {
     return table.findAll({
       attributes: Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -168,7 +169,7 @@ export function getData (query, pagination) {
     const statusActiveOnly = !!JSON.parse(activeOnly || 'false') ? { status: 'true' } : {}
     return table.findAll({
       where: {
-        $and: [{$or: { code: { $iRegexp: other.text }, name: { $iRegexp: other.text } }}, statusActiveOnly]
+        [Op.and]: [{[Op.or]: { code: { [Op.iRegexp]: other.text }, name: { [Op.iRegexp]: other.text } }}, statusActiveOnly]
       },
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
       order: order ? sequelize.literal(order) : null,

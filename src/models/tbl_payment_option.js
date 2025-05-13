@@ -6,16 +6,16 @@
 module.exports = function (sequelize, DataTypes) {
     var Payment = sequelize.define("tbl_payment_option", {
         id: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         parentId: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         typeCode: {
-            type: DataTypes.INTEGER(10),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         typeName: {

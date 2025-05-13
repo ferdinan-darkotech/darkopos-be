@@ -5,6 +5,7 @@ import sequelize from '../../../native/sequelize'
 import { setDefaultQuery } from '../../../utils/setQuery'
 import { increaseSequence, getDataByStoreAndCode } from '../../sequencesService'
 import { getSequenceFormatByCode } from '../../sequenceService'
+import { Op } from 'sequelize'
 
 const attrVHeader = [ 'id','storeid','storename','transno','transdate','memberid','membercode','membername',
 'cashierid','cashiername','memo','total','paid','change','createdby','createdat','updatedby','updatedat' ]
@@ -53,7 +54,7 @@ export function srvGetVoucherSalesItem (query, modeFetch = 'count', extraFilter)
   const statusActive = status ? { active: status } : {}
   const typeCode = type ? { typeCode: type.split(',') } : {}
   const newAttr = mode === 'lov' ? attrVoucherSalesItem.lov : attrVoucherSalesItem.mf
-  const searchByItem = item ? {itemcode: { $in: item.split(',') } } : {}
+  const searchByItem = item ? {itemcode: { [Op.in]: item.split(',') } } : {}
   if(modeFetch === 'count') {
     return vwVoucherSalesItem.findAll({
       attributes: newAttr,
@@ -62,13 +63,13 @@ export function srvGetVoucherSalesItem (query, modeFetch = 'count', extraFilter)
     })
   } else if (modeFetch === 'params') {
     let extendsFilter = {}
-    let defaultextendFilter = { salesstatus: { $ne: 'N' }, usedstatus: { $ne: 'N' } }
-    if(vld.indexOf('XP') !== -1) extendsFilter = { expireddate: { $gt: moment().format('YYYY-MM-DD') } }
-    if(vld.indexOf('SS') !== -1) extendsFilter = { ...extendsFilter, salesstatus: { $ne: 'Y' } }
-    if(vld.indexOf('US') !== -1) extendsFilter = { ...extendsFilter, usedstatus: { $ne: 'Y' } }
+    let defaultextendFilter = { salesstatus: { [Op.ne]: 'N' }, usedstatus: { [Op.ne]: 'N' } }
+    if(vld.indexOf('XP') !== -1) extendsFilter = { expireddate: { [Op.gt]: moment().format('YYYY-MM-DD') } }
+    if(vld.indexOf('SS') !== -1) extendsFilter = { ...extendsFilter, salesstatus: { [Op.ne]: 'Y' } }
+    if(vld.indexOf('US') !== -1) extendsFilter = { ...extendsFilter, usedstatus: { [Op.ne]: 'Y' } }
     return vwVoucherSalesItem.findAll({
       attributes: attrVoucherSalesItem.mf,
-      where: { vouchercode: { $in: other.vouchercode }, ...defaultextendFilter, ...extraFilter, ...extendsFilter },
+      where: { vouchercode: { [Op.in]: other.vouchercode }, ...defaultextendFilter, ...extraFilter, ...extendsFilter },
       raw: true
     })
   }
@@ -78,11 +79,11 @@ export function srvGetVoucherList (query, mode = 'count', extraFilter) {
   const { type = '', voucherlist,  total, ...other } = query
   let extendsFilter = {}
   let extraFilter2 = {}
-  let defaultextendFilter = { salesstatus: { $ne: 'N' }, usedstatus: { $ne: 'N' } }
-  if(type.indexOf('XP') !== -1) extendsFilter = { expireddate: { $gt: moment().format('YYYY-MM-DD') } }
-  if(type.indexOf('SS') !== -1) extendsFilter = { ...extendsFilter, salesstatus: { $ne: 'Y' } }
-  if(type.indexOf('US') !== -1) extendsFilter = { ...extendsFilter, usedstatus: { $ne: 'Y' } }
-  if(extraFilter2) extraFilter2 = { vouchercode: { $in: voucherlist }, ...defaultextendFilter, ...extraFilter, ...extendsFilter }
+  let defaultextendFilter = { salesstatus: { [Op.ne]: 'N' }, usedstatus: { [Op.ne]: 'N' } }
+  if(type.indexOf('XP') !== -1) extendsFilter = { expireddate: { [Op.gt]: moment().format('YYYY-MM-DD') } }
+  if(type.indexOf('SS') !== -1) extendsFilter = { ...extendsFilter, salesstatus: { [Op.ne]: 'Y' } }
+  if(type.indexOf('US') !== -1) extendsFilter = { ...extendsFilter, usedstatus: { [Op.ne]: 'Y' } }
+  if(extraFilter2) extraFilter2 = { vouchercode: { [Op.in]: voucherlist }, ...defaultextendFilter, ...extraFilter, ...extendsFilter }
   
   let tmpAttrs = tmpAttributes(attrVList)
   let queryDefault = setDefaultQuery(tmpAttrs, other, true)
@@ -107,7 +108,7 @@ export function srvGetVoucherList (query, mode = 'count', extraFilter) {
   } else {
     return vwVList.findAll({
       attributes: attrVList,
-      where: { voucherno: { $in: other.voucherno } },
+      where: { voucherno: { [Op.in]: other.voucherno } },
       raw: true
     })
   }

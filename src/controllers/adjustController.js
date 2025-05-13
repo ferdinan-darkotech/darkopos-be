@@ -13,6 +13,7 @@ import { srvGetSomeStockOnHand } from '../services/v2/inventory/srvStocks'
 import { checkStockMinus } from '../services/Report/fifoReportService'
 import requestApi from '../utils/request'
 import { srvGetAccessGrantedByCode, srvGetAccessGrantedByKeyCode } from '../services/v2/setting/srvAccessGranted'
+import { Op } from 'sequelize'
 
 
 async function adjustSenderEmail ({ action, type, trans, username, usercompany, storeId, transtypename, storeName, referencedate, reference }) {
@@ -178,7 +179,7 @@ exports.updateAdjust = function (req, res, next) {
 					const restrict = moment(moment(exists.transdate).format('YYYY-MM')).diff(moment().format('YYYY-MM'), 'month') === 0
 					exists = !restrict && exists ? null : exists
 					if (exists) {
-						const condition = { reference: data.reference, transtype: data.transType, transno: { $ne: transNo } }
+						const condition = { reference: data.reference, transtype: data.transType, transno: { [Op.ne]: transNo } }
 						return getAdjustByCustomeCondition(condition).then(async exists => {
 							if(exists) throw new Error('Reference has been exists')
 							else {

@@ -3,6 +3,7 @@ import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
 import sequelize from '../native/sequelize'
+import { Op } from 'sequelize'
 
 const Employee = db.tbl_employee
 
@@ -22,7 +23,7 @@ const emplBrowseFields = ['id', 'idType', 'idNo', 'employeeId', 'employeeName', 
 export function getEmployeeById (employeeId) {
   return Employee.findOne({
     where: {
-      $or: [
+      [Op.or]: [
         { employeeId: employeeId },
         { employeeName: employeeId },
       ]
@@ -65,7 +66,7 @@ export function getEmployeesData (query) {
         attributes: emplBrowseFields,
         where: {
           employeeName: {
-            $iRegexp: query.employeeName
+            [Op.iRegexp]: query.employeeName
           }
         }
       })

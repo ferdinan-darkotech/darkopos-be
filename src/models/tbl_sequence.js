@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         seqValue: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         initialChar: {
@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
         maxNumber: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         resetType: {

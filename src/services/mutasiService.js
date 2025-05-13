@@ -13,6 +13,7 @@ import {
 } from '../services/v1/errorHandlingService'
 import sequelize from '../native/sequelize'
 import { srvInsertApprovalMutasiOut } from './v2/monitoring/srvApproval'
+import { Op } from 'sequelize'
 
 const transferIn = db.tbl_transfer_in
 const tbl_sequence = db.tbl_sequence
@@ -86,7 +87,7 @@ export function transExistsInForCancel (transNo, storeId) {
 export function getInData (start, end, query) {
   if (start && end) {
     query["transDate"] = {
-      $between: [start, end]
+      [Op.between]: [start, end]
     }
   }
   return vwTransferIn.findAll({
@@ -182,7 +183,7 @@ export function transExistsOutStatus (id) {
 export function getOutData (start, end, query) {
   if (start && end) {
     query["transDate"] = {
-      $between: [start, end]
+      [Op.between]: [start, end]
     }
   }
   return vwTransferOut.findAll({

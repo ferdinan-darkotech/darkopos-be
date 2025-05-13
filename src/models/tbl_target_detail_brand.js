@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     month: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     targetSales: {

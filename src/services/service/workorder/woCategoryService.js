@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../../models'
 import dbv from '../../../models/view'
 import sequelize from '../../../native/sequelize'
@@ -32,7 +33,7 @@ export function getDataCode (id) {
     where: {
       productCategoryId: id,
       deletedBy: {
-        $eq: null
+        [Op.eq]: null
       }
     },
     raw: false
@@ -64,7 +65,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -81,9 +82,9 @@ export function countData (query) {
   if (querying.length > 0) {
     return view.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
     })
@@ -92,7 +93,7 @@ export function countData (query) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       }
     })
@@ -122,9 +123,9 @@ export function getData (query, pagination) {
     return view.findAll({
       attributes: Fields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,
@@ -137,7 +138,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,

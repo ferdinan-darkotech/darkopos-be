@@ -40,7 +40,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     year: {
-      type: DataTypes.INTEGER(4),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     chassisNo: {

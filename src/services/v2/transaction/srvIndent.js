@@ -7,6 +7,7 @@ import { getNativeQuery } from '../../../native/nativeUtils'
 import { setDefaultQuery } from '../../../utils/setQuery'
 import { getStoreQuery } from '../../../services/setting/storeService'
 import { srvInsertApprovalReturIndent } from '../monitoring/srvApproval'
+import { Op } from 'sequelize'
 
 
 const tbIndent = db.tbl_indent
@@ -214,7 +215,7 @@ export function srvGetIndentByMember ({ membercode }) {
     attributes: attrIndent,
     where: {
       membercode,
-      status: { $or: [{ $not: 'D' }, { $not: 'C' }] },
+      status: { [Op.or]: [{ [Op.not]: 'D' }, { [Op.not]: 'C' }] },
     },
     raw: true
   })
@@ -281,7 +282,7 @@ export function srvGetOneStockIndent (storeid = null, transno = null) {
 export function srvGetStockIndentDetail (storeid = null, transno = null, mode = 'bf', qtyExists = false) {
   return vwIndentDetail.findAll({
     attributes: attrIndentDetail[mode],
-    where: { storeid, transno, ...(qtyExists ? { currqty: { $gt: 0 } } : {}) },
+    where: { storeid, transno, ...(qtyExists ? { currqty: { [Op.gt]: 0 } } : {}) },
     raw: true
   })
 }

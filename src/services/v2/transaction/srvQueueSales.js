@@ -8,6 +8,7 @@ import { setDefaultQuery } from '../../../utils/setQuery'
 import { getStoreQuery } from '../../../services/setting/storeService'
 import { srvInsertTrackCustomerTrans, srvInsertQueueActivity } from './srvTrackSales'
 import { insertData as insertDataWo } from '../../service/workorder/woMainService'
+import { Op } from 'sequelize'
 
 const tblQueueSales = db.tbl_tmp_pos
 const tblQueueSalesDetail = db.tbl_tmp_pos_detail
@@ -264,7 +265,7 @@ export function srvGetVoidWO (query, storelist) {
 	let queryDefault = setDefaultQuery(cancelQueueAttr, tmpQuery, true)
 	queryDefault.where = {
 		...queryDefault.where,
-		storeid: { $in: storelist.split(',') }
+		storeid: { [Op.in]: storelist.split(',') }
 	}
 
 	
@@ -292,7 +293,7 @@ export function srvGetHistoryWO (query, storelist) {
 	
 	queryDefault.where = {
 		...queryDefault.where,
-		storeid: { $in: storelist.split(',') }
+		storeid: { [Op.in]: storelist.split(',') }
 	}
 
 	
@@ -323,7 +324,7 @@ export async function srvGetListQueueApproval (query, userid, noClause = false) 
 	
 	queryDefault.where = {
 		...queryDefault.where,
-		...(noClause ? {} : { storecode: { $in: listAccessStore } })
+		...(noClause ? {} : { storecode: { [Op.in]: listAccessStore } })
 	}
 	return vwQueueApproval.findAll({
 		attributes: queueApproval,
@@ -361,7 +362,7 @@ export function srvGetOneQueueById (headerid) {
 export function srvGetSomeMainQueueById (_headerid) {
 	return vwQueueList.findAll({
 		attributes: attrQueueList,
-		where: { headerid: { $in: _headerid } },
+		where: { headerid: { [Op.in]: _headerid } },
 		raw: false
 	})
 }
@@ -377,7 +378,7 @@ export function srvGetDataQueue (storeid, headerid, mode = null) {
 export function srvGetSomeDetailQueueById (_headerid) {
 	return vwQueueSales.findAll({
 		attributes: queueSalesAttr.mf,
-		where: { headerid: { $in: _headerid } },
+		where: { headerid: { [Op.in]: _headerid } },
 		raw: false
 	})
 }
@@ -386,7 +387,7 @@ export function srvGetAllDataQueue (storeid = '', type = 'findAll') {
 	if (type === 'findAll') {
 		return vwMonitSPK.findAndCountAll({
 			attributes: ['storeid', 'storecode','storename','listqueue'],
-			where: { storeid: { $in: storeid.split(',') } },
+			where: { storeid: { [Op.in]: storeid.split(',') } },
 			raw: true
 		})
 	} else if (type === 'findOne') {
@@ -535,7 +536,7 @@ export function srvUpdateApprovalQueueProduct (_FILTER, _DATA, user) {
 	const newFilter = _FILTER.map(x => ({ product: x.product, headerid: x.headerid }))
 	return tblQueueSalesDetail.update(
 		{ appby: user, appdt: moment(), appmemo, appstatus, appdata: false },
-		{ where: { $or: newFilter  } }
+		{ where: { [Op.or]: newFilter  } }
 	)
 } 
 

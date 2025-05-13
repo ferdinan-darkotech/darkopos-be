@@ -36,11 +36,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     memberGroupId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     memberTypeId: {
-      type: DataTypes.INTEGER(10),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     idType: {

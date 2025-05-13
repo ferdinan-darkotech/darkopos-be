@@ -5,6 +5,7 @@ import sequelize from '../../native/sequelize'
 import { getSelectOrder } from '../../native/nativeUtils'
 import { setDefaultQuery } from '../../utils/setQuery'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 let CashierUser = db.tbl_user_cashier
 let vwCashierUser = dbv.vw_user_cashier
@@ -54,7 +55,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -71,7 +72,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return vwCashierUser.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -117,7 +118,7 @@ export function srvGetUserCashiers (query, pagination) {
     return vwCashierUser.findAll({
       attributes: Fields,
       where: {
-        $or: querying
+        [Op.or]: querying
       },
       order: order ? sequelize.literal(order) : null,
       limit: parseInt(pageSize || 10, 10),
@@ -229,7 +230,7 @@ export function srvGetUserCashierPeriodByStore (params, query, pagination) {
   if (query.hasOwnProperty('period')) {
     whereCondition = {
       ...whereCondition,
-      period: { $between: query.period }
+      period: { [Op.between]: query.period }
     }
   }
 
@@ -256,7 +257,7 @@ export function srvGetUserCashierPeriodByStoreStatus (params, query, pagination,
   if (query.hasOwnProperty('period')) {
     whereCondition = {
       ...whereCondition,
-      period: { $between: query.period }
+      period: { [Op.between]: query.period }
     }
   }
   if (mode === 'all') {

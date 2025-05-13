@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import dbv from '../../models/view'
 import sequelize from '../../native/sequelize'
 
@@ -154,7 +155,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   let querying = []
@@ -171,9 +172,9 @@ export function countData (query) {
   if (querying.length > 0) {
     return view001.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         ...other
       },
@@ -183,7 +184,7 @@ export function countData (query) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       }
     })
@@ -196,7 +197,7 @@ export function getData (query, pagination) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   const { pageSize, page } = pagination
@@ -215,9 +216,9 @@ export function getData (query, pagination) {
     return view001.findAll({
       attributes: Fields,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         ...other
       },
@@ -231,7 +232,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         }
       },
       order: order ? sequelize.literal(order) : null,
@@ -247,7 +248,7 @@ export function countDataView3 (query) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   let querying = []
@@ -264,7 +265,7 @@ export function countDataView3 (query) {
   if (querying.length > 0) {
     return view003.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
     })
@@ -283,7 +284,7 @@ export function getDataView3 (query, pagination) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   const { pageSize, page } = pagination
@@ -302,7 +303,7 @@ export function getDataView3 (query, pagination) {
     return view003.findAll({
       attributes: Fields3,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
       order: order ? sequelize.literal(order) : null,
@@ -326,9 +327,9 @@ export function countDataView4 (query) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { $between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
   let querying = []
@@ -345,7 +346,7 @@ export function countDataView4 (query) {
   if (querying.length > 0) {
     return view004.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
     })
@@ -362,9 +363,9 @@ export function getDataView4 (query, pagination) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { $between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
-      other[key] = { $iRegexp: other[key] }
+      other[key] = { [Op.iRegexp]: other[key] }
     }
   }
 
@@ -384,7 +385,7 @@ export function getDataView4 (query, pagination) {
     return view004.findAll({
       attributes: Fields4,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         ...other
       },
       order: order ? sequelize.literal(order) : null,

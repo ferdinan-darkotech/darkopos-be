@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         productId: {
-            type: DataTypes.INTEGER(15),
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         productCode: {
@@ -142,7 +142,7 @@ module.exports = function (sequelize, DataTypes) {
         appdt: { type: DataTypes.DATE, allowNull: true },
 
         // [NEW]: FERDINAN - 2025-03-25
-        salestype: { type: DataTypes.STRING },
+        salestype: { type: DataTypes.STRING(1) },
         additionalpricenominal: { type: DataTypes.INTEGER },
         additionalpricepercent: { type: DataTypes.INTEGER },
         additionalpriceroundingdigit: { type: DataTypes.INTEGER },

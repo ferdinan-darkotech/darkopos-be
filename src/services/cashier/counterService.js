@@ -5,6 +5,7 @@ import { isEmpty } from '../../utils/check'
 import sequelize from '../../native/sequelize'
 import { getSelectOrder } from '../../native/nativeUtils'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 let CashierCounter = db.tbl_cashier_counter
 // let vwStockBrand = dbv.vw_stock_brand
@@ -66,7 +67,7 @@ export function countData (query) {
     if (key === 'createdAt' || key === 'updatedAt') {
       query[key] = { between: query[key] }
     } else if (type !== 'all' && query['q']) {
-      query[key] = { $iRegexp: query[key] }
+      query[key] = { [Op.iRegexp]: query[key] }
     }
   }
   let querying = []
@@ -83,7 +84,7 @@ export function countData (query) {
   if (querying.length > 0) {
     return CashierCounter.count({
       where: {
-        $or: querying
+        [Op.or]: querying
       },
     })
   } else {
@@ -98,7 +99,7 @@ export function countData (query) {
 export function srvGetCounters (query, pagination) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { $between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   const { pageSize, page, order } = pagination
@@ -115,10 +116,10 @@ export function srvGetCounters (query, pagination) {
         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
       ],
       where: {
-        $or: [
+        [Op.or]: [
           {
             counterName: {
-              $iRegexp: query.counterName,
+              [Op.iRegexp]: query.counterName,
             }
           }
         ]

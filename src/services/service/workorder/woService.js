@@ -5,6 +5,7 @@ import sequelize from '../../../native/sequelize'
 import { ApiError } from '../../../services/v1/errorHandlingService'
 import { getNativeQuery } from '../../../native/nativeUtils'
 import moment from 'moment'
+import { Op } from 'sequelize'
 
 const table = db.tbl_wo
 const tableWoDetail = db.tbl_wo_detail
@@ -141,12 +142,12 @@ export function getMinutesCreatedForMember (data) {
   return table.findOne({
     where: {
       createdAt: {
-        $gte: sequelize.literal(`now() - interval '5 minute'`)
+        [Op.gte]: sequelize.literal(`now() - interval '5 minute'`)
       },
       memberId: data.memberId,
       policeNoId: data.policeNoId,
       deletedBy: {
-        $eq: null
+        [Op.eq]: null
       }
     },
     raw: false
@@ -210,7 +211,7 @@ export function countData (query) {
       other[key] = { between: other[key] }
     } else if (type !== 'all' && query['q']) {
       if(query['q'] !== 'storeId') {
-        query[key] = { $iRegexp: query[key] }
+        query[key] = { [Op.iRegexp]: query[key] }
       } else {
         query[key] = query['q']
       }
@@ -236,9 +237,9 @@ export function countData (query) {
   if (querying.length > 0) {
     return view001.count({
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store
       },
@@ -248,7 +249,7 @@ export function countData (query) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store
       }
@@ -285,9 +286,9 @@ export function getData (query, pagination) {
     return view001.findAll({
       attributes: Fields,
       where: {
-        $or: [ querying ],
+        [Op.or]: [ querying ],
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store
       },
@@ -301,7 +302,7 @@ export function getData (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store
       },
@@ -332,7 +333,7 @@ export function getDataMainWo (query, pagination) {
         id === 'chassisNo' || id === 'machineNo'
       )) {
         let obj = {}
-        obj[id] = { $iRegexp: query['q'] }
+        obj[id] = { [Op.iRegexp]: query['q'] }
         querying.push(obj)
       }
     }
@@ -343,9 +344,9 @@ export function getDataMainWo (query, pagination) {
     return vwWO.findAndCountAll({
       // attributes: attrMainWo,
       where: {
-        $or: querying,
+        [Op.or]: querying,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store,
         ...(query.wo_status ? { wo_status: query.wo_status } : {})
@@ -360,7 +361,7 @@ export function getDataMainWo (query, pagination) {
       where: {
         ...other,
         deletedBy: {
-          $eq: null
+          [Op.eq]: null
         },
         storeId: store,
         ...(query.wo_status ? { wo_status: query.wo_status } : {})
@@ -377,9 +378,9 @@ export function getDataMainWo (query, pagination) {
   //   return vwMainWO.findAndCountAll({
   //     attributes: attrMainWo,
   //     where: {
-  //       $or: querying,
+  //       [Op.or]: querying,
   //       deletedBy: {
-  //         $eq: null
+  //         [Op.eq]: null
   //       },
   //       storeId: store
   //     },
@@ -393,7 +394,7 @@ export function getDataMainWo (query, pagination) {
   //     where: {
   //       ...other,
   //       deletedBy: {
-  //         $eq: null
+  //         [Op.eq]: null
   //       },
   //       storeId: store
   //     },

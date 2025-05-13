@@ -23,7 +23,7 @@ module.exports = function (sequelize, DataTypes) {
       // }
     },
     paymentTempo: {
-      type: DataTypes.INTEGER(5)
+      type: DataTypes.INTEGER
     },
     address01: {
       type: DataTypes.STRING(50),
@@ -36,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(50)
     },
     // cityId: {
-    //   type: DataTypes.INTEGER(10),
+    //   type: DataTypes.INTEGER,
     //   allowNull: false,
     // },
     kelid: {

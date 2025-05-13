@@ -5,6 +5,7 @@ import {
   dataExists, dataExistsCode
 } from '../../services/master/paymentMasterOptionService'
 import { extractTokenProfile } from '../../services/v1/securityService'
+import { Op } from 'sequelize'
 
 // Retrieve list a row
 exports.getDataId = function (req, res, next) {
@@ -29,7 +30,7 @@ exports.getData = function (req, res, next) {
   }
   if (isnull) {
     other[isnull] = {
-      $eq: null
+      [Op.eq]: null
     }
   }
   countData(other).then((count) => {

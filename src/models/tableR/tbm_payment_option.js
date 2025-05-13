@@ -19,11 +19,11 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     paymentTypeId: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     providerId: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     status: {

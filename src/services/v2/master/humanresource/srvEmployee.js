@@ -10,7 +10,7 @@ import { srvGetCityByCode } from '../general/srvCity'
 import { srvGetJobRoleByCode } from '../humanresource/srvJobRole'
 import { getNativeQuery } from '../../../../native/nativeUtils'
 import moment from 'moment'
-import sequelize from 'sequelize'
+import sequelize, { Op as OpSequelize } from 'sequelize'
 
 const table = tb.tbl_employee
 const view = vw.vw_employee
@@ -74,7 +74,7 @@ export function srvGetEmployeeForReports () {
 export async function srvGetEmployees (query, filter = false) {
   let { pageSize, page, order, q, store, activeOnly, ...other } = query
   let sort = (order) ? getSelectOrder(order) : null
-  let where = { deletedAt: { [Op.eq]: null } } // let where = { status:1 }
+  let where = { deletedAt: { [OpSequelize.eq]: null } } // let where = { status:1 }
   const { m, ...condition } = other
 
   
@@ -109,14 +109,14 @@ export async function srvGetEmployees (query, filter = false) {
   if((activeOnly || false).toString() === 'true') {
     where = [
       ...where,
-      { status: { $eq: true } }
+      { status: { [OpSequelize.eq]: true } }
     ]
   }
 
   return view.findAndCountAll({
     attributes,
     where: {
-      $and: [
+      [OpSequelize.and]: [
         ...where,
         (store ? {'': sequelize.literal(`jsonb_extract_path(storelistid, ${store}::text) is not null`)} : {})
       ],
@@ -130,7 +130,7 @@ export async function srvGetEmployees (query, filter = false) {
 export async function srvGetEmployeeByEmpId (empId, query = {}) {
   let { pageSize, page, order, q, ...other } = query
   let attributes = minFields02
-  let where = { employeeId: empId, deletedAt: { [Op.eq]: null } }
+  let where = { employeeId: empId, deletedAt: { [OpSequelize.eq]: null } }
   const modeField = switchModeField(other)
 
   switch (modeField) {
@@ -153,7 +153,7 @@ export async function srvGetEmployeeByEmpId (empId, query = {}) {
 export function srvGetSomeEmployeeByEId (empId) {
   return table.findAll({
     attributes: [...idField,...minFields01],
-    where: { employeeId: { $in: empId } },
+    where: { employeeId: { [OpSequelize.in]: empId } },
     raw: false
   })
 }
@@ -238,7 +238,7 @@ export async function srvUpdateEmployee (data, updatedBy, next) {
   }, {
     where: {
       employeeId: data.empId,
-      deletedAt: { [Op.eq]: null }
+      deletedAt: { [OpSequelize.eq]: null }
     }
   })
 

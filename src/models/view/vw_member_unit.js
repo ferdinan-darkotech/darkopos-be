@@ -3,7 +3,7 @@
 module.exports = function (sequelize, DataTypes) {
   var vwMemberUnit = sequelize.define("vw_member_unit", {
     id: {
-      type: DataTypes.INTEGER(11)
+      type: DataTypes.INTEGER
     },
     memberCode: {
       type: DataTypes.STRING(16),
@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     typeid: { type: DataTypes.INTEGER },
     active: { type: DataTypes.BOOLEAN },
     year: {
-      type: DataTypes.INTEGER(4),
+      type: DataTypes.INTEGER,
     },
     chassisNo: {
       type: DataTypes.STRING(20),

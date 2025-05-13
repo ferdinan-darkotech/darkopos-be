@@ -2,6 +2,7 @@ import { ApiError } from '../../services/v1/errorHandlingService'
 import {
   getData, getHeaderData, countHeaderData,
 } from '../../services/Report/bundlingReportService'
+import { Op } from 'sequelize'
 
 // Retrieve list of getDataReportPos
 // mengembalikan product detail dari pos Bundling saja (inner join)
@@ -14,12 +15,12 @@ exports.getDataReportPos = function (req, res, next) {
   }
   if (from && to) {
     other.transDate = {
-      $gte: from,
-      $lte: to
+      [Op.gte]: from,
+      [Op.lte]: to
     }
   }
   other.bundlingId = {
-    $ne: null
+    [Op.ne]: null
   }
   countHeaderData(other).then((count) => {
     return getHeaderData(other, pagination).then((data) => {

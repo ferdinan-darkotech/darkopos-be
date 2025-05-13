@@ -92,11 +92,11 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         printNo: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         tempo: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         dueDate: {
