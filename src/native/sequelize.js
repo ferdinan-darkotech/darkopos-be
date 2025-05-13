@@ -22,11 +22,7 @@ const sequelize = new Sequelize(project.db_name, project.db_user, project.db_pwd
     },
     quoteIdentifiers: false,
     timezone: '+07:00',
-    logging: (msg) => {
-      if (process.env.DEBUG === 'true') {
-        console.log(`[Sequelize] ${msg}`);
-      }
-    },
+    logging: JSON.parse(project.db_logging),
     camelCase: true,
     pool: {
       max: 100,

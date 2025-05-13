@@ -168,6 +168,9 @@ import { LogProcessRequest } from './v2/logs'
 // [NEW]: FERDINAN - 2025-03-06
 import requestStockOutRouter from './v2/transaction/rtrRequestStockOut'
 
+// [MECHANIC TOOLS]: FERDINAN - 2025-05-13
+import mechanicRouter from './v2/master/humanresource/rtrMechanicTools'
+
 /// v2
 
 const routes = (app) => {
@@ -431,6 +434,9 @@ const routes = (app) => {
 
   // [NEW]: FERDINAN - 2025-03-06
   app.use(requestStockOutRouter)
+
+  // [MECHANIC TOOLS]: FERDINAN - 2025-05-13
+  app.use(mechanicRouter)
 }
 
 export default routes
