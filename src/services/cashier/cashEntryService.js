@@ -63,7 +63,7 @@ export function countData (query) {
   // })
   for (let key in query) {
     if (key === 'createdAt' || key === 'updatedAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     } else if (type !== 'all') {
       query[key] = { [Op.iRegexp]: query[key] }
     }

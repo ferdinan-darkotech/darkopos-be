@@ -26,7 +26,7 @@ export function getCityById (cityId) {
 export function getCitiesData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key]={between: query[key]}
+      query[key]={[Op.between]: query[key]}
     }
   }
   if (query.userName) {

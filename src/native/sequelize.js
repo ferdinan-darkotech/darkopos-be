@@ -22,6 +22,7 @@ const sequelize = new Sequelize(project.db_name, project.db_user, project.db_pwd
     },
     quoteIdentifiers: false,
     timezone: '+07:00',
+    operatorsAliases: false,
     logging: JSON.parse(project.db_logging),
     camelCase: true,
     pool: {

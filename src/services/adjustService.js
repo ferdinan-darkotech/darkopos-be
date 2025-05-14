@@ -8,6 +8,7 @@ import { srvInsertApprovalAdjustment } from '../services/v2/monitoring/srvApprov
 import { getStockMinusAlert } from './Report/fifoReportService'
 import { getSequenceFormatByCode } from './sequenceService'
 import { calculateTax } from '../utils/operate/objOpr'
+import { Op } from 'sequelize'
 
 const vwAdjust = dbv.vw_adjust
 const Adjust = db.tbl_adjust
@@ -56,9 +57,9 @@ export function getAdjustByCustomeCondition (condition = {}) {
 export function getAdjustData (query) {
     for (let key in query) {
         if (key === 'createdAt') {
-            query[key] = { between: query[key] }
+            query[key] = { [Op.between]: query[key] }
         } else if (key === 'transDate') {
-            query[key] = { between: query[key] }
+            query[key] = { [Op.between]: query[key] }
         }
     }
     if (query) {
@@ -83,7 +84,7 @@ export function getAdjustData (query) {
 export function getAdjustDetail (query) {
     for (let key in query) {
         if (key === 'createdAt') {
-            query[key] = { between: query[key] }
+            query[key] = { [Op.between]: query[key] }
         }
     }
     if (query) {

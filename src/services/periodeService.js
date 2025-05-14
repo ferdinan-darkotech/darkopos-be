@@ -14,7 +14,7 @@ const periodField = ['id', 'storeCode', 'storeName', 'storeId', 'transNo', 'star
 export function getPeriodLastCode (query) {
     for (let key in query) {
         if (key === 'createdAt') {
-            query[key] = { between: query[key] }
+            query[key] = { [sequelize.Op.between]: query[key] }
         }
     }
     return Period.findAll({
@@ -57,7 +57,7 @@ export function getOnePeriodActive (storeId) {
 export function getPeriodData (query) {
     for (let key in query) {
         if (key === 'createdAt') {
-            query[key] = { between: query[key] }
+            query[key] = { [sequelize.Op.between]: query[key] }
         }
     }
     return vwPeriod.findAll({

@@ -36,7 +36,7 @@ exports.srvGetTargetDetail = function (req) {
     attributes: fullAttributesDetail,
     where: {
       storeCode,
-      startDate: { '$between': date }
+      startDate: { [sequelize.Op.between]: date }
     },
     order: ['startDate', 'endDate'],
     raw: false

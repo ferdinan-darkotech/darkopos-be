@@ -153,7 +153,7 @@ export function countData (query) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -195,7 +195,7 @@ export function getData (query, pagination) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -246,7 +246,7 @@ export function countDataView3 (query) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -282,7 +282,7 @@ export function getDataView3 (query, pagination) {
   const { type, field, order, q, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }

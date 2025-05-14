@@ -35,7 +35,7 @@ export function countData (query) {
     const { type, field, order, q, ...other } = query
     for (let key in query) {
         if (key === 'createdAt' || key === 'updatedAt' || key === 'transDate') {
-            query[key] = { between: query[key] }
+            query[key] = { [Op.between]: query[key] }
         } else if (type !== 'all' && query['q'] && key !== 'order' && key !== 'storeId' && key !== 'active') {
             query[key] = { [Op.iRegexp]: query[key] }
         }

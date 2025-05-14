@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models/tableR'
 import { ApiError} from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
@@ -30,7 +31,7 @@ export function getPositionsData (query) {
   console.log('getPositionsData', query)
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key]={between: query[key]}
+      query[key]={[Op.between]: query[key]}
     }
   }
   if (!isEmpty(query)) {

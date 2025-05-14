@@ -86,7 +86,7 @@ export function setDefaultQueryNoSQL (attributes = [], query = {}, pagings) {
       tmpWhere = { [attr]: { [Op.in]: [...trueStatus, ...falseStatus] } }
     } else {
       const newVal = (others[tmpItem] || '').replace(/(\(|\{|\[).*/g, '')
-      tmpWhere = { [attr]: { $regex: new RegExp(`${newVal}`, 'i') } }
+      tmpWhere = { [attr]: { [Op.regexp]: new RegExp(`${newVal}`, 'i') } }
     }
 
     if(attributes.indexOf(attr) !== -1) {

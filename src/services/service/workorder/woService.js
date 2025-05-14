@@ -208,7 +208,7 @@ export function countData (query) {
   const { type, field, order, q, store, ...other } = query
   for (let key in query) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       if(query['q'] !== 'storeId') {
         query[key] = { [Op.iRegexp]: query[key] }
@@ -261,7 +261,7 @@ export function getData (query, pagination) {
   const { type, field, order, q, store, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     }
   }
 
@@ -292,7 +292,7 @@ export function getData (query, pagination) {
         },
         storeId: store
       },
-      order: [['createdAt']],
+      order: [['createdAt', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
       offset: parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10)
     })
@@ -306,7 +306,7 @@ export function getData (query, pagination) {
         },
         storeId: store
       },
-      order: order ? sequelize.literal(order) : null,
+      order: order ? sequelize.literal(order) : [['createdAt', 'DESC']],
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
       offset: type !== 'all' ? parseInt(page - 1 || 0, 0) * parseInt(pageSize || 10, 10) : null
     })
@@ -318,7 +318,7 @@ export function getDataMainWo (query, pagination) {
   const { type, field, order, q, store, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     }
   }
 

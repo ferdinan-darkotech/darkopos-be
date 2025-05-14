@@ -89,7 +89,7 @@ export function getPurchaseDetailData (q) {
     }
     for (let key in query) {
         if (key === 'transDate') {
-            query[key] = { between: query[key] }
+            query[key] = { [Op.between]: query[key] }
         } else if (key === 'storeId') query[key] = +query[key]
     }
 

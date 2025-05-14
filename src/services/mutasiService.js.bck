@@ -86,7 +86,7 @@ export function transExistsInForCancel (transNo, storeId) {
 export function getInData (start, end, query) {
   if (start && end) {
     query["transDate"] = {
-      $between: [start, end]
+      [Op.between]: [start, end]
     }
   }
   return vwTransferIn.findAll({
@@ -181,7 +181,7 @@ export function transExistsOutStatus (id) {
 export function getOutData (start, end, query) {
   if (start && end) {
     query["transDate"] = {
-      $between: [start, end]
+      [Op.between]: [start, end]
     }
   }
   return vwTransferOut.findAll({

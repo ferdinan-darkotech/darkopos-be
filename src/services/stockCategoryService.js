@@ -27,7 +27,7 @@ export function getStockCategoryByCode (stockCategoryCode) {
 export function getStockCategoriesData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   if (!isEmpty(query)) {

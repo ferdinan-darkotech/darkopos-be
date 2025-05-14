@@ -59,7 +59,7 @@ export function getUserByEmail (email) {
 export function getUsersData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   if (query) {

@@ -144,7 +144,7 @@ export function countData (query) {
   const { type, field, order, q, storeId, from, to, year, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -180,7 +180,7 @@ export function countDataBrand (query) {
   const { type, field, order, q, storeId, from, to, year, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -216,7 +216,7 @@ export function getData (query, pagination) {
   const { type, field, order, q, storeId, from, to, year, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }
@@ -263,7 +263,7 @@ export function getDataBrand (query, pagination) {
   const { type, field, order, q, storeId, from, to, year, ...other } = query
   for (let key in other) {
     if (key === 'createdAt' || key === 'updatedAt' || key === 'timeIn' || key === 'timeOut' || key === 'transDate' || key === 'woDate') {
-      other[key] = { between: other[key] }
+      other[key] = { [Op.between]: other[key] }
     } else if (type !== 'all' && query['q']) {
       other[key] = { [Op.iRegexp]: other[key] }
     }

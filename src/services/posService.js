@@ -79,7 +79,7 @@ export function getPosData (query) {
   const end = query.endPeriod
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   const { startPeriod, endPeriod, storeId, field, period, type, ...other } = query

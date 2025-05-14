@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../../models/tableR'
 import dbv from '../../models/view'
 import { ApiError } from '../../services/v1/errorHandlingService'
@@ -20,7 +21,7 @@ export function getMemberTypeByCode (memberTypeCode) {
 export function getMemberTypesData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   if (query) {

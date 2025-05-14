@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import db from '../models'
 import { ApiError } from '../services/v1/errorHandlingService'
 import { isEmpty } from '../utils/check'
@@ -28,7 +29,7 @@ export function getSettingByCode (key) {
 export function getSettingData (query) {
   for (let key in query) {
     if (key === 'updatedAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   if (query) {

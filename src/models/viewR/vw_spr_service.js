@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
         serviceName: { type: DataTypes.STRING(50) },
         cost: { type: DataTypes.DECIMAL(19, 2) },
         serviceCost: { type: DataTypes.DECIMAL(19, 2) },
-        serviceTypeId: { type: DataTypes.STRING(6) },
+        serviceTypeId: { type: DataTypes.STRING(10) },
         reminder_in_day: { type: DataTypes.INTEGER },
         reminder_in_km: { type: DataTypes.FLOAT },
         active: { type: DataTypes.BOOLEAN },

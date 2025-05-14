@@ -166,12 +166,12 @@ app.use(customErrorHandler);
 //   res.xstatus(200).render('index', {title: 'Blacklist'});
 // });
 
-var crypto = require('crypto')
-var cipher = crypto.createCipher('aes-128-cbc', project.db_name)
-var text = "uncle had a little farm"
-var crypted = cipher.update(text, 'utf8', 'hex')
-crypted += cipher.final('hex')
-//now crypted contains the hex representation of the ciphertext
-console.log('crypted', crypted)
+// var crypto = require('crypto')
+// var cipher = crypto.createCipher('aes-128-cbc', project.db_name)
+// var text = "uncle had a little farm"
+// var crypted = cipher.update(text, 'utf8', 'hex')
+// crypted += cipher.final('hex')
+// //now crypted contains the hex representation of the ciphertext
+// console.log('crypted', crypted)
 
 export default app

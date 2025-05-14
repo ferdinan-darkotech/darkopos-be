@@ -91,7 +91,7 @@ export function getMiscByCodeName (miscCode, miscName) {
 export function getMiscsData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key]={between: query[key]}
+      query[key]={[Op.between]: query[key]}
     }
   }
   if (query) {

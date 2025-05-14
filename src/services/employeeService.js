@@ -37,7 +37,7 @@ export function getEmployeesData (query) {
   if (query) {
     for (let key in query) {
       if (key === 'createdAt') {
-        query[key] = { between: query[key] }
+        query[key] = { [Op.between]: query[key] }
       }
     }
     if (query.hasOwnProperty('id')) {

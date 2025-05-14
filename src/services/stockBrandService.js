@@ -20,7 +20,7 @@ export function getBrandByCode (brandCode) {
 export function getBrandsData (query) {
   for (let key in query) {
     if (key === 'createdAt') {
-      query[key] = { between: query[key] }
+      query[key] = { [Op.between]: query[key] }
     }
   }
   if (query.brandName) {
