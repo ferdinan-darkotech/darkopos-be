@@ -17,12 +17,8 @@ export const fetchMechanics = async (query) => {
         attributes: mechanicsAttr,
         where: {
           [Op.and]: [
-            {
-                positionname: 'MECHANIC',
-                positioncode: 'MECH'
-            },
             {'': sequelize.literal(`jsonb_extract_path(storelistid, ${query.store}::text) is not null`)}
-          ],
+          ]
         },
         order: [['id', 'desc']],
         raw: false
@@ -39,18 +35,31 @@ export const addNewToolOnMechanic = async (payload, user) => {
   return await tblMechanicTool.create(body)
 }
 
-export const fetchMechanicToolsByEmployeeCode = async (employeecode, query) => {
-  return await vwMechanicTool.findAll({
+export const fetchMechanicToolsByEmployeeCode = async (employeecode, query, pagination) => {
+  const { pageSize, page } = pagination
+
+  return await vwMechanicTool.findAndCountAll({
     where: {
       ...(query.q ? { 
         [Op.or]: [
           { toolname: { [Op.iLike]: `%${query.q || ''}%` } },
-          { noreference: { [Op.iLike]: `%${query.q || ''}%` } },
+          { unit: { [Op.iLike]: `%${query.q || ''}%` } },
           { description: { [Op.iLike]: `%${query.q || ''}%` } },
           { employeename: { [Op.iLike]: `%${query.q || ''}%` } },
           { createdby: { [Op.iLike]: `%${query.q || ''}%` } }
         ]
       }: {}),
+      employeecode
+    },
+    limit: parseInt(pageSize || 6),
+    offset: (parseInt(page || 1) - 1) * parseInt(pageSize || 6),
+    order: [['createdat', 'desc']]
+  })
+}
+
+export const fetchAllMechanicToolsByEmployeeCode = async (employeecode) => {
+  return await vwMechanicTool.findAll({
+    where: {
       employeecode
     },
     order: [['createdat', 'desc']]
@@ -65,7 +74,7 @@ export const fetchMechanicTools = async (query, pagination) => {
       ...(query.q ? { 
         [Op.or]: [
           { toolname: { [Op.iLike]: `%${query.q || ''}%` } },
-          { noreference: { [Op.iLike]: `%${query.q || ''}%` } },
+          { unit: { [Op.iLike]: `%${query.q || ''}%` } },
           { description: { [Op.iLike]: `%${query.q || ''}%` } },
           { employeename: { [Op.iLike]: `%${query.q || ''}%` } },
           { createdby: { [Op.iLike]: `%${query.q || ''}%` } }
@@ -79,13 +88,19 @@ export const fetchMechanicTools = async (query, pagination) => {
   })
 }
 
+export const fetchAllMechanicTools = async (storecode) => {
+  return await vwMechanicTool.findAll({
+    where: { storecode },
+    order: [['toolname', 'asc']]
+  })
+}
+
 export const fetchOneMechanicTool = async (id) => {
   return await tblMechanicTool.findOne({ where: { id }, raw: true })
 }
 
 export const addSoftRemoveMechanicTool = async (mechanictoolid, payload, user) => {
   const mechanictool = await fetchOneMechanicTool(mechanictoolid)
-  console.log('mechanictool >>> ', mechanictool)
   const { id, ...rest } = mechanictool
   const body = {
     ...rest,

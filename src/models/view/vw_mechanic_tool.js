@@ -27,13 +27,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    noreference: {
-      type: DataTypes.STRING,
-      allowNull: true
+    qty: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
-    referencedate: {
-      type: DataTypes.DATE,
-      allowNull: true
+    unit: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     description: {
       type: DataTypes.STRING,

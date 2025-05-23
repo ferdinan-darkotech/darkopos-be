@@ -1,5 +1,5 @@
 const { ApiError } = require("../../../../services/v1/errorHandlingService")
-const { fetchMechanics, addNewToolOnMechanic, addSoftRemoveMechanicTool, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
+const { fetchMechanics, addNewToolOnMechanic, addSoftRemoveMechanicTool, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
 
 const getMechanics = async function (req, res, next, comment = 'getMechanics') {
     console.log('Requesting-' + comment + ': ' + req.url + ' ...')
@@ -32,7 +32,30 @@ const getMechanicToolsByEmployeeCode = async function (req, res, next, comment =
   
   const employeecode = req.params.employeecode
 
-  return fetchMechanicToolsByEmployeeCode(employeecode, req.query).then((tools) => {
+  const { pageSize, page, ...other } = req.query
+  const pagination = {
+    pageSize: parseInt(pageSize || 6),
+    page: parseInt(page || 1),
+  }
+
+  return fetchMechanicToolsByEmployeeCode(employeecode, other, pagination).then((tools) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      pageSize: pagination.pageSize,
+      page: pagination.page,
+      total: tools.count,
+      data: JSON.parse(JSON.stringify(tools.rows))
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00003: Couldn't find tools on this mechanic`, err)))
+}
+
+const printMechanicToolsByEmployeeCode = async function (req, res, next, comment = 'printMechanicToolsByEmployeeCode') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+  
+  const employeecode = req.params.employeecode
+
+  return fetchAllMechanicToolsByEmployeeCode(employeecode).then((tools) => {
     res.xstatus(200).json({
       success: true,
       message: 'Ok',
@@ -59,7 +82,20 @@ const getMechanicTools = async function (req, res, next, comment = 'getMechanicT
       total: tools.count,
       data: JSON.parse(JSON.stringify(tools.rows))
     })
-  }).catch(err => next(new ApiError(422, `ZCEP-00003: Couldn't find tools on this mechanic`, err)))
+  }).catch(err => next(new ApiError(422, `ZCEP-00007: Couldn't find tools on this mechanic`, err)))
+}
+
+const printMechanicTools = async function (req, res, next, comment = 'printMechanicTools') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+  const storecode = req.query.storecode
+
+  return fetchAllMechanicTools(storecode).then((tools) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: tools
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00006: Couldn't find tools on this mechanic`, err)))
 }
 
 const deleteMechanicTool = async function (req, res, next, comment = 'deleteMechanicTools') {
@@ -90,5 +126,7 @@ module.exports = {
   createMechanicTool,
   getMechanicToolsByEmployeeCode,
   deleteMechanicTool,
-  getMechanicTools
+  getMechanicTools,
+  printMechanicTools,
+  printMechanicToolsByEmployeeCode
 }
