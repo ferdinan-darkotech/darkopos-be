@@ -37,6 +37,16 @@ module.exports = function (sequelize, DataTypes) {
 
         // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
         transnopurchase: { type: DataTypes.STRING },
+
+        // [HPP VALIDATION]: FERDINAN - 2025-05-22
+        hppperiod: {
+          type: DataTypes.STRING,
+          allowNull: true
+        },
+        hppprice: {
+          type: DataTypes.INTEGER,
+          allowNull: true
+        },
     }, { tableName: 'vw_pos_detail' })
 
     return Pos_Detail

@@ -100,7 +100,11 @@ const mappingCreateDetail = (x, info) => ({
 	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
 
 	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
-	transnopurchase: x.transnopurchase || null
+	transnopurchase: x.transnopurchase || null,
+
+	// [HPP VALIDATION]: FERDINAN - 2025-05-22
+	hppperiod: x.hppperiod || '',
+	hppprice: x.hppprice || 0
 })
 /* --------------- LOCAL FUNCTION  ---------------- */ 
 
@@ -189,7 +193,11 @@ async function srvUpdateQueueSalesDetail (data, info, transaction) {
 			additionalpriceroundingdigit: data[x].additionalpriceroundingdigit || 0,
 
 			// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
-			transnopurchase: data[x].transnopurchase || null
+			transnopurchase: data[x].transnopurchase || null,
+			
+			// [HPP VALIDATION]: FERDINAN - 2025-05-22
+			hppperiod: data[x].hppperiod || '',
+			hppprice: data[x].hppprice || 0
 		}
 		if(data[x].action === 'edit') {
 			await tblQueueSalesDetail.update(
@@ -574,4 +582,11 @@ export async function srvSetConfirmMechanics (queueID, mechanicCode, confirmID, 
 	} catch (er) {
 		throw er
 	}
+}
+
+// [HPP VALIDATION]: FERDINAN - 20250522
+export async function srvValidationHPP (productcode, storecode) {
+    const sSql = `select * from sch_pos.get_current_hpp('${productcode}', '${storecode}') val;`
+    const result = await getNativeQuery(sSql, true, 'RAW', null)
+    return result
 }

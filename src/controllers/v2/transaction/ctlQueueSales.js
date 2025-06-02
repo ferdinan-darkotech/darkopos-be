@@ -1,7 +1,8 @@
 import {
   srvInsertQueueSales, srvUpdateQueueSales, srvGetListQueueByStore, srvGetDataQueue, srvDestroyByCondition,
 	srvGetListQueueApproval, srvUpdateApprovalQueueProduct, srvGetApprovalExists, srvGetAllDataQueue,
-	srvValidationSales, srvGetHistoryWO, srvGetVoidWO, srvGetOneQueueById
+	srvValidationSales, srvGetHistoryWO, srvGetVoidWO, srvGetOneQueueById,
+	srvValidationHPP
 } from '../../../services/v2/transaction/srvQueueSales'
 import { ApiError } from '../../../services/v1/errorHandlingService'
 import { srvGetFormSPK } from '../../../services/v2/transaction/srvSpkForm'
@@ -67,7 +68,11 @@ const remapProduct = x => ({
 	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
 
 	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
-	transnopurchase: x.transnopurchase || null
+	transnopurchase: x.transnopurchase || null,
+
+	// [HPP VALIDATION]: FERDINAN - 2025-05-23
+	hppperiod: x.hppperiod || '',
+	hppprice: x.hppprice || 0
 })
 
 const remapService = x => ({
@@ -114,7 +119,11 @@ const remapService = x => ({
 	additionalpriceroundingdigit: x.additionalpriceroundingdigit || 0,
 
 	// [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
-	transnopurchase: x.transnopurchase || null
+	transnopurchase: x.transnopurchase || null,
+
+	// [HPP VALIDATION]: FERDINAN - 2025-05-23
+	hppperiod: x.hppperiod,
+	hppprice: x.hppprice,
 })
 
 
@@ -621,4 +630,20 @@ export function ctlSetLocationCustomers (req, res, next) {
 			})
 		}).catch(err => next(new ApiError(422, `ZQSL-00007: Couldn't resend confirmation order`, err)))
 	}).catch(err => next(new ApiError(422, `ZQSL-00007: Couldn't resend confirmation order`, err)))
+}
+
+
+// [HPP VALIDATION]: FERDINAN  - 20250522
+export function ctlValidationHPP (req, res, next) {
+	console.log('Requesting-ctlValidationHPP: ' + req.url + ' ...')
+	const { productcode, storecode } = req.body
+
+	return srvValidationHPP(productcode, storecode).then(result => {
+		console.log("result >>> ", result)
+
+		res.xstatus(200).json({
+			success: true,
+			data: result[0][0] || {}
+		})
+	}).catch(err => next(new ApiError(422, `ZQSL-00008: Couldn't check validation of transaction`, err)))
 }

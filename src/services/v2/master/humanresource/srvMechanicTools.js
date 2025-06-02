@@ -3,6 +3,7 @@ import sequelize, { Op } from 'sequelize'
 import vw from '../../../../models/view'
 import tbl from '../../../../models/tableR'
 import moment from 'moment'
+import { getNativeQuery } from '../../../../native/nativeUtils'
 
 const vwMember = vw.vw_employee
 const vwMechanicTool = vw.vw_mechanic_tool
@@ -99,20 +100,23 @@ export const fetchOneMechanicTool = async (id) => {
   return await tblMechanicTool.findOne({ where: { id }, raw: true })
 }
 
-export const addSoftRemoveMechanicTool = async (mechanictoolid, payload, user) => {
-  const mechanictool = await fetchOneMechanicTool(mechanictoolid)
-  const { id, ...rest } = mechanictool
-  const body = {
-    ...rest,
-    ...payload,
-    mechanictoolid: Number(mechanictoolid),
-    deletedat: moment(),
-    deletedby: user
-  }
+// export const addSoftRemoveMechanicTool = async (mechanictoolid, payload, user) => {
+//   const mechanictool = await fetchOneMechanicTool(mechanictoolid)
+//   const { id, ...rest } = mechanictool
+//   const body = {
+//     ...rest,
+//     ...payload,
+//     mechanictoolid: Number(mechanictoolid),
+//     deletedat: moment(),
+//     deletedby: user
+//   }
 
-  return await tblMechanicToolLog.create(body)
+//   return await tblMechanicToolLog.create(body)
+// }
+
+export const updateSoftRemoveMechanicTool = async (mechanictoolid, employeecode, payload) => {
+  return await tblMechanicToolLog.update(payload, { where: { mechanictoolid, employeecode } })
 }
-
 
 export const removeMechanicTool = async (id, employeecode) => {
   return await tblMechanicTool.destroy({ where: { id, employeecode } })

@@ -113,7 +113,11 @@ export function reArrangedPosDetail (sequence, pos, posDetail, createdBy, detail
         additionalpriceroundingdigit: dataPosDetail.additionalpriceroundingdigit || 0,
 
         // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
-        transnopurchase: dataPosDetail.transnopurchase || null
+        transnopurchase: dataPosDetail.transnopurchase || null,
+
+        // [HPP VALIDATION]: FERDINAN - 2025-05-23
+        hppperiod: dataPosDetail.hppperiod || '',
+        hppprice: dataPosDetail.hppprice || 0
       }
   })
 }

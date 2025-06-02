@@ -124,6 +124,16 @@ module.exports = function (sequelize, DataTypes) {
 
         // [EXTERNAL SERVICE]: FERDINAN - 2025-04-22
         transnopurchase: { type: DataTypes.STRING, allowNull: true },
+
+        // [HPP VALIDATION]: FERDINAN - 2025-05-22
+        hppperiod: {
+          type: DataTypes.STRING,
+          allowNull: true
+        },
+        hppprice: {
+          type: DataTypes.INTEGER,
+          allowNull: true
+        },
     }, {
             tableName: 'tbl_tmp_pos_detail'
         })

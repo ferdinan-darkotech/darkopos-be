@@ -11,7 +11,8 @@ from '../../controllers/posController'
 import {
   ctlGetListQueue, ctlInsertQueueSales, ctlUpdateQueueSales, ctlGetDataQueue, ctlDeleteQueue,
   ctlGetListQueueApproval, ctlUpdateApprovalQueueProduct, ctlValidationSales, ctlGetHistoryWO,
-  ctlGetVoidWO, ctlResendConfirmationOrder, ctlDeletePendingWO, ctlSetLocationCustomers
+  ctlGetVoidWO, ctlResendConfirmationOrder, ctlDeletePendingWO, ctlSetLocationCustomers,
+  ctlValidationHPP
 } from '../../controllers/v2/transaction/ctlQueueSales'
 
 const router = express.Router()
@@ -33,7 +34,8 @@ const apiRouteQueue = [
   apiRoute2 + '/approval',
   apiRoute2 + '/validation-sales',
   apiRoute2 + '/history-wo',
-  apiRoute2 + '/cancel-queue'
+  apiRoute2 + '/cancel-queue',
+  apiRoute2 + '/validation/hpp'
 ]
 
 const apiRouteConfirm = [
@@ -55,6 +57,9 @@ router.post(apiRouteQueue[1], requireAuth, ctlInsertQueueSales)
 router.get(apiRouteQueue[2], requireAuth, ctlGetDataQueue)
 router.put(apiRouteQueue[2], requireAuth, ctlUpdateQueueSales)
 router.delete(apiRouteQueue[2], requireAuth, ctlDeleteQueue)
+
+// [HPP VALIDATION]: FERDINAN  - 20250522
+router.post(apiRouteQueue[7], requireAuth, ctlValidationHPP)
 // End Queue Sales
 
 
