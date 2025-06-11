@@ -28,10 +28,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: true
     },
-    // cityId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: false,
-    // },
+    cityId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     state: {
       type: DataTypes.STRING(30),
       allowNull: true
@@ -100,6 +100,12 @@ module.exports = function (sequelize, DataTypes) {
       validate: {
         is: /^[a-z0-9\_\-]{3,30}$/i
       }
+    },
+
+    // [STORE GET REGION]: FERDINAN - 2025-06-11
+    kode_kelurahan: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {
       tableName: 'tbl_store'

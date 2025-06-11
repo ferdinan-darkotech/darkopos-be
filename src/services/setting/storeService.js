@@ -364,6 +364,7 @@ export function srvGetStoreById (storeId, attributes = []) {
 
 
 export function srvCreateStore (store, createdBy, next) {
+  console.log("store >>> ", store)
   return Store.create({
     storeCode: store.code,
     storeName: store.name,
@@ -389,7 +390,10 @@ export function srvCreateStore (store, createdBy, next) {
     settingValue: JSON.stringify(store.settingValue),
     createdBy: createdBy,
     updatedBy: '---',
-    createdAt: moment()
+    createdAt: moment(),
+
+    // [STORE GET REGION]: FERDINAN - 2025-06-11
+    kode_kelurahan: store.kode_kelurahan
   }).catch(err => {
     const errObj = JSON.parse(JSON.stringify(err))
     const { parent, original, sql, ...other } = errObj
@@ -422,7 +426,10 @@ export function srvUpdateStore (storeId, store, updateBy, next) {
     cashierCounter: store.cashierCounter,
     settingValue: JSON.stringify(store.settingValue), // 22
     updatedBy: updateBy,
-    updatedAt: moment()
+    updatedAt: moment(),
+
+    // [STORE GET REGION]: FERDINAN - 2025-06-11
+    kode_kelurahan: store.kode_kelurahan
   },
     { where: { id: +storeId } }
   ).catch(err => {

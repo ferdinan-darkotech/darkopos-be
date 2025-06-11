@@ -36,14 +36,22 @@ const mainFields = [
   'prov_nama', 'kab_nama', 'kec_nama', 'kel_nama', 'kel_id', 'active', 'verifications', 'npwp_address',
   'dept_id', 'dept_code', 'dept_name', 'branch_id', 'branch_name', 'verification_status', 'verif_request_at',
   'verif_approved_at', 
-  'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
+  'referralcode', // [ITCF MEMBER]: FERDINAN - 2025-04-21
+
+  // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+  'newtaxid',
+  'taxdigit'
 ]
 const mainViewFields = [
   'memberCode', 'memberName', 'address01', 'address02', 'cityName', 'state', 'zipCode',
   'mobileNumber', 'phoneNumber', 'idType', 'idNo', 'birthDate', 'gender', 'taxId', 'cashback',
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'verifications', 'npwp_address',
   'dept_code', 'dept_name', 'branch_name', 
-  'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
+  'referralcode', // [ITCF MEMBER]: FERDINAN - 2025-04-21
+
+  // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+  'newtaxid',
+  'taxdigit'
 ]
 
 const attrMemberVerify = [

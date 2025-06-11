@@ -17,12 +17,15 @@ const lovFields01 = [
 ]
 const minFields01 = [
   'cityCode',
-  'cityName'
+  'cityName',
+
+  // [STORE GET REGION]: FERDINAN - 2025-06-11
+  'id'
 ]
 const minFields02 = [
   'id',
   'cityCode',
-  'cityName'
+  'cityName',
 ]
 const minFields03 = [
   'cityCode',
