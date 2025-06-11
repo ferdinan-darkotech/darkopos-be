@@ -16,11 +16,15 @@ const attrStkOnHand = {
   "brandname", "qtystock", "qtypartition", "qtyonhand", "costprice", "costpricelocal", "costpriceglobal",
   "sellprice", "sellpricelocal", "sellpriceglobal", "distprice01", "distprice01local", "distprice01global",
   "distprice02", "distprice02local", "distprice02global", "categoryid", "categorycode", "categoryname", "max_disc",
-  "max_disc_nominal","barcode01","curr_hpp", 'use_warranty', "valid_warranty_km", "valid_warranty_period", "shelf"
+  "max_disc_nominal","barcode01","curr_hpp", 'use_warranty', "valid_warranty_km", "valid_warranty_period", "shelf",
+  // [QTY BOOKED]: FERDINAN - 2025-06-02
+  'qty_booked'
   ],
   bf: [
     "productcode", "productname","barcode01","brandname","qtyonhand","costprice","sellprice","distprice01",
-    "distprice02","max_disc","max_disc_nominal","curr_hpp", "shelf"
+    "distprice02","max_disc","max_disc_nominal","curr_hpp", "shelf",
+    // [QTY BOOKED]: FERDINAN - 2025-06-02
+    'qty_booked'
   ],
   lov: ["productcode", "costprice"],
   existsStock: [

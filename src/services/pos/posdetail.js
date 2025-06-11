@@ -53,7 +53,7 @@ export function reArrangedPosDetail (sequence, pos, posDetail, createdBy, detail
       let newPpn = dataPosDetail.PPN
       const newPrice = calculate_tax({
         product: dataPosDetail.productCode,
-        price: dataPosDetail.sellingPrice + (dataPosDetail.additionalpricenominal || 0), // [NEW]: FERDINAN - 2025-03-26
+        price: dataPosDetail.sellingPrice, // [NEW]: FERDINAN - 2025-03-26
         qty: dataPosDetail.qty,
         disc1: dataPosDetail.disc1,
         disc2: dataPosDetail.disc2,

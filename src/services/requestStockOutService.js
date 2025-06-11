@@ -210,3 +210,13 @@ export const changeStatusCancel = async (transactionnumber, body, user) => {
         return { success: false, message: error.message, data: {} }
     }
 }
+
+// [DELETE RSO WHEN QUEUE IS DELETED]: FERDINAN - 2025-06-03
+export const removeRequestStockOutByQueue = async (queuenumber) => {
+    try {
+        await tblRequestStockOut.destroy({ where: { queuenumber, status: 'N' } })
+        return { success: true, message: 'Request Stock Out deleted successfully' }
+    } catch (error) {
+        return { success: false, message: error.message, data: {} }
+    }
+}

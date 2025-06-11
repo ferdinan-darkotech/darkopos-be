@@ -3,7 +3,8 @@ import project from '../../../config/project.config'
 import { ApiError } from '../../services/v1/errorHandlingService'
 import {
   setServiceInfo, getServiceByCode, serviceExists, countData, getServicesData,
-  createService, updateService, deleteService, deleteServices
+  createService, updateService, deleteService, deleteServices,
+  getServiceByCodeAndStore
 }
   from '../../services/service/serviceService'
 
@@ -157,3 +158,15 @@ exports.deleteServices = function (req, res, next) {
 //     })
 //   }).catch(err => next(new ApiError(501, `Couldn't find Service ${serviceCode}.`, err)))
 // }
+exports.getServiceByCodeStore = function (req, res, next) {
+  console.log('Requesting-getService: ' + req.url + ' ...')
+  const servicecode = req.params.code
+  const storecode = req.params.storecode
+  getServiceByCodeAndStore(servicecode, storecode).then((service) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: service
+    })
+  }).catch(err => next(new ApiError(422, err + ` - Couldn't find Service ${servicecode}.`, err)))
+}

@@ -167,6 +167,16 @@ module.exports = function (sequelize, DataTypes) {
     referralcode: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+
+    // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+    newtaxid: {
+      type: DataTypes.STRING(16),
+      allowNull: true
+    },
+    taxdigit: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
       tableName: 'tbl_member'

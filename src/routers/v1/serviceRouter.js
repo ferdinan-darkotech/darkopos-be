@@ -1,7 +1,7 @@
 import express from 'express'
 import project from '../../../config/project.config'
 import { requireAuth } from '../../services/v1/usersService'
-import { getService, getServices, insertService, updateService, deleteService, deleteServices }
+import { getService, getServices, insertService, updateService, deleteService, deleteServices, getServiceByCodeStore }
   from '../../controllers/service/serviceController'
 import { getServiceChecks, getServiceChecksUsage }
   from '../../controllers/service/checkController'
@@ -13,12 +13,14 @@ const apiRouter = [
   apiRoute,
   apiRoute + '/:id',
   apiRoute + '/checks',
-  apiRoute + '/checks/usage'
+  apiRoute + '/checks/usage',
+  apiRoute + '/:code/store/:storecode'
 ]
 
 // OTHER //
 router.get(apiRouter[2], requireAuth, getServiceChecks)
 router.get(apiRouter[3], requireAuth, getServiceChecksUsage)
+router.get(apiRouter[4], requireAuth, getServiceByCodeStore)
 // OTHER //
 
 // MAIN //

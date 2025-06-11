@@ -3,7 +3,7 @@ import project from '../../config/project.config'
 import { ApiError } from '../services/v1/errorHandlingService'
 import {
   setPosDetailInfo, getPosDetailByCode, getPosDetailTableByCode, getPosDetailData, getPosReportData,
-  createPosDetail, updatePosDetail, deletePosDetail
+  createPosDetail, updatePosDetail, deletePosDetail, fetchPosDetailByDateRange
 }
   from '../services/posDetailService'
 import { extractTokenProfile } from '../services/v1/securityService'
@@ -101,4 +101,20 @@ exports.deletePosDetail = function (req, res, next) {
       next(new ApiError(422, `Couldn't delete Data ${id}.`))
     }
   }).catch(err => next(new ApiError(500, `Couldn't delete Data ${id}.`, err)))
+}
+
+// [GENERATE XML POS]: FERDINAN - 2025-06-09
+exports.getPosDetailByDateRange = function (req, res, next) {
+  console.log('Requesting-getPosDetailByDateRange: ' + req.url + ' ...')
+  const { dateFrom, dateTo } = req.query
+  const storeId = req.params.storeId
+  const memberId = req.params.memberId
+
+  fetchPosDetailByDateRange({ dateFrom, dateTo, storeId, memberId }).then((PosDetail) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      pos: PosDetail
+    })
+  }).catch(err => next(new ApiError(422, err + ` - Couldn't find POS Detail ${dateFrom} - ${dateTo} - ${storeId}.`, err)))
 }

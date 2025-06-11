@@ -1,7 +1,7 @@
 import express from 'express'
 import project from '../../../config/project.config'
 import { requireAuth } from '../../services/v1/usersService'
-import { getPosDetail, getAllPosDetail, getAllPosReport, updatePosDetail, deletePosDetail }
+import { getPosDetail, getAllPosDetail, getAllPosReport, updatePosDetail, deletePosDetail, getPosDetailByDateRange }
   from '../../controllers/posDetailController'
 
 const router = express.Router()
@@ -12,6 +12,9 @@ const apiRouter = [
   apiRoute,
   apiRoute + '/:id',
   apiRouteReport,
+
+  // [GENERATE XML POS]: FERDINAN - 2025-06-09
+  apiRoute + '/store/:storeId/member/:memberId',
 ]
 
 // MAIN //
@@ -27,5 +30,7 @@ router.put(apiRouter[1], requireAuth, updatePosDetail)
 router.delete(apiRouter[1], requireAuth, deletePosDetail)
 
 // MAIN //
+// [GENERATE XML POS]: FERDINAN - 2025-06-09
+router.get(apiRouter[3], requireAuth, getPosDetailByDateRange)
 
 export default router

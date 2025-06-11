@@ -8,6 +8,9 @@ const PosDetail = db.tbl_pos_detail
 const PosDetailInfo = dbv.vw_pos_detail
 const PosReportDetail = dbv.vw_report_pos
 
+// [GENERATE XML POS]: FERDINAN - 2025-06-09
+const XmlPos = dbv.vw_xml_pos
+
 const posField = ['id', 'typeCode', 'transNo', 'bundlingId', 'bundlingCode', 'bundlingName', 'productId', 'serviceCode', 'serviceName', 'productCode', 'productName', 'qty',
     'sellPrice', 'sellingPrice', 'DPP', 'PPN', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3'
 ]
@@ -187,5 +190,19 @@ export function createPosDetail (transNo, posDetail, createdBy, next) {
         const errObj = JSON.parse(JSON.stringify(err))
         const { parent, original, sql, ...other } = errObj
         next(new ApiError(400, other, err))
+    })
+}
+
+// [GENERATE XML POS]: FERDINAN - 2025-06-09
+export async function fetchPosDetailByDateRange ({ dateFrom, dateTo, storeId, memberId }) {
+    return XmlPos.findAll({
+        // attributes: posField,
+        where: {
+            createdAt: {
+                [Op.between]: [dateFrom, dateTo]
+            },
+            storeId,
+            memberId
+        }
     })
 }

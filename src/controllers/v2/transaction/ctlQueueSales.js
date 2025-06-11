@@ -19,6 +19,7 @@ import { sendMessages } from '../../../services/v2/other/WA-Bot/srvWA'
 import { compareDiffObjects } from '../../../utils/mapping'
 import _socket from '../../../utils/socket'
 import moment from 'moment'
+import { removeRequestStockOutByQueue } from '../../../services/requestStockOutService'
 
 
 
@@ -508,10 +509,18 @@ export function ctlDeleteQueue (req, res, next) {
 		return srvDestroyByCondition({ storeid, headerid, users: userid, memo, woid: newExists.woid }, 'CANCEL').then(rs => {
 			if(!rs.success) throw new Error(rs.message)
 			else {
-				res.xstatus(200).json({
-					success: true,
-					message: rs.message,
-				})
+				// [DELETE RSO WHEN QUEUE IS DELETED]: FERDINAN - 2025-06-03
+				removeRequestStockOutByQueue(exists.queuenumber).then((response) => {
+					if (!response.success) throw new Error(response.message)
+					res.xstatus(200).json({
+						success: true,
+						message: rs.message,
+					})
+				}).catch(err => res.xstatus(400).json({
+					success: false,
+					message: `ZQSL-00003.4: Couldn't delete queue, Request Stock Out`,
+					detail: err.detail
+				}))
 			}
 		}).catch(err => res.xstatus(400).json({
 			success: false,
@@ -631,7 +640,6 @@ export function ctlSetLocationCustomers (req, res, next) {
 		}).catch(err => next(new ApiError(422, `ZQSL-00007: Couldn't resend confirmation order`, err)))
 	}).catch(err => next(new ApiError(422, `ZQSL-00007: Couldn't resend confirmation order`, err)))
 }
-
 
 // [HPP VALIDATION]: FERDINAN  - 20250522
 export function ctlValidationHPP (req, res, next) {

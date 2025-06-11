@@ -282,3 +282,17 @@ export function deleteServices (services) {
     return null
   }
 }
+
+export async function getServiceByCodeAndStore (serviceCode, storeCode) {
+  const currBranch = await srvGetStoreBranch(storeCode)
+
+  return vwService.findOne({
+    where: {
+      serviceCode: serviceCode,
+      reg_code: {
+        [Op.in]: [, currBranch.store_code, currBranch.parent_store_code]
+      }
+    },
+    raw: false
+  })
+}

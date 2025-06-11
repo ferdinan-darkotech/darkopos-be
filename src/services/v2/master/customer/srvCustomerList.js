@@ -35,13 +35,15 @@ const mainFields = [
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'membercategorycode', 'membercategoryname',
   'prov_nama', 'kab_nama', 'kec_nama', 'kel_nama', 'kel_id', 'active', 'verifications', 'npwp_address',
   'dept_id', 'dept_code', 'dept_name', 'branch_id', 'branch_name', 'verification_status', 'verif_request_at',
-  'verif_approved_at', 'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
+  'verif_approved_at', 
+  'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
 ]
 const mainViewFields = [
   'memberCode', 'memberName', 'address01', 'address02', 'cityName', 'state', 'zipCode',
   'mobileNumber', 'phoneNumber', 'idType', 'idNo', 'birthDate', 'gender', 'taxId', 'cashback',
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'verifications', 'npwp_address',
-  'dept_code', 'dept_name', 'branch_name', 'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
+  'dept_code', 'dept_name', 'branch_name', 
+  'referralcode' // [ITCF MEMBER]: FERDINAN - 2025-04-21
 ]
 
 const attrMemberVerify = [
@@ -301,7 +303,7 @@ export async function srvCreateCustomer (data, createdBy, next) {
       email: data.email,
       birthDate: data.birthDate,
       gender: data.gender,
-      taxId: data.taxId,
+      // taxId: data.taxId,
       active: data.active,
       verifications: (data.verifications || {}),
       createdBy: createdBy,
@@ -311,7 +313,12 @@ export async function srvCreateCustomer (data, createdBy, next) {
       verif_approved_at: data.verif_approved_at,
 
       // [ITCF MEMBER]: FERDINAN - 2025-04-21
-      referralcode: data.referralcode
+      referralcode: data.referralcode,
+
+      // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+      newtaxid: data.newtaxid,
+      taxdigit: data.taxdigit,
+      taxId: data.taxdigit === 15 ? data.newtaxid : data.taxId
     }, { transaction })
     await transaction.commit()
 
@@ -354,7 +361,7 @@ export async function srvUpdateCustomer (data, updatedBy, next) {
       email: data.email,
       birthDate: data.birthDate,
       gender: data.gender,
-      taxId: data.taxId,
+      // taxId: data.taxId,
       updatedBy: updatedBy,
       updatedAt: moment(),
       verification_status: data.verification_status,
@@ -362,7 +369,12 @@ export async function srvUpdateCustomer (data, updatedBy, next) {
       verif_approved_at: data.verif_approved_at,
 
       // [ITCF MEMBER]: FERDINAN - 2025-04-21
-      referralcode: data.referralcode
+      referralcode: data.referralcode,
+
+      // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+      newtaxid: data.newtaxid,
+      taxdigit: data.taxdigit,
+      taxId: data.taxdigit === 15 ? data.newtaxid : data.taxId
     }, {
       where: {
         memberCode: data.code

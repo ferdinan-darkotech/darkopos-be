@@ -33,5 +33,8 @@ module.exports = function (sequelize, DataTypes) {
     use_warranty: { type: DataTypes.BOOLEAN },
     valid_warranty_km: { type: DataTypes.NUMERIC },
     valid_warranty_period: { type: DataTypes.INTEGER },
+
+    // [QTY BOOKED]: FERDINAN - 2025-06-02
+    qty_booked: { type: DataTypes.INTEGER },
   }, { tableName: 'vw_stock_list', freezeTableName: true })
 }
