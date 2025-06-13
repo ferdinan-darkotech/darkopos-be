@@ -72,7 +72,11 @@ module.exports = function (sequelize, DataTypes) {
     npwp_address: { type: DataTypes.STRING },
 
     // [TGL JATUH TEMPO]: FERDINAN - 2025-05-09
-    topdate: { type: DataTypes.DATE }
+    topdate: { type: DataTypes.DATE },
+
+    // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+    newtaxid: { type: DataTypes.STRING },
+    taxdigit: { type: DataTypes.INTEGER }
   }, {tableName: 'vw_pos'})
   return Pos
 }

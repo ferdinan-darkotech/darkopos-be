@@ -10,7 +10,9 @@ const viewSaleHeadDay = dbv.vw_pos_report_day
 const idField = ['id']
 const viewSaleHeadMainFields = ['id', 'woId', 'storeId', 'cashierTransId', 'cashierName', 'transNo', 'woReference', 'technicianName', 'technicianId', 'memberId', 'memberCode', 'memberName', 'transDate', 'total', 'creditCardNo', 'creditCardType', 'creditCardCharge',
   'totalCreditCard', 'discount', 'rounding', 'paid', 'change', 'policeNo', 'policeNoId', 'year', 'merk', 'model', 'type', 'chassisNo', 'machineNo', 'lastMeter', 'discountLoyalty', 'lastCashback', 'gettingCashback', 'status', 'memo', 'paymentVia', 'taxType',
-  'address01', 'address02', 'mobileNumber', 'phoneNumber', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'no_tax_series', 'npwp_address', 'topdate' // [NEW]: FERDINAN - 2025-03-18
+  'address01', 'address02', 'mobileNumber', 'phoneNumber', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', 'no_tax_series', 'npwp_address',
+  'topdate', // [NEW]: FERDINAN - 2025-03-18
+  'newtaxid', 'taxdigit' // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
 ]
 const viewSaleHeadMinFields01 = ['transNo', 'transDate']
 

@@ -26,7 +26,11 @@ const minFields01 = [
   'memberCode',
   'memberName',
   'verifications',
-  'npwp_address'
+  'npwp_address',
+
+  // [16 DIGIT TAX ID]: FERDINAN - 2025-06-11
+  'newtaxid',
+  'taxdigit'
 ]
 const mainFields = [
   'id', 'memberCode', 'memberName', 'address01', 'address02', 'cityCode', 'cityName', 'email', 'state',
