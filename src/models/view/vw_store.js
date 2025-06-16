@@ -108,6 +108,12 @@ module.exports = function (sequelize, DataTypes) {
       validate: {
         is: /^[a-z0-9\_\-]{3,30}$/i
       }
+    },
+
+    // [STORE GET REGION]: FERDINAN - 2025-06-11
+    kode_kelurahan: {
+      type: DataTypes.STRING(10),
+      allowNull: true
     }
   }, {
       tableName: 'vw_store',

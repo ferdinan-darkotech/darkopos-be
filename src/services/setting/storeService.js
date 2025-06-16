@@ -16,7 +16,7 @@ const Fields = [
   'address02'
 ]
 
-const nativeField_store007 = `storeid as "id", storecode as "storeCode",storename as "storeName",storeparentid as "storeParentId",address01 as "address01",address02 as "address02",cityid as "cityId",state as "state",zipcode as "zipCode",mobilenumber as "mobileNumber",phonenumber as "phoneNumber",email as "email",initial as "initial",shortname as "shortName",companyname as "companyName",taxid as "taxID",taxconfirmdate as "taxConfirmDate",taxtype as "taxType",
+const nativeField_store007 = `kode_kelurahan as "kode_kelurahan",storeid as "id", storecode as "storeCode",storename as "storeName",storeparentid as "storeParentId",address01 as "address01",address02 as "address02",cityid as "cityId",state as "state",zipcode as "zipCode",mobilenumber as "mobileNumber",phonenumber as "phoneNumber",email as "email",initial as "initial",shortname as "shortName",companyname as "companyName",taxid as "taxID",taxconfirmdate as "taxConfirmDate",taxtype as "taxType",
 latitude as "latitude",longitude as "longitude", settingvalue as "settingValue", "icon_url", "website_url",
 createdby as "createdBy",createdat as "createdAt",updatedby as "updatedBy",updatedat as "updatedAt"`
 
@@ -364,7 +364,6 @@ export function srvGetStoreById (storeId, attributes = []) {
 
 
 export function srvCreateStore (store, createdBy, next) {
-  console.log("store >>> ", store)
   return Store.create({
     storeCode: store.code,
     storeName: store.name,

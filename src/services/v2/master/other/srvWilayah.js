@@ -1,9 +1,13 @@
 import dbv from '../../../../models/viewR'
+import dbv2 from '../../../../models/view'
 import { setDefaultQuery } from '../../../../utils/setQuery'
 
 import { getNativeQuery } from '../../../../native/nativeUtils' 
 
 const vwWilayah = dbv.mv_wilayah
+
+// [STORE GET REGION]: FERDINAN - 2025-06-11
+const vwStore = dbv2.vw_store
 
 const attrWilayah = ['prov_id', 'prov_kode', 'prov_nama', 'kab_id', 'kab_nama', 'ibukota',
 'kec_id', 'kec_nama', 'kel_id', 'kel_nama', 'pos_kode']
@@ -32,13 +36,30 @@ export async function srvGetRegion (query) {
   const response = await getNativeQuery(queryCount, true, 'SELECT')
   const rows = await getNativeQuery(querySelect, false, 'SELECT')
 
-  console.log({
-    count: response.count,
-    rows
-  })
-
   return {
     count: response.count,
     rows
   }
+}
+
+// [STORE GET REGION]: FERDINAN - 2025-06-11
+export async function srvGetRegionByKodeKelurahan (storeid) {
+  const store = await vwStore.findOne({
+    where: {
+      storeid: storeid
+    }
+  }, {
+    raw: true
+  })
+
+  if (!store) {
+    return {
+      success: false,
+      message: 'Store not found'
+    }
+  }
+  const kodeKelurahan = store.kode_kelurahan || ''
+  const query = `select * from sch_erp_system.mv_view_pos_wilayah where kode_kelurahan = '${kodeKelurahan}' limit 1;`
+  const response = await getNativeQuery(query, false, 'SELECT')
+  return response[0]
 }
