@@ -131,7 +131,13 @@ module.exports = function(sequelize, DataTypes) {
         is: /^[a-z0-9\_\-]{3,30}$/i
       }
     },
-    updatedAt: { type: DataTypes.DATE, allowNull: true }
+    updatedAt: { type: DataTypes.DATE, allowNull: true },
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
   }, {
     tableName: 'tbl_stock'
   }, {

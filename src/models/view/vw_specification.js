@@ -12,7 +12,12 @@ module.exports = function (sequelize, DataTypes) {
     updatedBy: { type: DataTypes.STRING },
     updatedAt: { type: DataTypes.DATE },
     deletedBy: { type: DataTypes.STRING },
-    deletedAt: { type: DataTypes.DATE }
+    deletedAt: { type: DataTypes.DATE },
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: { type: DataTypes.INTEGER },
+    groupCode: { type: DataTypes.STRING },
+    groupName: { type: DataTypes.STRING }
   }, { tableName: 'vw_specification' })
   return Specification
 }

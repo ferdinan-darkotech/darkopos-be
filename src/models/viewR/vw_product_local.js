@@ -46,7 +46,12 @@ module.exports = function (sequelize, DataTypes) {
     sellPriceLocal: { type: DataTypes.NUMERIC },
     sellPricePreLocal: { type: DataTypes.NUMERIC },
     distPrice01Local: { type: DataTypes.NUMERIC },
-    distPrice02Local: { type: DataTypes.NUMERIC }
+    distPrice02Local: { type: DataTypes.NUMERIC },
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: { type: DataTypes.INTEGER },
+    groupName: { type: DataTypes.STRING },
+    groupCode: { type: DataTypes.STRING }
   }, { tableName: 'vw_product_local' })
   return vwiProduct002
 }

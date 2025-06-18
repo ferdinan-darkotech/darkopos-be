@@ -60,7 +60,10 @@ const stockFields = ['id', 'variantId', 'productParentId', 'productCode', 'produ
   'sectionWidth', 'aspectRatio', 'rimDiameter',
   'brandId', 'brandName', 'categoryId', 'categoryName', 'trackQty', 'alertQty',
   'active', 'exception01', 'usageTimePeriod', 'usageMileage', 'productImage', 'dummyCode', 'dummyName',
-  'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'max_disc'
+  'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'max_disc',
+
+  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  'groupId', 'groupName', 'groupCode'
 ]
 
 const stockFieldsV2 = ['id', 'productCode', 'productName', 'barCode01', 'barCode02',
@@ -69,7 +72,10 @@ const stockFieldsV2 = ['id', 'productCode', 'productName', 'barCode01', 'barCode
   'sectionWidth', 'aspectRatio', 'rimDiameter',
   'brandId', 'brandName', 'categoryId', 'categoryName', 'trackQty', 'alertQty',
   'active', 'exception01', 'usageTimePeriod', 'usageMileage', 'productImage', 'dummyCode', 'dummyName',
-  'use_warranty', 'valid_warranty_km', 'valid_warranty_period', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
+  'use_warranty', 'valid_warranty_km', 'valid_warranty_period', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt',
+
+  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  'groupId', 'groupName', 'groupCode'
 ]
 
 const stockFieldsNormalize = ['id', 'productCode', 'productName',
@@ -555,7 +561,10 @@ export function createStockGlobal (stockcode, stock, createdBy, next, transactio
     valid_warranty_period: stock.valid_warranty_period,
     createdBy: createdBy,
     createdAt: moment(),
-    updatedBy: '---'
+    updatedBy: '---',
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: stock.groupId
   }, { transaction }).catch(err => {
     console.log(err)
     const errObj = JSON.parse(JSON.stringify(err))
@@ -653,7 +662,10 @@ export function updateStockGlobal(stockcode, stock, updateBy, next, localPrice) 
     dummyCode: stockcode,
     dummyName: stock.productName,
     updatedBy: updateBy,
-    updatedAt: moment()
+    updatedAt: moment(),
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: stock.groupId
   },
     { where: { productCode: stockcode } }
   ).catch(err => {

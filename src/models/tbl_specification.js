@@ -40,6 +40,12 @@ module.exports = function (sequelize, DataTypes) {
         is: /^[a-z0-9\_\-]{3,30}$/i
       }
     },
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
   }, {
       tableName: 'tbl_specification'
     })

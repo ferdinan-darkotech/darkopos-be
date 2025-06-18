@@ -17,7 +17,12 @@ const Fields = [
   'updatedBy',
   'updatedAt',
   'deletedBy',
-  'deletedAt'
+  'deletedAt',
+
+  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  'groupId',
+  'groupName',
+  'groupCode'
 ]
 
 export function getDataId (id) {
@@ -131,7 +136,8 @@ export function getData (query, pagination) {
         deletedBy: {
           [Op.eq]: null
         },
-        [Op.and]: other
+        // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+        ...(other.groupId ? { [Op.or]: other } : { [Op.and]: other })
       },
       order: [['createdAt']],
       limit: parseInt(pageSize || 10, 10),
@@ -141,7 +147,8 @@ export function getData (query, pagination) {
     return view.findAll({
       attributes: query.field ? query.field.split(',') : Fields,
       where: {
-        ...other,
+        // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+        ...(other.groupId ? { [Op.or]: other } : { ...other }),
         deletedBy: {
           [Op.eq]: null
         }
@@ -158,7 +165,10 @@ export function insertData (data, createdBy, next) {
     categoryId: data.categoryId,
     name: data.name,
     createdBy: createdBy,
-    updatedBy: '---'
+    updatedBy: '---',
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: data.groupId
   })
 }
 
@@ -166,7 +176,10 @@ export function updateData (id, data, updateBy) {
   return table.update({
     categoryId: data.categoryId,
     name: data.name,
-    updatedBy: updateBy
+    updatedBy: updateBy,
+
+    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    groupId: data.groupId
   },
     {
       where: {

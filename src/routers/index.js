@@ -140,7 +140,7 @@ import socialRouter from './v1/social/socialRouter'
 //temporary open
 
 import { saleReport, reportLists, reportIndents, reportCustomerTrans, customReport } from './v2/report'
-import { stocksBrand, stocksCategory, rolesDiscount, masterProductTradeIn, shelfs } from './v2/master/stocks'
+import { stocksBrand, stocksCategory, rolesDiscount, masterProductTradeIn, shelfs, stocksGroup } from './v2/master/stocks'
 import { salesTarget, salesRealization, followUpCustomerV2, bundlingV2, NPSV2 } from './v2/marketing'
 import { StocksV2, RequestOrder } from './v2/inventory'
 import { OSRequest, Approval, Warranty } from './v2/monitoring'
@@ -170,6 +170,9 @@ import requestStockOutRouter from './v2/transaction/rtrRequestStockOut'
 
 // [MECHANIC TOOLS]: FERDINAN - 2025-05-13
 import mechanicRouter from './v2/master/humanresource/rtrMechanicTools'
+
+// [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+import stockGroupRouter from './v1/product/stockGroupRouter'
 
 /// v2
 
@@ -437,6 +440,10 @@ const routes = (app) => {
 
   // [MECHANIC TOOLS]: FERDINAN - 2025-05-13
   app.use(mechanicRouter)
+
+  // [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+  app.use(stockGroupRouter)
+  app.use(stocksGroup)
 }
 
 export default routes
