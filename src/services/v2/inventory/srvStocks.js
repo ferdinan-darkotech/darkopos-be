@@ -11,6 +11,10 @@ const vStockList = dbvr.vw_stock_list
 const tbStock = db.tbl_stock 
 const Op = sequelize.Op
 
+// [HARGA PRODUCT BY PURCHASE PRICE]: FERDINAN - 2025-06-18
+const vStockListPurchasePrice = dbvr.vw_stock_list_purchase_price
+const vwStore = dbv.vw_store
+
 const attrStkOnHand = {
   mf: ["storeid", "storecode", "storename", "productid", "productcode", "productname", "brandid",
   "brandname", "qtystock", "qtypartition", "qtyonhand", "costprice", "costpricelocal", "costpriceglobal",
@@ -77,7 +81,7 @@ const restrictPrice = (p) => (
 )
 
 
-export function srvGetStockOnHand (query) {
+export async function srvGetStockOnHand (query) {
   const {  m, page, pageSize, type, existsqty, ...other } = query || {}
   let extendWhere = {}
   let limit = {}
@@ -94,6 +98,26 @@ export function srvGetStockOnHand (query) {
   let newClause = type === 'report' ? { storeid: query.store } :
     { [Op.and]: [ { storeid: query.store }, { ...extendWhere, active: 1 } ]  }
   newClause = { ...newClause, ...((existsqty || false).toString() === 'true' ? { qtyonhand: { [Op.gt]: 0 } } : {}) }
+
+  // [HARGA PRODUCT BY PURCHASE PRICE]: FERDINAN - 2025-06-18
+  const store = await vwStore.findOne({
+    attributes: ['settingValue'],
+    where: { storeid: `${query.store}` },
+    raw: true
+  })
+
+  const setting = store.settingvalue || {}
+  const isPurchasePrice = setting.productpurchaseprice && setting.productpurchaseprice.active
+
+  if (isPurchasePrice) {
+    return vStockListPurchasePrice.findAndCountAll({
+      attributes: newAttr,
+      where: newClause,
+      raw: true,
+      ...limit
+    })
+  }
+
   return vStockList.findAndCountAll({
     attributes: newAttr,
     where: newClause,
