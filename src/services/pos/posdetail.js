@@ -117,7 +117,10 @@ export function reArrangedPosDetail (sequence, pos, posDetail, createdBy, detail
 
         // [HPP VALIDATION]: FERDINAN - 2025-05-23
         hppperiod: dataPosDetail.hppperiod || '',
-        hppprice: dataPosDetail.hppprice || 0
+        hppprice: dataPosDetail.hppprice || 0,
+
+        // [NO BAN]: FERDINAN - 2025-06-20
+        noreference: dataPosDetail.noreference || null
       }
   })
 }

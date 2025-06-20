@@ -37,5 +37,8 @@ module.exports = function (sequelize, DataTypes) {
 
     // [QTY BOOKED]: FERDINAN - 2025-06-02
     qty_booked: { type: DataTypes.INTEGER },
+
+    // [NO BAN]: FERDINAN - 2025-06-20
+    isNoReferenceRequired: { type: DataTypes.BOOLEAN },
   }, { tableName: 'vw_stock_list_purchase_price', freezeTableName: true })
 }

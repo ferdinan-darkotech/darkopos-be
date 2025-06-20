@@ -104,7 +104,10 @@ const mappingCreateDetail = (x, info) => ({
 
 	// [HPP VALIDATION]: FERDINAN - 2025-05-22
 	hppperiod: x.hppperiod || '',
-	hppprice: x.hppprice || 0
+	hppprice: x.hppprice || 0,
+
+	// [NO BAN]: FERDINAN - 2025-06-20
+	noreference: x.noreference || null
 })
 /* --------------- LOCAL FUNCTION  ---------------- */ 
 
@@ -197,7 +200,10 @@ async function srvUpdateQueueSalesDetail (data, info, transaction) {
 			
 			// [HPP VALIDATION]: FERDINAN - 2025-05-22
 			hppperiod: data[x].hppperiod || '',
-			hppprice: data[x].hppprice || 0
+			hppprice: data[x].hppprice || 0,
+
+			// [NO BAN]: FERDINAN - 2025-06-20
+			noreference: data[x].noreference || null
 		}
 		if(data[x].action === 'edit') {
 			await tblQueueSalesDetail.update(

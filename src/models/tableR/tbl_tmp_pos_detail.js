@@ -134,6 +134,9 @@ module.exports = function (sequelize, DataTypes) {
           type: DataTypes.INTEGER,
           allowNull: true
         },
+
+        // [NO BAN]: FERDINAN - 2025-06-20
+        noreference: { type: DataTypes.STRING, allowNull: true }
     }, {
             tableName: 'tbl_tmp_pos_detail'
         })

@@ -73,7 +73,10 @@ const remapProduct = x => ({
 
 	// [HPP VALIDATION]: FERDINAN - 2025-05-23
 	hppperiod: x.hppperiod || '',
-	hppprice: x.hppprice || 0
+	hppprice: x.hppprice || 0,
+
+	// [NO BAN]: FERDINAN - 2025-06-20
+	noreference: x.noreference || null
 })
 
 const remapService = x => ({
@@ -125,6 +128,9 @@ const remapService = x => ({
 	// [HPP VALIDATION]: FERDINAN - 2025-05-23
 	hppperiod: x.hppperiod,
 	hppprice: x.hppprice,
+
+	// [NO BAN]: FERDINAN - 2025-06-20
+	noreference: x.noreference || null
 })
 
 
