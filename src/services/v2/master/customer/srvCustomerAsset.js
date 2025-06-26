@@ -257,7 +257,10 @@ export async function srvUpdateCustomerAsset (data, updatedBy, mode = '', next) 
     taxId: data.taxId,
     active: data.active,
     updatedBy: (mode === '') ? updatedBy : null,
-    updatedAt: moment()
+    updatedAt: moment(),
+
+    // [ENABLED EDIT POLICE NO]: FERDINAN - 2025/06/26
+    ...(data.editPoliceNoEnabled ? { policeNo: data.policeNo } : {})
   }
 
   if (mode === 'delete') updatedColumns = { deletedBy: updatedBy }
@@ -266,7 +269,9 @@ export async function srvUpdateCustomerAsset (data, updatedBy, mode = '', next) 
   return table.update(updatedColumns, {
     where: {
       memberId: member.id,
-      policeNo: data.policeNo
+      // policeNo: data.policeNo
+      // [ENABLED EDIT POLICE NO]: FERDINAN - 2025/06/26
+      policeNo: data.editPoliceNoEnabled ? data.id : data.policeNo
     }
   }).catch(err => {
     const { parent, original, sql, ...other } = JSON.parse(JSON.stringify(err))
@@ -318,5 +323,46 @@ export async function srvGetCustomerByAsset (params, query = {}, mode = '') {
     where,
     ...limitQuery,
     raw: false
+  })
+}
+
+// [ENABLED EDIT POLICE NO]: FERDINAN - 2025/06/26
+export async function srvGetCustomerAssetByIdEnabledEdit (params, query = {}, mode = '') {
+  let { id } = params
+  let { pageSize, page, order, q, activeOnly, ...other } = query
+  let attributes = minViewFields01
+  const activeStatus = (activeOnly || '').toString() === 'true' ? { active: { [OpSequelize.eq]: true } } : {}
+
+  let where = { id, deletedAt: { [OpSequelize.eq]: null }, ...activeStatus }
+  if (mode === 'undelete') where.deletedAt =  { [OpSequelize.ne]: null }
+
+  const modeField = switchModeField(other)
+
+  switch (modeField) {
+    case 'main': attributes = mainFields; break
+    case 'brow': attributes = mainViewFields; break
+    case 'min': attributes = minViewFields01; break
+    case 'getid': attributes = idField; break
+    default: attributes = minViewFields01
+  }
+
+  // if sdel = show deleted row
+  if (modeField === 'sdel') delete where.deletedAt
+
+  return view.findOne({
+    attributes,
+    where,
+    raw: false
+  })
+}
+
+export async function srvCustomerAssetExistById (params, mode = '') {
+  return srvGetCustomerAssetByIdEnabledEdit(params, {}, mode).then(data => {
+    if (data == null) {
+      return false
+    }
+    else {
+      return true
+    }
   })
 }

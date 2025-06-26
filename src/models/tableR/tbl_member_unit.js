@@ -14,9 +14,9 @@ module.exports = function (sequelize, DataTypes) {
     policeNo: {
       type: DataTypes.STRING(15),
       allowNull: false,
-      validate: {
-        is: /^[a-z0-9\_\-]{3,15}$/i
-      }
+      // validate: {
+      //   is: /^[a-z0-9\_\-]{3,15}$/i
+      // }
     },
     merk: {
       type: DataTypes.STRING(30),

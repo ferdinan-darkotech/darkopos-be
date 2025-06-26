@@ -4,7 +4,8 @@ import { ApiError } from '../../../../services/v1/errorHandlingService'
 //   from '../../../../services/v2/master/customer/srvCustomerList'
 import { srvGetCustomerAssets, srvGetCustomerAssetById, srvGetCustomerAssetByNo,
   srvCustomerAssetExist, srvGetCustomerByAsset, srvCreateCustomerAsset, srvUpdateCustomerAsset, srvDeleteCustomerAsset,
-  srvGetAsset, srvGetAssetByPoliceNo
+  srvGetAsset, srvGetAssetByPoliceNo,
+  srvCustomerAssetExistById
  }
   from '../../../../services/v2/master/customer/srvCustomerAsset'
 import { getStoreQuery } from '../../../../services/setting/storeService'
@@ -136,17 +137,34 @@ const updateCustomerAsset = function (req, res, next, mode = '', comment = 'upda
   let data = req.body
   const { code: memberCode, no: policeNo } = req.params
   data.memberCode = memberCode
-  data.policeNo = policeNo
+  data.policeNo = req.body.editPoliceNoEnabled ? req.body.policeNo : policeNo
   const info = policeNo + ' - ' + memberCode
   const userLogIn = extractTokenProfile(req)
 
-  srvCustomerAssetExist(req.params, mode).then(exists => {
-    if (exists) {
-      updateCustomerAssetMain(req, res, next, data, userLogIn, mode, info)
-    } else {
-      next(new ApiError(422, `ZCCA-00009: Couldn't find Customer Asset ${info} .`))
-    }
-  }).catch(err => next(new ApiError(422, `ZCCA-00010: Couldn't find Customer Asset ${info} .`, err)))
+  // [ENABLED EDIT POLICE NO]: FERDINAN - 2025/06/26
+  if (req.body.editPoliceNoEnabled) {
+    srvCustomerAssetExistById({ id: req.body.memberUnitId }, mode).then(exists => {
+      srvCustomerAssetExist({ no: req.body.policeNo, code: memberCode }, mode).then(response => {
+        if (response) {
+          return next(new ApiError(409, `Police No ${req.body.policeNo} already exists.`))
+        }
+      })
+
+      if (exists) {
+        updateCustomerAssetMain(req, res, next, data, userLogIn, mode, info)
+      } else {
+        next(new ApiError(422, `ZCCA-00009: Customer Asset already exists.`))
+      }
+    }).catch(err => next(new ApiError(409, `ZCCA-00010: Couldn't find Customer Asset ${info} .`)))
+  } else {
+    srvCustomerAssetExist(req.params, mode).then(exists => {
+      if (exists) {
+        updateCustomerAssetMain(req, res, next, data, userLogIn, mode, info)
+      } else {
+        next(new ApiError(422, `ZCCA-00009: Couldn't find Customer Asset ${info} .`))
+      }
+    }).catch(err => next(new ApiError(422, `ZCCA-00010: Couldn't find Customer Asset ${info} .`, err)))
+  }
 }
 
 // Update General Customer Asset
