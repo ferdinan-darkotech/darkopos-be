@@ -236,7 +236,10 @@ export async function updateService (serviceID, regID, service, updatedBy, next,
       serviceName: service.serviceName,
       serviceTypeId: service.serviceTypeId,
       updatedBy: updatedBy,
-      updatedAt: timeNow
+      updatedAt: timeNow,
+
+      // [ENABLED EDIT SERVICE CODE]: FERDINAN - 2025/06/26
+      ...(service.editServiceCodeEnabled ? { serviceCode: service.serviceCode } : {})
     }, { where: { id: serviceID } }, { transaction })
 
     if (newUtility) {

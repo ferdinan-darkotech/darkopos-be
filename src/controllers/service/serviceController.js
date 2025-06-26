@@ -87,6 +87,15 @@ exports.updateService = function (req, res, next) {
   return srvGetStoreBranch(userLogIn.store).then(storeBranch => {
     if (!storeBranch) return next(new ApiError(404, `Regional is not found.`))
     return getServiceByCode(servicecode, storeBranch.parent_store_id).then(_exists => {
+      // [ENABLED EDIT SERVICE CODE]: FERDINAN - 2025/06/26
+      if (service.editServiceCodeEnabled && servicecode !== service.serviceCode) {
+        getServiceByCode(service.serviceCode, storeBranch.parent_store_id).then(_exists => {
+          if (_exists) {
+            return next(new ApiError(409, `Service Code '${service.serviceCode}' already exists.`))
+          }
+        })
+      }
+
       const exists = JSON.parse(JSON.stringify(_exists))
       if (exists) {
         return updateService(exists.id, exists.reg_id, service, userLogIn.userid, next, !exists.sync_at).then((serviceUpdated) => {
@@ -95,7 +104,7 @@ exports.updateService = function (req, res, next) {
             message: `Service ${service.serviceName} updated`,
           }
           res.xstatus(200).json(jsonObj)
-        }).catch(err => next(new ApiError(422, `Couldn't find Service ${serviceCode}.`, err)))
+        }).catch(err => next(new ApiError(422, `Couldn't find Service ${servicecode}.`, err)))
       } else {
         next(new ApiError(422, `Couldn't find Service ${servicecode} .`))
       }
