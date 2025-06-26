@@ -299,3 +299,13 @@ export async function getServiceByCodeAndStore (serviceCode, storeCode) {
     raw: false
   })
 }
+
+// [ENABLED EDIT SERVICE CODE]: FERDINAN - 2025/06/26
+export function getServiceById (id) {
+  return vwService.findOne({
+    where: {
+      id
+    },
+    raw: false
+  })
+}
