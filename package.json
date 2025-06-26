@@ -22,7 +22,7 @@
       }
     },
     "start-api-dev": {
-      "command": "nodemon src/bin/server.js --exec babel-node",
+      "command": "nodemon src/bin/server.js --exec \"node --max-old-space-size=4096 -r babel-register\"",
       "env": {
         "NODE_ENV": "development",
         "DEBUG": "app:*"

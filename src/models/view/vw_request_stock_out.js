@@ -74,6 +74,9 @@ module.exports = function (sequelize, DataTypes) {
         appvlvl: { type: DataTypes.INTEGER },
         statusapproval: { type: DataTypes.STRING },
         data_detail: { type: DataTypes.JSON },
+
+        // [POLICE NO ID IN REQUEST STOCK OUT]: FERDINAN - 2025/06/26
+        policeno: { type: DataTypes.STRING },
     }, {
             tableName: 'vw_request_stock_out'
         })

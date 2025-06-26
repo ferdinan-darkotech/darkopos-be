@@ -104,7 +104,7 @@ export const fetchRequestStockOut = async (storeid, search, pagination) => {
     try {
         const { pageSize, page } = pagination
         const data = await vwRequestStockOut.findAndCountAll({
-            attributes: ['transactionnumber', 'queuenumber', 'storename', 'created_by_fullname', 'createdat', 'statuscancel', 'memocancel'],
+            attributes: ['transactionnumber', 'queuenumber', 'storename', 'created_by_fullname', 'createdat', 'statuscancel', 'memocancel', 'policeno'],
             where: { 
                 [Op.or]: [
                     { status: 'N' },
