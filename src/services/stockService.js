@@ -337,7 +337,7 @@ export function getProductsData (query, pagination) {
   if (query['q']) {
     for (let key in searchField) {
       const id = Object.assign(searchField)[key]
-      if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type')) {
+      if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type' || id === 'productCode')) {
         let obj = {}
         // obj[id] = query['q']
         obj[id] = { [Op.iRegexp]: query['q'] }
@@ -350,7 +350,10 @@ export function getProductsData (query, pagination) {
       attributes: stockFieldsV2, //stockFieldsLocal,
       where: {
         [Op.or]: querying,
-        [Op.and]: [...other, [{ storecode: store }]]
+        [Op.and]: [...other, [{ storecode: store }]],
+
+        // [FILTER PRODUCT BY CODE: PSP/PB/PO]: FERDINAN - 2025/06/30
+        ...(query['productCode'] ? { productCode: { [Op.iLike]: `${query['productCode']}%` } } : {})
       },
       order: order ? sequelize.literal(order) : [['productCode', 'DESC']],
       limit: parseInt(pageSize || 10, 10),
@@ -361,7 +364,10 @@ export function getProductsData (query, pagination) {
       attributes: stockFieldsV2, // stockFieldsLocal,
       where: {
         ...other,
-        storecode: store
+        storecode: store,
+
+        // [FILTER PRODUCT BY CODE: PSP/PB/PO]: FERDINAN - 2025/06/30
+        ...(query['productCode'] ? { productCode: { [Op.iLike]: `${query['productCode']}%` } } : {})
       },
       order: order ? sequelize.literal(order) : [['productCode', 'DESC']],
       limit: type !== 'all' ? parseInt(pageSize || 10, 10) : null,
