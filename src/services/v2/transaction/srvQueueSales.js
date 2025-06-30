@@ -356,10 +356,21 @@ export function srvGetListQueueByWO (headerid, woid) {
 	})
 }
 
-export function srvGetListQueueByStore (storeid) {
+export function srvGetListQueueByStore (storeid, query) {
 	return vwQueueList.findAll({
 		attributes: attrQueueList,
-		where: { storeid },
+		where: { 
+			storeid,
+			
+			// [SEARCH QUEUE]: FERDINAN - 2025-06-30
+			...(query.q ? {
+				[Op.or]: [
+					{ queuenumber: { [Op.iLike]: `%${query.q}%` } },
+					{ memberName: { [Op.iLike]: `%${query.q}%` } },
+					{ policeNo: { [Op.iLike]: `%${query.q}%` } }
+				]
+			} : {})
+		},
 		order: ['storeid', 'queuenumber', 'createdat','updatedat'], 
 		raw: true
 	})

@@ -186,7 +186,7 @@ export function ctlGetListQueueApproval (req, res, next) {
 export function ctlGetListQueue (req, res, next) {
 	console.log('Requesting-ctlGetListQueue: ' + req.url + ' ...')
 	const storeid = req.params.store
-	const querying = [srvGetListQueueByStore(storeid), srvGetListPendingWO(storeid)]
+	const querying = [srvGetListQueueByStore(storeid, req.query), srvGetListPendingWO(storeid)]
 
 	return Promise.all(querying).then(rs => {
 		const [resultDataQueue, resultDataPending] = rs
