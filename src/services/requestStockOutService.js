@@ -220,3 +220,43 @@ export const removeRequestStockOutByQueue = async (queuenumber) => {
         return { success: false, message: error.message, data: {} }
     }
 }
+
+// [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+export const fetchFinishRequestStockOut = async (storeid, query) => {
+    const { search, dateFrom, dateTo, productcode } = query
+
+    try {
+        const data = await vwRequestStockOutDetail.findAll({
+            where: {
+                [Op.or]: [
+                    { status: 'Y' },
+                    { statuscancel: 'APPROVE' }
+                ],
+                storeid,
+                [Op.and]: [
+                    { 
+                        [Op.or]: [
+                            { transactionnumber: { [Op.iLike]: `%${search || ''}%` } },
+                            { queuenumber: { [Op.iLike]: `%${search || ''}%` } },
+                            { policeno: { [Op.iLike]: `%${search || ''}%` } },
+                            { productname: { [Op.iLike]: `%${search || ''}%` } },
+                            { productcode: { [Op.iLike]: `%${search || ''}%` } },
+                            { requestby: { [Op.iLike]: `%${search || ''}%` } },
+                            { updaterequestby: { [Op.iLike]: `%${search || ''}%` } },
+                        ]
+                    }
+                ],
+                exitdate: { [Op.between]: [dateFrom, dateTo] },
+                ...(productcode ? { productcode } : {})
+            },
+            order: [['transactionnumber', 'DESC']]
+        })
+        return { 
+            success: true, 
+            message: 'Request Stock Out fetched successfully',
+            data
+        }
+    } catch (error) {
+        return { success: false, message: error.message, data: {} }
+    }
+};

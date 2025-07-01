@@ -13,6 +13,9 @@ const apiRouter = [
   apiRoute + '/:id',
   apiRoute + '/:id/queue',
   apiRoute + '/:id/cancel',
+
+  // [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+  apiRoute + '/report/finish'
 ]
 
 
@@ -24,6 +27,9 @@ router.post(apiRouter[0], requireAuth, ctl.createRequestStockOut)
 router.put(apiRouter[1], requireAuth, ctl.updateRequestStockOut)
 router.put(apiRouter[3], requireAuth, ctl.updateStatusCancelRequestStockOut)
 router.delete(apiRouter[1], requireAuth, ctl.deleteRequestStockOut)
+
+// [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+router.get(apiRouter[4], requireAuth, ctl.getFinishRequestStockOut)
 
 
 export default router

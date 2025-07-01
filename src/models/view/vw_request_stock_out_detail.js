@@ -52,7 +52,19 @@ module.exports = function (sequelize, DataTypes) {
         },
 
         createdAt: { type: DataTypes.DATE, allowNull: false },
-        updatedAt: { type: DataTypes.DATE, allowNull: true }
+        updatedAt: { type: DataTypes.DATE, allowNull: true },
+
+        // [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+        status: { type: DataTypes.STRING },
+        statuscancel: { type: DataTypes.STRING },
+        queuenumber: { type: DataTypes.STRING },
+        storeid: { type: DataTypes.INTEGER },
+        exitdate: { type: DataTypes.DATE },
+        requestat: { type: DataTypes.DATE },
+        updaterequestat: { type: DataTypes.DATE },
+        requestby: { type: DataTypes.STRING },
+        updaterequestby: { type: DataTypes.STRING },
+        policeno: { type: DataTypes.STRING }
     }, {
             tableName: 'vw_request_stock_out_detail'
         })

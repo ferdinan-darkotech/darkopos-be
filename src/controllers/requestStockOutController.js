@@ -1,5 +1,5 @@
 // [NEW]: FERDINAN - 2025-03-06
-import { addNewRequestStockOut, changeRequestStockOut, changeStatusCancel, fetchRequestStockOut, fetchRequestStockOutByTransNo, fetchTransactionRequestStockOut, removeRequestStockOut } from "../services/requestStockOutService"
+import { addNewRequestStockOut, changeRequestStockOut, changeStatusCancel, fetchFinishRequestStockOut, fetchRequestStockOut, fetchRequestStockOutByTransNo, fetchTransactionRequestStockOut, removeRequestStockOut } from "../services/requestStockOutService"
 import { extractTokenProfile } from "../services/v1/securityService"
 import { ApiError } from '../services/v1/errorHandlingService'
 
@@ -66,4 +66,13 @@ exports.updateStatusCancelRequestStockOut = async function (req, res, next) {
     return changeStatusCancel(transactionnumber, req.body, userLogIn.userid).then((result) => {
         res.xstatus(200).json(result)
     }).catch(err => next(new ApiError(501, `Couldn't update stock.`, err)))
+}
+
+// [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+exports.getFinishRequestStockOut = async function (req, res, next) {
+    console.log('Requesting-getRequestStockOut: ' + req.url + ' ...')
+    const { storeid } = req.query
+    return fetchFinishRequestStockOut(storeid, req.query).then((result) => {
+        res.xstatus(200).json(result)
+    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
 }
