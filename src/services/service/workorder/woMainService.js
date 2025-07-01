@@ -104,7 +104,10 @@ function createHeaderWO (header = {}, info, transaction) {
     createdAt: info.time,
     employeecode: header.employeecode || header.employeeCode || header.employee || header.employeeId || header.employeeid || null,
     noreference: header.noreference || '-',
-    drivername: header.drivername || '-'
+    drivername: header.drivername || '-',
+
+    // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+    statusvehicle: header.statusvehicle
   }, { transaction })
 }
 
@@ -410,7 +413,10 @@ export async function updateDataWoNotRegister (id, data, updateBy) {
       takeAway: +header.takeAway,
       employeecode: header.employeecode || header.employeeCode || header.employee || header.employeeId || header.employeeid || null,
       noreference: header.noreference || '-',
-      drivername: header.drivername || '-'
+      drivername: header.drivername || '-',
+
+      // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+      statusvehicle: header.statusvehicle
     }, { where: { id } }, transaction)
     
     const customeDetailModifier = await modifyDataCustomeFieldsWO(header.woid, other.custome, updateBy, transaction)

@@ -75,7 +75,10 @@ const woDetailAttribute = [
 // [NEW]: FERDINAN - 2025-03-03
 const woDetailAttributeNew = [
   ['id', 'woid'], 'wono', 'storeid', 'storecode', 'storename', 'memberid', 'membercode', 'membername', 'memberpendingpayment', 'membersellprice', 'membertypeid', 'showasdiscount', 'timein',
-  'gasoline_percent', 'vehicle_km', 'takeaway', 'policenoid', 'policeno', 'current_duplicate', 'total_duplicate', 'noreference', 'drivername'
+  'gasoline_percent', 'vehicle_km', 'takeaway', 'policenoid', 'policeno', 'current_duplicate', 'total_duplicate', 'noreference', 'drivername',
+
+  // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+  'statusvehicle'
 ]
 
 // Normalization query to database, at : 18-Nov-2022
@@ -445,7 +448,10 @@ export async function updateData (id, data, updateBy, isChange = false, headerid
 
       // [NEW]: FERDINAN - 2025-03-07
       drivername: header.drivername || '-',
-      noreference: header.noreference || '-'
+      noreference: header.noreference || '-',
+
+      // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+      statusvehicle: header.statusvehicle
     },
       {
         where: {

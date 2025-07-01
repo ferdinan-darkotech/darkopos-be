@@ -21,6 +21,7 @@ import { srvGetFormSPK } from '../../../services/v2/transaction/srvSpkForm'
 exports.insertData = function (req, res, next) {
   console.log('Requesting-MainWOinsertData: ' + req.url + ' ...')
   const data = req.body
+  console.log("req.body", req.body)
   const userLogIn = extractTokenProfile(req)
   return getMinutesCreatedForMember({ memberId: data.header.memberId, policeNoId: data.header.policeNoId }).then(allowExists => {
     if (!allowExists) {

@@ -85,6 +85,9 @@ module.exports = function (sequelize, DataTypes) {
     memberaddress02: { type: DataTypes.STRING },
     membermobilenumber: { type: DataTypes.STRING },
     memberphonenumber: { type: DataTypes.STRING },
+
+    // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+    statusvehicle: { type: DataTypes.STRING },
   }, { tableName: 'vw_wo', freezeTableName: true, timestamps: false  })
   return viewwo
 }

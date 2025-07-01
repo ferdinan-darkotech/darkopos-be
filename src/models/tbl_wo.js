@@ -91,6 +91,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(60),
       allowNull: true
     },
+
+    // [STATUS VEHICLE]: FERDINAN - 2025/07/01
+    statusvehicle: {
+      type: DataTypes,
+      allowNull: true
+    }
   }, {
       tableName: 'tbl_wo',
       paranoid: true
