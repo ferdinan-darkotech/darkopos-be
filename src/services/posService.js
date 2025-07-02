@@ -353,14 +353,15 @@ export async function createPos (transNo, pos, createdBy, next, req, settingStor
     const arrayProd = reArrangedPosDetail(sequence, pos, posDetail, createdBy, detailQueue, salesTax)
 
     const {
-      totalPos, totalDPP, totalPPN, totalServices, totalProducts
+      totalPos, totalDPP, totalPPN, totalServices, totalProducts, total
     } = arrayProd.reduce((x, y) => ({
       totalPos: x.totalPos + (y.DPP + y.PPN),
       totalDPP: x.totalDPP + y.DPP,
       totalPPN: x.totalPPN + y.PPN,
       totalServices: x.totalProducts + (y.typeCode === 'P' ? 1 : 0),
-      totalProducts: x.totalServices + (y.typeCode === 'S' ? 1 : 0)
-    }), { totalPos: 0, totalDPP: 0, totalPPN: 0, totalProducts: 0, totalServices: 0 })
+      totalProducts: x.totalServices + (y.typeCode === 'S' ? 1 : 0),
+      total: x.total + ((y.sellingPrice || y.sellingprice || y.price) * y.qty)
+    }), { totalPos: 0, totalDPP: 0, totalPPN: 0, totalProducts: 0, totalServices: 0, total: 0 })
     // console.log('\n total', totalPos)
     // await getTotalPos(arrayProd)
     if (pos.discountLoyalty > 0 && !resultLoyalty) {
@@ -389,7 +390,7 @@ export async function createPos (transNo, pos, createdBy, next, req, settingStor
     // posHeader
     let newResult = {}
     let newResultDetail = []
-    const totalData = { total_dpp: totalDPP, total_ppn: totalPPN, total_netto: totalPos, total_services: totalServices, total_products: totalProducts }
+    const totalData = { total_dpp: totalDPP, total_ppn: totalPPN, total_netto: totalPos, total_services: totalServices, total_products: totalProducts, total }
     
     const result = await insertPosHeader({
       ...pos,
