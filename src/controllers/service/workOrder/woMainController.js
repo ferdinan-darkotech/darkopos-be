@@ -8,7 +8,8 @@ import {
   fetchWOSPK,
   updateDataWoNotRegister, 
   replaceWoProduct,
-  updateEmployeeOnWO
+  updateEmployeeOnWO,
+  updateUnitOnWO
 } from '../../../services/service/workorder/woMainService'
 import {
   getMinutesCreatedForMember, getWoById, getWoByNo,
@@ -192,6 +193,25 @@ export const updateEmployeWo = function (req, res, next) {
   const data = req.body
   const userLogIn = extractTokenProfile(req)
   return updateEmployeeOnWO(id, userLogIn.userid, data).then((updated) => {
+    if(updated.success) {
+      let jsonObj = {
+        success: true,
+        message: `Data updated`
+      }
+      res.xstatus(200).json(jsonObj)
+    } else {
+      next(new ApiError(501, `Couldn't update wo.`))
+    }
+  }).catch(err => next(new ApiError(501, `Couldn't update wo.`, err)))
+}
+
+// [UNIT NOT UPDATE ON WO WHEN CHANGE IN POS]: FERDINAN - 2025/07/02
+export const updateUnitWo = function (req, res, next) {
+  console.log('Requesting-updateUnitWo: ' + req.url + ' ...')
+  const id = req.params.id
+  const data = req.body
+  const userLogIn = extractTokenProfile(req)
+  return updateUnitOnWO(id, userLogIn.userid, data).then((updated) => {
     if(updated.success) {
       let jsonObj = {
         success: true,

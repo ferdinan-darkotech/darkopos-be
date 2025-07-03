@@ -173,7 +173,7 @@ async function scheduleBroadcastProductUpdateLog () {
           for (let m in (otherStores || {})) {
             const perStoreCounts = (otherStores || {})[m]
 
-            await bulkSendBroadcast('NOTIF-CHANGE- LOCAL-PRICE-PRODUCT', 'receiveNotifChangeProductPrice', { STORE: [m] }, { type: 'LOCAL', count: perStoreCounts }) 
+            await bulkSendBroadcast('NOTIF-CHANGE-LOCAL-PRICE-PRODUCT', 'receiveNotifChangeProductPrice', { STORE: [m] }, { type: 'LOCAL', count: perStoreCounts }) 
           }
 
           await srvSetBroadcastProducts(timeNow)
@@ -193,6 +193,8 @@ async function scheduleBroadcastProductUpdateLog () {
 
 function socketListen (server, path, errorPath) {
   SockIO = socket(server, {
+    cors: true,
+    allowEIO3: true,
     handlePreflightRequest: (req, res) => {
       const headers = {
           "Access-Control-Allow-Headers": "Content-Type, Authorization",

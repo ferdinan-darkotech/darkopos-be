@@ -104,13 +104,15 @@ export function getMiscsData (query) {
       attributes: ['miscCode', 'miscName', 'miscDesc', 'miscVariable',
         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
       ],
-      where: query
+      where: query,
+      order: [['id', 'DESC']]
     })
   } else {
     return vwMisc.findAll({
       attributes: ['miscCode', 'miscName', 'miscDesc', 'miscVariable',
         'createdBy', 'createdAt', 'updatedBy', 'updatedAt'
-      ]
+      ],
+      order: [['id', 'DESC']]
     })
   }
 }

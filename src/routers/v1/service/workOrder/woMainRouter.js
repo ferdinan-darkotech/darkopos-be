@@ -11,7 +11,10 @@ import {
   getWoSPKByWoId,
 
   // [NEW]: FERDINAN - 2025-03-17
-  updateEmployeWo, 
+  updateEmployeWo,
+
+  // [UNIT NOT UPDATE ON WO WHEN CHANGE IN POS]: FERDINAN - 2025/07/02
+  updateUnitWo, 
 } from '../../../../controllers/service/workOrder/woMainController'
 
 const router = express.Router()
@@ -30,6 +33,9 @@ const apiRouter = [
   apiRoute + '/:id',
   apiRoute + '/:id/product',
   apiRoute + '/:id/employee',
+
+  // [UNIT NOT UPDATE ON WO WHEN CHANGE IN POS]: FERDINAN - 2025/07/02
+  apiRoute + '/:id/unit',
 ]
 
 // MAIN //
@@ -46,6 +52,9 @@ router.put(apiRouter[6], requireAuth, updateDataWoProduct)
 
 // [NEW]: FERDINAN - 2025-03-17
 router.put(apiRouter[7], requireAuth, updateEmployeWo)
+
+// [UNIT NOT UPDATE ON WO WHEN CHANGE IN POS]: FERDINAN - 2025/07/02
+router.put(apiRouter[8], requireAuth, updateUnitWo)
 // MAIN //
 
 export default router

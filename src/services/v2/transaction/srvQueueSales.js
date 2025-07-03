@@ -153,7 +153,10 @@ function srvUpdateQueueSalesHeader (data, info, transaction) {
 		discountLoyalty: data.discountLoyalty,
 		other_informations: data.otherInformations,
 		updatedat: info.time,
-		updatedby: info.user
+		updatedby: info.user,
+
+		// [ENABLED EDIT IN POS]: FERDINAN - 2025/07/02
+		employee: data.employee
 	}, { where: { headerid: info.headerid, storeid: info.storeid } }, { transaction })
 }
 

@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     miscName: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(15),
       allowNull: false,
       unique: 'misc_unique_key',
       validate: {

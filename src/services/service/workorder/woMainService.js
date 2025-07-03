@@ -485,3 +485,13 @@ export async function updateEmployeeOnWO (id, user, data) {
     return { message: er.message, success: false }
   }
 }
+
+// [UNIT NOT UPDATE ON WO WHEN CHANGE IN POS]: FERDINAN - 2025/07/02
+export async function updateUnitOnWO (id, user, data) {
+  try {
+    await table.update({ policeNoId: data.policeNoId, updatedBy: user }, { where: { id } })
+    return { message: 'WO has been updated', success: true }
+  } catch (er) {
+    return { message: er.message, success: false }
+  }
+}

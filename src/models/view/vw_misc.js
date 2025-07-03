@@ -50,7 +50,8 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         is: /^[a-z0-9\_\-]{3,30}$/i
       }
-    }
+    },
+    createdAt: { type: DataTypes.DATE },
   }, {
     tableName: 'vw_misc'
   }, {
