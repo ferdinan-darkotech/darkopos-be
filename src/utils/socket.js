@@ -193,8 +193,6 @@ async function scheduleBroadcastProductUpdateLog () {
 
 function socketListen (server, path, errorPath) {
   SockIO = socket(server, {
-    cors: true,
-    allowEIO3: true,
     handlePreflightRequest: (req, res) => {
       const headers = {
           "Access-Control-Allow-Headers": "Content-Type, Authorization",

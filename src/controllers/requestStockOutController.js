@@ -1,5 +1,5 @@
 // [NEW]: FERDINAN - 2025-03-06
-import { addNewRequestStockOut, changeRequestStockOut, changeStatusCancel, fetchFinishRequestStockOut, fetchRequestStockOut, fetchRequestStockOutByTransNo, fetchTransactionRequestStockOut, removeRequestStockOut } from "../services/requestStockOutService"
+import { addNewRequestStockOut, changeRequestStockOut, changeStatusCancel, fetchAllRequestStockOutPerRequest, fetchFinishRequestStockOut, fetchRequestStockOut, fetchRequestStockOutByTransNo, fetchTransactionRequestStockOut, removeRequestStockOut } from "../services/requestStockOutService"
 import { extractTokenProfile } from "../services/v1/securityService"
 import { ApiError } from '../services/v1/errorHandlingService'
 
@@ -21,7 +21,7 @@ exports.updateRequestStockOut = async function (req, res, next) {
     const data = req.body
     return changeRequestStockOut(transactionnumber, userLogIn.userid, data).then((created) => {
         res.xstatus(200).json(created)
-    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't update request stock out`, err)))
 }
 
 exports.deleteRequestStockOut = async function (req, res, next) {
@@ -30,7 +30,7 @@ exports.deleteRequestStockOut = async function (req, res, next) {
     const userLogIn = extractTokenProfile(req)
     return removeRequestStockOut(transactionnumber, userLogIn.userid).then((created) => {
         res.xstatus(200).json(created)
-    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't delete request stock out`, err)))
 }
 
 exports.getRequestStockOut = async function (req, res, next) {
@@ -39,7 +39,7 @@ exports.getRequestStockOut = async function (req, res, next) {
     const pagination = { pageSize, page }
     return fetchRequestStockOut(storeid, search, pagination).then((result) => {
         res.xstatus(200).json(result)
-    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't get request stock out`, err)))
 }
 
 exports.getRequestStockOutDetail = async function (req, res, next) {
@@ -47,7 +47,7 @@ exports.getRequestStockOutDetail = async function (req, res, next) {
     const transactionnumber = req.params.id
     return fetchRequestStockOutByTransNo(transactionnumber).then((result) => {
         res.xstatus(200).json(result)
-    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't get request stock out detail`, err)))
 }
 
 exports.getTransactionRequestStockOut = async function (req, res, next) {
@@ -55,7 +55,7 @@ exports.getTransactionRequestStockOut = async function (req, res, next) {
     const transactionnumber = req.params.id
     return fetchTransactionRequestStockOut(transactionnumber).then((result) => {
         res.xstatus(200).json(result)
-    }).catch(err => next(new ApiError(501, `Couldn't find stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't get transaction request stock out.`, err)))
 }
 
 // [NEW]: FERDINAN - 2025-03-28
@@ -65,7 +65,7 @@ exports.updateStatusCancelRequestStockOut = async function (req, res, next) {
     const userLogIn = extractTokenProfile(req)
     return changeStatusCancel(transactionnumber, req.body, userLogIn.userid).then((result) => {
         res.xstatus(200).json(result)
-    }).catch(err => next(new ApiError(501, `Couldn't update stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't update status cancel request stock out.`, err)))
 }
 
 // [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
@@ -74,5 +74,14 @@ exports.getFinishRequestStockOut = async function (req, res, next) {
     const { storeid } = req.query
     return fetchFinishRequestStockOut(storeid, req.query).then((result) => {
         res.xstatus(200).json(result)
-    }).catch(err => next(new ApiError(501, `Couldn't create stock.`, err)))
+    }).catch(err => next(new ApiError(501, `Couldn't get finish request stock out`, err)))
+}
+
+// [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
+exports.getAllRequestStockOutPerReq = async function (req, res, next) {
+    console.log('Requesting-getAllRequestStockOutPerReq: ' + req.url + ' ...')
+    const { storeid } = req.query
+    return fetchAllRequestStockOutPerRequest(storeid, req.query).then((result) => {
+        res.xstatus(200).json(result)
+    }).catch(err => next(new ApiError(501, `Couldn't get all request stock out per request`, err)))
 }
