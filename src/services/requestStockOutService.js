@@ -221,17 +221,61 @@ export const removeRequestStockOutByQueue = async (queuenumber) => {
     }
 }
 
+const status = [
+    'SEMUA',
+    'DIKELUARKAN',
+    'DIBATALKAN/DIKEMBALIKAN',
+    'PEMBATALAN/PENGEMBALIAN DITOLAK',
+    'DALAM PENGAJUAN UNTUK KELUARKAN BARANG',
+    'PERLU PERSETUJUAN UNTUK PEMBATALAN/PENGEMBALIAN BARANG OLEH KACAB',
+    'PERLU PROSES UNTUK PEMBATALAN/PENGEMBALIAN BARANG OLEH GUDANG',
+]
+
+const getValueOfStatus = (value) => {
+  switch (value) {
+    case status[0]:
+      return {};
+    case status[1]:
+      return { 
+        [Op.or]: [
+            {
+                [Op.and]: [
+                    { status: 'Y' }, 
+                    { statuscancel: null }
+                ]
+            }, 
+            {
+                [Op.and]: [
+                    { status: 'Y' }, 
+                    { statuscancel: 'REJECT' }
+                ]
+            }
+        ]
+      };
+    case status[2]:
+      return { statuscancel: 'APPROVE-GUDANG' };
+    case status[3]:
+      return { statuscancel: 'REJECT' };
+    case status[4]:
+      return { status: 'N' };
+    case status[5]:
+      return { statuscancel: 'REQUEST' };
+    case status[6]:
+      return { statuscancel: 'APPROVE' };
+    default:
+      return {}
+  }
+}
+
 // [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
 export const fetchFinishRequestStockOut = async (storeid, query) => {
-    const { search, dateFrom, dateTo, productcode, selectby, transactionnumber } = query
+    const { search, dateFrom, dateTo, productcode, selectby, transactionnumber, statusfilter } = query
+
+    const statusResult = getValueOfStatus(statusfilter)
 
     try {
         const data = await vwRequestStockOutDetail.findAll({
             where: {
-                // [Op.or]: [
-                //     { status: 'Y' },
-                //     { statuscancel: 'APPROVE' }
-                // ],
                 storeid,
                 [Op.and]: [
                     { 
@@ -250,6 +294,7 @@ export const fetchFinishRequestStockOut = async (storeid, query) => {
                 createdAt: { [Op.between]: [dateFrom, dateTo] },
                 ...(productcode ? { productcode } : {}),
                 ...(transactionnumber ? { transactionnumber } : {}),
+                ...statusResult
             },
             order: selectby === 'productcode' ? [['productcode', 'ASC'], ['requestat', 'DESC']] : selectby === 'transactionnumber' ? [['transactionnumber', 'DESC'], ['requestat', 'DESC']] : [['transactionnumber', 'DESC'], ['requestat', 'DESC']]
         })
@@ -265,7 +310,9 @@ export const fetchFinishRequestStockOut = async (storeid, query) => {
 
 // // [ACCEPT REQUEST STOCK OUT REPORT]: FERDINAN - 2025/06/30
 export const fetchAllRequestStockOutPerRequest = async (storeid, query) => {
-    const { search, dateFrom, dateTo } = query
+    const { search, dateFrom, dateTo, statusfilter } = query
+
+    const statusResult = getValueOfStatus(statusfilter)
 
     try {
         const data = await vwRequestStockOut.findAll({
@@ -280,7 +327,8 @@ export const fetchAllRequestStockOutPerRequest = async (storeid, query) => {
                 ],
                 // exitdate: { [Op.between]: [dateFrom, dateTo] },
                 createdAt: { [Op.between]: [dateFrom, dateTo] },
-                storeid
+                storeid,
+                ...statusResult
             },
             order: [['transactionnumber', 'DESC']]
         })

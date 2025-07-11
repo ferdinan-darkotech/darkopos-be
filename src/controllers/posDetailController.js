@@ -118,3 +118,16 @@ exports.getPosDetailByDateRange = function (req, res, next) {
     })
   }).catch(err => next(new ApiError(422, err + ` - Couldn't find POS Detail ${dateFrom} - ${dateTo} - ${storeId}.`, err)))
 }
+
+// [GET PRODUCT SALES FOR GUDANG]: FERDINAN - 2025/07/08
+exports.getProductSalesForGudang = function (req, res, next) {
+  console.log('Requesting-getProductSalesForGudang: ' + req.url + ' ...')
+  const { dateFrom, dateTo, storeId, productCode } = req.query
+  fetchPosDetailByDateRange({ dateFrom, dateTo, storeId, productCode }).then((PosDetail) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      pos: PosDetail
+    })
+  }).catch(err => next(new ApiError(422, err + ` - Couldn't find POS Detail ${dateFrom} - ${dateTo} - ${storeId}.`, err)))
+}

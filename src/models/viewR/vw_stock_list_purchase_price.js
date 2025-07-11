@@ -40,5 +40,6 @@ module.exports = function (sequelize, DataTypes) {
 
     // [NO BAN]: FERDINAN - 2025-06-20
     isNoReferenceRequired: { type: DataTypes.BOOLEAN },
+    isusepurchaseprice: { type: DataTypes.BOOLEAN }
   }, { tableName: 'vw_stock_list_purchase_price', freezeTableName: true })
 }

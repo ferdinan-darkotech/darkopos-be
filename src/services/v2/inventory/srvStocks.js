@@ -111,7 +111,7 @@ export async function srvGetStockOnHand (query) {
 
   if (isPurchasePrice) {
     return vStockListPurchasePrice.findAndCountAll({
-      attributes: [...newAttr, 'isNoReferenceRequired'],
+      attributes: [...newAttr, 'isNoReferenceRequired', 'isusepurchaseprice'],
       where: newClause,
       raw: true,
       ...limit
