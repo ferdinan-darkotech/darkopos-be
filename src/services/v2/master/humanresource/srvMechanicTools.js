@@ -8,6 +8,9 @@ import { getNativeQuery } from '../../../../native/nativeUtils'
 const vwMember = vw.vw_employee
 const vwMechanicTool = vw.vw_mechanic_tool
 
+// [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+const vwMechanicToolInventory = vw.vw_mechanic_tool_inventory
+
 const tblMechanicTool = tbl.tbl_mechanic_tool
 const tblMechanicToolLog = tbl.tbl_mechanic_tool_log
 
@@ -47,7 +50,10 @@ export const fetchMechanicToolsByEmployeeCode = async (employeecode, query, pagi
           { unit: { [Op.iLike]: `%${query.q || ''}%` } },
           { description: { [Op.iLike]: `%${query.q || ''}%` } },
           { employeename: { [Op.iLike]: `%${query.q || ''}%` } },
-          { createdby: { [Op.iLike]: `%${query.q || ''}%` } }
+          { createdby: { [Op.iLike]: `%${query.q || ''}%` } },
+
+          // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+          { toolcode: { [Op.iLike]: `%${query.q || ''}%` } }
         ]
       }: {}),
       employeecode
@@ -78,21 +84,24 @@ export const fetchMechanicTools = async (query, pagination) => {
           { unit: { [Op.iLike]: `%${query.q || ''}%` } },
           { description: { [Op.iLike]: `%${query.q || ''}%` } },
           { employeename: { [Op.iLike]: `%${query.q || ''}%` } },
-          { createdby: { [Op.iLike]: `%${query.q || ''}%` } }
+          { createdby: { [Op.iLike]: `%${query.q || ''}%` } },
+
+          // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+          { toolcode: { [Op.iLike]: `%${query.q || ''}%` } }
         ]
       }: {}),
       storecode: query.storecode
     },
     limit: parseInt(pageSize || 10, 10),
     offset: (parseInt(page || 1, 10) - 1) * parseInt(pageSize || 10, 10),
-    order: [['toolname', 'asc']]
+    order: [['employeename', 'asc'], ['createdat', 'desc']]
   })
 }
 
 export const fetchAllMechanicTools = async (storecode) => {
   return await vwMechanicTool.findAll({
     where: { storecode },
-    order: [['toolname', 'asc']]
+    order: [['employeename', 'asc'], ['createdat', 'desc']]
   })
 }
 
@@ -120,4 +129,25 @@ export const updateSoftRemoveMechanicTool = async (mechanictoolid, employeecode,
 
 export const removeMechanicTool = async (id, employeecode) => {
   return await tblMechanicTool.destroy({ where: { id, employeecode } })
+}
+
+// [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+export const fetchMechanicToolsInventory = async (query, pagination) => {
+  const { pageSize, page } = pagination
+
+  return await vwMechanicToolInventory.findAndCountAll({
+    attributes: ['kode_barang', 'nama_barang', 'nama_lain', 'input_dt'],
+    where: {
+      ...(query.q ? { 
+        [Op.or]: [
+          { kode_barang: { [Op.iLike]: `%${query.q || ''}%` } },
+          { nama_barang: { [Op.iLike]: `%${query.q || ''}%` } },
+          { nama_lain: { [Op.iLike]: `%${query.q || ''}%` } },
+        ]
+      }: {}),
+    },
+    limit: parseInt(pageSize || 10, 10),
+    offset: (parseInt(page || 1, 10) - 1) * parseInt(pageSize || 10, 10),
+    order: [['input_dt', 'DESC']] 
+  })
 }

@@ -1,7 +1,7 @@
 import express from 'express'
 import project from '../../../../../config/project.config'
 import { requireAuth } from '../../../../services/v1/usersService'
-import { createMechanicTool, deleteMechanicTool, getMechanics, getMechanicTools, getMechanicToolsByEmployeeCode, printMechanicTools, printMechanicToolsByEmployeeCode } from '../../../../controllers/v2/master/humanresource/ctlMechanicTools'
+import { createMechanicTool, deleteMechanicTool, getMechanics, getMechanicTools, getMechanicToolsByEmployeeCode, getMechanicToolsInventory, printMechanicTools, printMechanicToolsByEmployeeCode } from '../../../../controllers/v2/master/humanresource/ctlMechanicTools'
 
 const router = express.Router()
 
@@ -17,6 +17,9 @@ router.get(`${mechanicRoute}/:employeecode/tool/print`, requireAuth, printMechan
 
 router.post(`${mechanicRoute}/tool`, requireAuth, createMechanicTool)
 router.delete(`${mechanicRoute}/:employeecode/tool/:id`, requireAuth, deleteMechanicTool)
+
+// [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+router.get(`${mechanicRoute}/tool/inventory`, requireAuth, getMechanicToolsInventory)
 
 // MAIN //
 

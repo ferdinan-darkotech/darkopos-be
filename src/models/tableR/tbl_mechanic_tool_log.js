@@ -55,6 +55,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+
+    // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+    toolcode: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
       tableName: 'tbl_mechanic_tool_log',
       paranoid: true

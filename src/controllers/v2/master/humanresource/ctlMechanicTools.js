@@ -1,5 +1,5 @@
 const { ApiError } = require("../../../../services/v1/errorHandlingService")
-const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
+const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool, fetchMechanicToolsInventory } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
 
 const getMechanics = async function (req, res, next, comment = 'getMechanics') {
     console.log('Requesting-' + comment + ': ' + req.url + ' ...')
@@ -134,6 +134,24 @@ const deleteMechanicTool = async function (req, res, next, comment = 'deleteMech
   // }).catch(err => next(new ApiError(422, `ZCEP-00005: Couldn't create tool on tbl_mechanic_tool_log`, err)))
 }
 
+// [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+const getMechanicToolsInventory = async function (req, res, next, comment = 'getMechanicToolsInventory') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+
+  const { pageSize, page, ...other } = req.query
+
+  return fetchMechanicToolsInventory(other, { pageSize: parseInt(pageSize || 10), page: parseInt(page || 1) }).then((tools) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      pageSize: parseInt(pageSize || 10),
+      page: parseInt(page || 1),
+      total: tools.count,
+      data: JSON.parse(JSON.stringify(tools.rows))
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00007: Couldn't find tools on this mechanic`, err)))
+}
+
 module.exports = {
   getMechanics,
   createMechanicTool,
@@ -141,5 +159,8 @@ module.exports = {
   deleteMechanicTool,
   getMechanicTools,
   printMechanicTools,
-  printMechanicToolsByEmployeeCode
+  printMechanicToolsByEmployeeCode,
+
+  // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
+  getMechanicToolsInventory
 }
