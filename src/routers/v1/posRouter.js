@@ -4,7 +4,10 @@ import { requireAuth } from '../../services/v1/usersService'
 import {
   getPos, getAllPos, insertPos, updatePos, deletePos,
   deletePoses, getLast, cancelPos, confirmPayments,
-  confirmTapIn
+  confirmTapIn,
+
+  // [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
+  getPosByDateAndCustomer
 }
 from '../../controllers/posController'
 
@@ -43,6 +46,11 @@ const apiRouteConfirm = [
   apiRoute3 + '/tap-in/mechanic/:type',
   apiRoute3 + '/pending-wo/:recordID',
   apiRoute3 + '/set-location/customers'
+]
+
+// [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
+const apiRouteReport = [
+  apiRoute + '/report/date/customer'
 ]
 
 // MAIN //
@@ -87,7 +95,8 @@ router.delete(apiRouteConfirm[2], requireAuth, ctlDeletePendingWO)
 router.post(apiRouteConfirm[3], requireAuth, ctlSetLocationCustomers)
 
 
-
+// [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
+router.get(apiRouteReport[0], requireAuth, getPosByDateAndCustomer)
 
 // MAIN //
 

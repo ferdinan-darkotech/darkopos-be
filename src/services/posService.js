@@ -694,3 +694,24 @@ export function deletePoses (poses) {
     return null
   }
 }
+
+// [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
+export async function fetchPosByDateAndCustomer ({ dateFrom, dateTo, storeId, memberId, search }) {
+  return await PosView.findAll({
+    attributes: ['transNo', 'woNo', 'memberCode', 'memberName', 'transDate', 'policeNo', 'total_products', 'total_services', 'total_netto', 'topdate', 'total_dpp', 'total_ppn'],
+    where: {
+      transDate: { [Op.between]: [dateFrom, dateTo] },
+      memberId: memberId,
+      storeId: storeId,
+      ...(search ? {
+        [Op.or]: [
+          { transNo: { [Op.iLike]: `%${search || ''}%` } },
+          { woNo: { [Op.iLike]: `%${search || ''}%` } },
+          { memberCode: { [Op.iLike]: `%${search || ''}%` } },
+          { memberName: { [Op.iLike]: `%${search || ''}%` } },
+          { policeNo: { [Op.iLike]: `%${search || ''}%` } }
+        ]
+      } : {})
+    }
+  })
+}

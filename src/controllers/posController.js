@@ -5,7 +5,8 @@ import moment from 'moment'
 import {
   setPosInfo, getPosByCode, posExists, getPosData,
   createPos, woIdExists, updatePos, deletePos, deletePoses, getLastTrans, cancelPos,
-  syncMemberCashback
+  syncMemberCashback,
+  fetchPosByDateAndCustomer
 }
   from '../services/posService'
 import { extractTokenProfile } from '../services/v1/securityService'
@@ -603,3 +604,15 @@ exports.confirmTapIn = async function (req, res, next) {
   }).catch(err => next(new ApiError(501, `Couldn't send tap-in confirmations.`, err)))
 }
 
+// [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
+exports.getPosByDateAndCustomer = function (req, res, next) {
+  console.log('Requesting-getPosByDateAndCustomer: ' + req.url + ' ...')
+  
+  fetchPosByDateAndCustomer(req.query).then((pos) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: pos
+    })
+  }).catch(err => next(new ApiError(501, err + ` - Couldn't find POS.`, err)))
+}
