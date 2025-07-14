@@ -194,7 +194,7 @@ export function createPosDetail (transNo, posDetail, createdBy, next) {
 }
 
 // [GENERATE XML POS]: FERDINAN - 2025-06-09
-export async function fetchPosDetailByDateRange ({ dateFrom, dateTo, storeId, memberId, productCode }) {
+export async function fetchPosDetailByDateRange ({ dateFrom, dateTo, storeId, memberId, productCode, search }) {
     return XmlPos.findAll({
         // attributes: posField,
         where: {
@@ -203,7 +203,14 @@ export async function fetchPosDetailByDateRange ({ dateFrom, dateTo, storeId, me
             },
             storeId,
             ...(memberId ? { memberId } : {}),
-            ...(productCode ? { productCode } : {})
+            ...(productCode ? { productCode } : {}),
+            ...(search ? {
+                [Op.or]: [
+                    { transNo: { [Op.iLike]: `%${search || ''}%` } },
+                    { woNo: { [Op.iLike]: `%${search || ''}%` } },
+                    { policeNo: { [Op.iLike]: `%${search || ''}%` } },
+                ],
+            } : {})
         }
     })
 }
