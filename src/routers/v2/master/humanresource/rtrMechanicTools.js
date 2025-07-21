@@ -1,7 +1,7 @@
 import express from 'express'
 import project from '../../../../../config/project.config'
 import { requireAuth } from '../../../../services/v1/usersService'
-import { createMechanicTool, deleteMechanicTool, getMechanics, getMechanicTools, getMechanicToolsByEmployeeCode, getMechanicToolsInventory, printMechanicTools, printMechanicToolsByEmployeeCode } from '../../../../controllers/v2/master/humanresource/ctlMechanicTools'
+import { checkMechanicToolBeforeInsert, createMechanicTool, deleteMechanicTool, generateSaldoAwalMehanicTools, getMechanics, getMechanicTools, getMechanicToolsByEmployeeCode, getMechanicToolsInventory, getMonthAndYearSaldoPeriod, printMechanicTools, printMechanicToolsByEmployeeCode } from '../../../../controllers/v2/master/humanresource/ctlMechanicTools'
 
 const router = express.Router()
 
@@ -20,6 +20,11 @@ router.delete(`${mechanicRoute}/:employeecode/tool/:id`, requireAuth, deleteMech
 
 // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
 router.get(`${mechanicRoute}/tool/inventory`, requireAuth, getMechanicToolsInventory)
+
+// [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
+router.get(`${mechanicRoute}/:employeecode/tool/:toolcode/report`, requireAuth, checkMechanicToolBeforeInsert)
+router.get(`${mechanicRoute}/tool/saldo/period`, requireAuth, getMonthAndYearSaldoPeriod)
+router.post(`${mechanicRoute}/tool/generate-saldo-awal`, generateSaldoAwalMehanicTools)
 
 // MAIN //
 

@@ -1,5 +1,5 @@
 const { ApiError } = require("../../../../services/v1/errorHandlingService")
-const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool, fetchMechanicToolsInventory } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
+const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool, fetchMechanicToolsInventory, fetchMechanicToolByToolAndMechanic, createSaldoAwalMehanicTools, fetchMechanicToolsSaldoFormatByEmployeeCode, fetchMonthAndYearSaldoPeriod } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
 
 const getMechanics = async function (req, res, next, comment = 'getMechanics') {
     console.log('Requesting-' + comment + ': ' + req.url + ' ...')
@@ -55,7 +55,7 @@ const printMechanicToolsByEmployeeCode = async function (req, res, next, comment
   
   const employeecode = req.params.employeecode
 
-  return fetchAllMechanicToolsByEmployeeCode(employeecode).then((tools) => {
+  return fetchAllMechanicToolsByEmployeeCode(employeecode, req.query).then((tools) => {
     res.xstatus(200).json({
       success: true,
       message: 'Ok',
@@ -89,7 +89,7 @@ const printMechanicTools = async function (req, res, next, comment = 'printMecha
   console.log('Requesting-' + comment + ': ' + req.url + ' ...')
   const storecode = req.query.storecode
 
-  return fetchAllMechanicTools(storecode).then((tools) => {
+  return fetchAllMechanicTools(storecode, req.query).then((tools) => {
     res.xstatus(200).json({
       success: true,
       message: 'Ok',
@@ -152,6 +152,49 @@ const getMechanicToolsInventory = async function (req, res, next, comment = 'get
   }).catch(err => next(new ApiError(422, `ZCEP-00007: Couldn't find tools on this mechanic`, err)))
 }
 
+// [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
+const checkMechanicToolBeforeInsert = async function (req, res, next, comment = 'checkMechanicToolBeforeInsert') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+
+  const { employeecode, toolcode } = req.params
+
+  return fetchMechanicToolByToolAndMechanic(toolcode, employeecode).then((tool) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: tool
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00007: Couldn't find tools on this mechanic`, err)))
+}
+
+// [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
+const generateSaldoAwalMehanicTools = async function (req, res, next, comment = 'generateSaldoAwalMehanicTools') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+
+  const { tahun, bulan, createdby } = req.body
+
+  return createSaldoAwalMehanicTools({ tahun, bulan, createdby }).then((tool) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: tool && tool.length > 0 && tool[0][0].val ? { result: tool[0][0].val } : {}
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00007: Tidak bisa generate saldo awal`, err)))
+}
+
+// [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
+const getMonthAndYearSaldoPeriod = async function (req, res, next, comment = 'getMonthAndYearSaldoPeriod') {
+  console.log('Requesting-' + comment + ': ' + req.url + ' ...')
+
+  return fetchMonthAndYearSaldoPeriod(req.query).then((tool) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: tool
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00007: No Month And Year Saldo Period in DB`, err)))
+}
+
 module.exports = {
   getMechanics,
   createMechanicTool,
@@ -162,5 +205,10 @@ module.exports = {
   printMechanicToolsByEmployeeCode,
 
   // [CONNECT TOOL INVENTORY FROM ERP]: FERDINAN - 11/07/2025
-  getMechanicToolsInventory
+  getMechanicToolsInventory,
+
+  // [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
+  checkMechanicToolBeforeInsert,
+  generateSaldoAwalMehanicTools,
+  getMonthAndYearSaldoPeriod
 }

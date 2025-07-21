@@ -653,8 +653,6 @@ export function ctlValidationHPP (req, res, next) {
 	const { productcode, storecode } = req.body
 
 	return srvValidationHPP(productcode, storecode).then(result => {
-		console.log("result >>> ", result)
-
 		res.xstatus(200).json({
 			success: true,
 			data: result[0][0] || {}
