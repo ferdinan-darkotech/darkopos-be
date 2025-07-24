@@ -183,6 +183,25 @@ export const updateSoftRemoveMechanicTool = async (mechanictoolid, employeecode,
   return await tblMechanicToolLog.update(payload, { where: { mechanictoolid, employeecode } })
 }
 
+const addNewMechanicToolLog = async (payload) => {
+  return await tblMechanicToolLog.create(payload)
+}
+
+export const removeMechanicToolFn = async (id, payload) => {
+  const mechanictool = await fetchOneMechanicTool(id)
+
+  if (!mechanictool) throw new Error('Mechanic tool not found')
+
+  const { id: mechanictoolid, ...rest } = mechanictool
+
+  return await addNewMechanicToolLog({ 
+    mechanictoolid, 
+    ...rest, 
+    ...payload, 
+    deletedat: new Date()
+  })
+}
+
 export const removeMechanicTool = async (id, employeecode) => {
   return await tblMechanicTool.destroy({ where: { id, employeecode } })
 }

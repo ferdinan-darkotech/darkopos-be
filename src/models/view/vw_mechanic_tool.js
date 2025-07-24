@@ -52,6 +52,11 @@ module.exports = function(sequelize, DataTypes) {
     toolcode: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+
+    qty_delete: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {freezeTableName: true}, {
     tableName: 'vw_mechanic_tool'

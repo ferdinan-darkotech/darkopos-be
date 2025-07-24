@@ -1,5 +1,5 @@
 const { ApiError } = require("../../../../services/v1/errorHandlingService")
-const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool, fetchMechanicToolsInventory, fetchMechanicToolByToolAndMechanic, createSaldoAwalMehanicTools, fetchMechanicToolsSaldoFormatByEmployeeCode, fetchMonthAndYearSaldoPeriod } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
+const { fetchMechanics, addNewToolOnMechanic, removeMechanicTool, fetchMechanicToolsByEmployeeCode, fetchMechanicTools, fetchAllMechanicTools, fetchAllMechanicToolsByEmployeeCode, updateSoftRemoveMechanicTool, fetchMechanicToolsInventory, fetchMechanicToolByToolAndMechanic, createSaldoAwalMehanicTools, fetchMechanicToolsSaldoFormatByEmployeeCode, fetchMonthAndYearSaldoPeriod, removeMechanicToolFn } = require("../../../../services/v2/master/humanresource/srvMechanicTools")
 
 const getMechanics = async function (req, res, next, comment = 'getMechanics') {
     console.log('Requesting-' + comment + ': ' + req.url + ' ...')
@@ -106,20 +106,29 @@ const deleteMechanicTool = async function (req, res, next, comment = 'deleteMech
 
   const payload = {
     memo: req.body.memo,
-    deletedby: user.userid
+    deletedby: user.userid,
+    ...(req.body.qty ? { qty: req.body.qty } : {}),
   }
 
-  return removeMechanicTool(id, employeecode).then((response) => {
-    if (response) {
-      updateSoftRemoveMechanicTool(id, employeecode, payload).then((response) => {
-        res.xstatus(200).json({
-          success: true,
-          message: 'Ok',
-          data: response
-        })
-      }).catch(err => next(new ApiError(422, `ZCEP-00004: Couldn't remove tool on this mechanic from tbl_mechanic_tool`, err)))
-    }
-  }).catch(err => next(new ApiError(422, `ZCEP-00005: Couldn't create tool on tbl_mechanic_tool_log`, err)))
+  return removeMechanicToolFn(id, payload).then((response) => {
+    res.xstatus(200).json({
+      success: true,
+      message: 'Ok',
+      data: response
+    })
+  }).catch(err => next(new ApiError(422, `ZCEP-00004: Couldn't remove tool on this mechanic from tbl_mechanic_tool`, err)))
+
+  // return removeMechanicTool(id, employeecode).then((response) => {
+  //   if (response) {
+  //     updateSoftRemoveMechanicTool(id, employeecode, payload).then((response) => {
+  //       res.xstatus(200).json({
+  //         success: true,
+  //         message: 'Ok',
+  //         data: response
+  //       })
+  //     }).catch(err => next(new ApiError(422, `ZCEP-00004: Couldn't remove tool on this mechanic from tbl_mechanic_tool`, err)))
+  //   }
+  // }).catch(err => next(new ApiError(422, `ZCEP-00005: Couldn't create tool on tbl_mechanic_tool_log`, err)))
 
   // return addSoftRemoveMechanicTool(id, payload, user.userid).then((response) => {
   //   if (response) {
