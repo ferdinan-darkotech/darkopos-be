@@ -45,7 +45,11 @@ export const addNewToolOnMechanic = async (payload, user) => {
     createdby: user
   }
 
-  return await tblMechanicTool.create(body)
+  const result = await tblMechanicTool.create(body)
+
+  await createSaldoAwalMehanicTools({ tahun: moment().format('YYYY'), bulan: moment().format('MM') })
+  
+  return result
 }
 
 const checkView = (type) => {
@@ -87,8 +91,8 @@ export const fetchMechanicToolsByEmployeeCode = async (employeecode, query, pagi
       // [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
       ...(type === 'saldo' ? { tahun: query.year || currentYear, bulan: query.month || currentMonth } : {})
     },
-    limit: parseInt(pageSize || 6),
-    offset: (parseInt(page || 1) - 1) * parseInt(pageSize || 6),
+    limit: parseInt(pageSize || 10),
+    offset: (parseInt(page || 1) - 1) * parseInt(pageSize || 10),
     ...(type === 'detail' ? { order: [['createdat', 'desc']] } : {}) // [MECHANIC TOOLS REPORT]: FERDINAN - 15/07/2025
   })
 }
@@ -194,12 +198,19 @@ export const removeMechanicToolFn = async (id, payload) => {
 
   const { id: mechanictoolid, ...rest } = mechanictool
 
-  return await addNewMechanicToolLog({ 
+  const result = await addNewMechanicToolLog({ 
     mechanictoolid, 
     ...rest, 
     ...payload, 
     deletedat: new Date()
   })
+
+  await createSaldoAwalMehanicTools({ 
+    tahun: moment().format('YYYY'), 
+    bulan: moment().format('MM')
+  })
+
+  return result
 }
 
 export const removeMechanicTool = async (id, employeecode) => {

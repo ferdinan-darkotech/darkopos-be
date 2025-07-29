@@ -341,7 +341,7 @@ export function getProductsData (query, pagination) {
     for (let key in searchField) {
       const id = Object.assign(searchField)[key]
       // if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type' || id === 'productCode')) {
-      if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type' || id === 'productCode')) {
+      if (!(id === 'createdBy' || id === 'updatedBy' || id === 'createdAt' || id === 'updatedAt' || id === 'type')) {
         let obj = {}
         // obj[id] = query['q']
         obj[id] = { [Op.iRegexp]: query['q'] }

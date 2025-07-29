@@ -79,7 +79,7 @@ module.exports = function (sequelize, DataTypes) {
     taxdigit: { type: DataTypes.INTEGER },
 
     // [GET POS BY DATE AND CUSTOMER]: FERDINAN - 2025/07/14
-    woNo: { type: DataTypes.STRING },
+    wono: { type: DataTypes.STRING },
     total_products: { type: DataTypes.INTEGER },
     total_services: { type: DataTypes.INTEGER },
     total_netto: { type: DataTypes.INTEGER },
