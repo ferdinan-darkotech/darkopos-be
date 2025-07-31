@@ -2,7 +2,10 @@ import { ApiError } from '../../../services/v1/errorHandlingService'
 import { extractTokenProfile } from '../../../services/v1/securityService'
 import {
   srvGetStockOnHand, srvGetStockExists, srvGetSomeStockOnHand, srvGetStockOnHandByScanner, srvGetSuggestionOrder,
-  srvBulkUpdateGlobalProduct, srvGetTotalStock, srvFindStockByCode, srvGetStockLOV, srvGetStockQuery, getHppStock
+  srvBulkUpdateGlobalProduct, srvGetTotalStock, srvFindStockByCode, srvGetStockLOV, srvGetStockQuery, getHppStock,
+
+  // [GENERATE UPDATED PRICE]: FERDINAN - 29/07/2025
+  srvGetProductPurchasePriceByProducts
 } from '../../../services/v2/inventory/srvStocks'
 import { countUserRole } from '../../../services/v1/usersService'
 import { getMiscByCodeName } from '../../../services/v1/miscService'
@@ -173,4 +176,16 @@ export function ctlFindHppStock (req, res, next) {
       data: ext.data
     })
   }).catch(err => next(new ApiError(422, `ZCCA-00011: Couldn't get HPP`, err)))
+}
+
+// [GENERATE UPDATED PRICE]: FERDINAN - 29/07/2025
+export function ctlGetUpdatedProductPurchasePrice(req, res, next) {
+  console.log('Requesting-ctlGetUpdatedProductPurchasePrice: ' + JSON.stringify(req.params) + ' ...')
+  
+  return srvGetProductPurchasePriceByProducts(req.body.products, req.body.storeid).then(ext => {
+    res.xstatus(200).json({
+      success: true,
+      data: ext
+    })
+  }).catch(err => next(new ApiError(422, `ZCCA-00012: Couldn't get products`, err)))
 }

@@ -296,3 +296,13 @@ export function getHppStock(query) {
     return { success: true, data: rs };
   }).catch(er => ({ success: false, message: er.message }));
 }
+
+// [GENERATE UPDATED PRICE]: FERDINAN - 29/07/2025
+export async function srvGetProductPurchasePriceByProducts(products, storeid) {
+  return await vStockListPurchasePrice.findAll({
+    where: {
+      productcode: { [Op.in]: products },
+      storeid: storeid
+    }
+  })
+}

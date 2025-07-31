@@ -3,7 +3,10 @@ import project from '../../../../config/project.config'
 import { requireAuth } from '../../../services/v1/usersService'
 import {
   ctlGetStockOnHand, ctlGetStockExists, ctlGetSomeStockOnHand, ctlGetStockOnHandByScanner, ctlGetSuggestionOrder,
-  ctlBulkUpdateGlobalProduct, ctlGetTotalStock, ctlFindStockByCode, ctlGetStockLOV, ctlGetStockQuery, ctlFindHppStock
+  ctlBulkUpdateGlobalProduct, ctlGetTotalStock, ctlFindStockByCode, ctlGetStockLOV, ctlGetStockQuery, ctlFindHppStock,
+
+  // [GENERATE UPDATED PRICE]: FERDINAN - 29/07/2025
+  ctlGetUpdatedProductPurchasePrice
 } from '../../../controllers/v2/inventory/ctlStocks'
 
 const router = express.Router()
@@ -22,7 +25,10 @@ const apiRouter = [
   apiRoute + '/lov',
   apiRoute + '/q',
 
-  apiRoute + '/hpp-stock'
+  apiRoute + '/hpp-stock',
+
+  // [GENERATE UPDATED PRICE]: FERDINAN - 29/07/2025
+  apiRoute + '/updated-price'
 ]
 
 router.get(apiRouter[0], requireAuth, ctlGetStockOnHand)
@@ -37,6 +43,7 @@ router.get(apiRouter[8], requireAuth, ctlGetStockLOV)
 router.post(apiRouter[6], requireAuth, ctlGetTotalStock)
 router.get(apiRouter[9], requireAuth, ctlGetStockQuery)
 router.post(apiRouter[10], requireAuth, ctlFindHppStock)
+router.post(apiRouter[11], requireAuth, ctlGetUpdatedProductPurchasePrice)
 
 
 export default router
