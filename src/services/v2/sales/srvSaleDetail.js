@@ -7,7 +7,7 @@ const viewSaleDetail = dbv.vw_pos_detail
 const idField = ['id']
 const viewSaleDetailMainFields = ['id', 'typeCode', 'transNo', 'bundlingId', 'bundlingCode', 'bundlingName',
   'productId', 'serviceCode', 'serviceName', 'productCode', 'productName', 'qty', 'trade_in_id',
-  'sellPrice', 'sellingPrice', 'DPP', 'PPN', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3',
+  'sellPrice', 'sellingPrice', 'dpp', 'ppn', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3',
 
   // [NEW]: FERDINAN - 2025-03-26
   'salestype', 'additionalpricepercent', 'additionalpricenominal',
@@ -21,7 +21,7 @@ const viewSaleDetailMainFields = ['id', 'typeCode', 'transNo', 'bundlingId', 'bu
 const viewSaleDetailMinFields01 = ['transNo', 'productCode', 'serviceCode']
 const viewSaleDetailMinFields02 = ['typeCode', 'transNo', 'trade_in_id',
   'serviceCode', 'serviceName', 'productCode', 'productName', 'qty',
-  'sellPrice', 'sellingPrice', 'DPP', 'PPN', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3', 'keterangan',
+  'sellPrice', 'sellingPrice', 'dpp', 'ppn', 'discountLoyalty', 'discount', 'disc1', 'disc2', 'disc3', 'keterangan',
 
   // [NEW]: FERDINAN - 2025-03-26
   'salestype', 'additionalpricepercent', 'additionalpricenominal',

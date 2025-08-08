@@ -62,6 +62,11 @@ const config = {
 
   version: process.env.VERSION,
   message_detail: process.env.MESSAGE_DETAIL,
+
+  // [MPWA CONNECT]: FERDINAN - 31/08/2025
+  mpwa_api_key: process.env.API_KEY_MPWA,
+  mpwa_url: process.env.MPWA_URL
+  // mpwa_sender_phone: process.env.MPWA_SENDER_PHONE
 }
 
 // ------------------------------------

@@ -174,6 +174,9 @@ import mechanicRouter from './v2/master/humanresource/rtrMechanicTools'
 // [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
 import stockGroupRouter from './v1/product/stockGroupRouter'
 
+// [MPWA CONNECT]: FERDINAN - 31/08/2025
+import mpwaRouter from './v2/mpwa/rtrMpwa'
+
 /// v2
 
 const routes = (app) => {
@@ -444,6 +447,9 @@ const routes = (app) => {
   // [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
   app.use(stockGroupRouter)
   app.use(stocksGroup)
+
+  // [MPWA CONNECT]: FERDINAN - 31/08/2025
+  app.use(mpwaRouter)
 }
 
 export default routes
