@@ -5,7 +5,7 @@ import { srvGetSaleByStoreOneDay, srvGetSaleByStoreTransNo } from '../../../serv
 import { srvGetSaleDetailByStoreTransNo } from '../../../services/v2/sales/srvSaleDetail'
 import { srvGetSalePaymentByStoreTransNo } from '../../../services/v2/sales/srvSalePayment'
 import { srvGetAllStockProductTradeIn } from '../../../services/v2/master/stocks/srvProductTradeIN'
-import { srvGetOneCustomerByCode } from '../../../services/v2/master/customer/srvCustomerList'
+import { srvGetCustomerById, srvGetOneCustomerByCode } from '../../../services/v2/master/customer/srvCustomerList'
 
 
 export function ctlGetPendingTaxSeries (req, res, next) {
@@ -72,6 +72,13 @@ export function ctlGetSaleByStoreTransNo (req, res, next) {
       })
       newDetailSales = tmpDetailSales
     }
+
+    
+    // [MESSAGE AFTER PAYMENT]: FERDINAN 2025/08/08
+    const pos = JSON.parse(JSON.stringify(values[0]))
+    const getMember = await srvGetCustomerById(pos.memberId)
+    const existsMember = JSON.parse(JSON.stringify(getMember))
+    const memberVerifyData = (existsMember.verifications || {})
     
     res.xstatus(200).json({
       success: true,
@@ -79,7 +86,12 @@ export function ctlGetSaleByStoreTransNo (req, res, next) {
       total: values[0].count,
       data: values[0],
       detail: newDetailSales,
-      edc: values[2]
+      edc: values[2],
+
+      // [MESSAGE AFTER PAYMENT]: FERDINAN 2025/08/08
+      memberInfo: {
+        verifyNumber: (memberVerifyData.WA || {}).id || null
+      }
     })
   }).catch(err => next(new ApiError(422,`ZCSP-00001: Couldn't find Sale`, err)))
 }
