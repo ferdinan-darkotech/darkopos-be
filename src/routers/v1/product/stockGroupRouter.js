@@ -1,4 +1,4 @@
-// [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+// [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
 import express from 'express'
 import project from '../../../../config/project.config'
 import { requireAuth } from '../../../services/v1/usersService'

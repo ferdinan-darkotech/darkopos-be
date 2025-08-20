@@ -1,3 +1,4 @@
+// [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
 import db from '../models'
 import dbv from '../models/view'
 import { ApiError } from '../services/v1/errorHandlingService'

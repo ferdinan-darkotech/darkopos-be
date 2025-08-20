@@ -19,7 +19,7 @@ const Fields = [
   'deletedBy',
   'deletedAt',
 
-  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
   'groupId',
   'groupName',
   'groupCode'
@@ -136,7 +136,7 @@ export function getData (query, pagination) {
         deletedBy: {
           [Op.eq]: null
         },
-        // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+        // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
         ...(other.groupId ? { [Op.or]: other } : { [Op.and]: other })
       },
       order: [['createdAt']],
@@ -147,7 +147,7 @@ export function getData (query, pagination) {
     return view.findAll({
       attributes: query.field ? query.field.split(',') : Fields,
       where: {
-        // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+        // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
         ...(other.groupId ? { [Op.or]: other } : { ...other }),
         deletedBy: {
           [Op.eq]: null
@@ -167,7 +167,7 @@ export function insertData (data, createdBy, next) {
     createdBy: createdBy,
     updatedBy: '---',
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: data.groupId
   })
 }
@@ -178,7 +178,7 @@ export function updateData (id, data, updateBy) {
     name: data.name,
     updatedBy: updateBy,
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: data.groupId
   },
     {

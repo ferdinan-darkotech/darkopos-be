@@ -48,7 +48,7 @@ module.exports = function (sequelize, DataTypes) {
     distPrice01Local: { type: DataTypes.NUMERIC },
     distPrice02Local: { type: DataTypes.NUMERIC },
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: { type: DataTypes.INTEGER },
     groupName: { type: DataTypes.STRING },
     groupCode: { type: DataTypes.STRING }

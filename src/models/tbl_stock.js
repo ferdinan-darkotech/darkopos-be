@@ -133,7 +133,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     updatedAt: { type: DataTypes.DATE, allowNull: true },
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: true

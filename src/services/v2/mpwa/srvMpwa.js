@@ -10,12 +10,17 @@ import project from "../../../../config/project.config";
 
 import dbv from "../../../models/view";
 import db from "../../../models/tableR";
+import db2 from "../../../models";
 import { srvGetStoreSetting } from "../master/store/srvStore";
 
 const vwPos = dbv.vw_pos;
 const vwPosDetail = dbv.vw_pos_detail;
-const tblMessageTemplate = db.tbl_message_template;
+
 const tblMember = db.tbl_member;
+const tblMessageTemplate = db.tbl_message_template;
+
+// [REMINDER SERVICE MPWA]: FERDINAN - 2025/08/14
+const tblStore = db2.tbl_store
 
 const viewSaleDetailMainFields = ['id', 'typeCode', 'transNo', 'bundlingId', 'bundlingCode', 'bundlingName',
     'productId', 'serviceCode', 'serviceName', 'productCode', 'productName', 'qty', 'trade_in_id',
@@ -58,12 +63,21 @@ function fillTemplate(template, data) {
   });
 }
 
+// [REMINDER SERVICE MPWA]: FERDINAN - 2025/08/14
+export async function getTemplateMessage (templatecode) {
+  const template = await tblMessageTemplate.findOne({
+    attributes: ["content_body"],
+    where: { code: templatecode },
+  });
+  return template
+}
+
 export async function getTemplateAfterPaymentMessage (transno, templatecode) {
   const pos = await vwPos.findOne({ 
     attributes: ['transno', 'total_netto', 'transdate'],
     where: { transno: transno }, 
     raw: true 
-});
+  });
 
   const posdetail = await vwPosDetail.findAll({
     attributes: viewSaleDetailMainFields,
@@ -71,10 +85,7 @@ export async function getTemplateAfterPaymentMessage (transno, templatecode) {
     raw: true,
   })
 
-  const template = await tblMessageTemplate.findOne({
-    attributes: ["content_body"],
-    where: { code: templatecode },
-  });
+  const template = await getTemplateMessage(templatecode);
 
   const products = posdetail.filter((item) => item.typecode === 'P');
   const services = posdetail.filter((item) => item.typecode === 'S');
@@ -190,11 +201,63 @@ export async function fetchMemberCodeByPhone (localphone, internationalphone) {
           ...(internationalphone ? [{ mobileNumber: internationalphone }] : [])
         ]
       }
-    });
+    })
 
-    return result ? result.memberCode : null;
+    return result ? result.memberCode : null
   } catch (error) {
-    console.error('Couldn\'t find member code : ', error);
-    throw error;
+    console.error('Couldn\'t find member code : ', error)
+    throw error
   }
+}
+
+// [REMINDER SERVICE MPWA]: FERDINAN - 2025/08/14
+export async function getTransactionByAge ({ days, weeks, months, years, storeid }) {
+  let date = new Date()
+
+  if (years)  date.setFullYear(date.getFullYear() - years)
+  if (months) date.setMonth(date.getMonth() - months)
+  if (weeks)  date.setDate(date.getDate() - (weeks * 7))
+  if (days)   date.setDate(date.getDate() - days)
+
+  let whereClause = {}
+
+  if (days || weeks || months || years) {
+    whereClause.transdate = {
+      [Op.lte]: date
+    }
+  }
+
+  const transactions = await vwPos.findAll({
+    where: {
+      ...whereClause,
+      storeid
+    },
+    raw: true
+  })
+
+  return transactions
+}
+
+// [REMINDER SERVICE MPWA]: FERDINAN - 2025/08/14
+export async function getStoreSetting () {
+  const store = await tblStore.findAll({
+    attributes: ['id', 'storeparentid', 'settingvalue'],
+    raw: true
+  })
+
+  // bikin lookup biar cepat cari parent
+  const storeMap = new Map(store.map(s => [s.id, s.settingvalue]))
+
+  const storeWithParent = store.map(function(s) {
+    const parentSetting = storeMap.get(s.storeparentid)
+
+    return {
+      id: s.id,
+      storeparentid: s.storeparentid,
+      mpwa: s.settingvalue && s.settingvalue.mpwa ? s.settingvalue.mpwa : null,
+      mpwaParent: parentSetting && parentSetting.mpwa ? parentSetting.mpwa : null
+    }
+  })
+
+  return storeWithParent
 }

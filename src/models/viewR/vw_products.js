@@ -45,7 +45,7 @@ module.exports = function (sequelize, DataTypes) {
     updatedBy: { type: DataTypes.STRING },
     updatedAt: { type: DataTypes.DATE },
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: { type: DataTypes.INTEGER },
     groupName: { type: DataTypes.STRING },
     groupCode: { type: DataTypes.STRING }

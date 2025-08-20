@@ -216,7 +216,7 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
         }
   
         if (!storeAccess.includes(b.store.trim())) {
-          erResults = `Kesalahan pada baris ${x + 1}: store '${b.store}' tidak valid atau tidak memiliki akses.`;
+          erResults = `Kesalahan pada baris ${x + 1}: store '${b.store}' tidak valid atau tidak ditemukan di tabel stock.`;
           break;
         }
         

@@ -62,7 +62,7 @@ const stockFields = ['id', 'variantId', 'productParentId', 'productCode', 'produ
   'active', 'exception01', 'usageTimePeriod', 'usageMileage', 'productImage', 'dummyCode', 'dummyName',
   'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'max_disc',
 
-  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
   'groupId', 'groupName', 'groupCode'
 ]
 
@@ -74,7 +74,7 @@ const stockFieldsV2 = ['id', 'productCode', 'productName', 'barCode01', 'barCode
   'active', 'exception01', 'usageTimePeriod', 'usageMileage', 'productImage', 'dummyCode', 'dummyName',
   'use_warranty', 'valid_warranty_km', 'valid_warranty_period', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt',
 
-  // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+  // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
   'groupId', 'groupName', 'groupCode'
 ]
 
@@ -573,7 +573,7 @@ export function createStockGlobal (stockcode, stock, createdBy, next, transactio
     createdAt: moment(),
     updatedBy: '---',
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: stock.groupId
   }, { transaction }).catch(err => {
     console.log(err)
@@ -674,7 +674,7 @@ export function updateStockGlobal(stockcode, stock, updateBy, next, localPrice) 
     updatedBy: updateBy,
     updatedAt: moment(),
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: stock.groupId
   },
     { where: { productCode: stockcode } }

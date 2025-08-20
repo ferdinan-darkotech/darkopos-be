@@ -1,4 +1,4 @@
-// [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+// [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
 import project from '../../config/project.config'
 import { ApiError } from '../services/v1/errorHandlingService'
 import {

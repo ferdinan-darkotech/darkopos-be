@@ -80,7 +80,7 @@ async function sendMesageAfterPayment (req, res, next) {
     return MPWASERVICE.getStoreSettingForMPWA(storecode).then(async (mpwaSetting) => {
         const { mpwasender } = MPWASERVICE.checkMPWASetting(mpwaSetting)
 
-        return MPWASERVICE.getTemplateAfterPaymentMessage(transno, mpwaSetting.afterpayment).then(async (message) => {
+        return MPWASERVICE.getTemplateAfterPaymentMessage(transno, mpwaSetting.afterpayment.templatecode || mpwaSetting.afterpayment).then(async (message) => {
             if (message) {
                 return MPWASERVICE.sendMessageToWa(international, mpwasender, message).then(async (result) => {
                     if (result) {
@@ -89,7 +89,8 @@ async function sendMesageAfterPayment (req, res, next) {
                             message_text: message,
                             message_status: 'S',
                             message_type: mpwaSetting.afterpayment,
-                            member_code: memberCode
+                            member_code: memberCode,
+                            message_time: new Date()
                         }
 
                         return fonnteMsg(dataCreatMsg, next).then((pesan_wa) => {

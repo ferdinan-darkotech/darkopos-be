@@ -171,7 +171,7 @@ import requestStockOutRouter from './v2/transaction/rtrRequestStockOut'
 // [MECHANIC TOOLS]: FERDINAN - 2025-05-13
 import mechanicRouter from './v2/master/humanresource/rtrMechanicTools'
 
-// [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+// [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
 import stockGroupRouter from './v1/product/stockGroupRouter'
 
 // [MPWA CONNECT]: FERDINAN - 31/08/2025
@@ -444,7 +444,7 @@ const routes = (app) => {
   // [MECHANIC TOOLS]: FERDINAN - 2025-05-13
   app.use(mechanicRouter)
 
-  // [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+  // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
   app.use(stockGroupRouter)
   app.use(stocksGroup)
 

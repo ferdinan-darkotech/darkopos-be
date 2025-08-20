@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
     deletedBy: { type: DataTypes.STRING },
     deletedAt: { type: DataTypes.DATE },
 
-    // [MASTER STOCKS GROUP - ADD]: FERDINAN - 16/06/2025
+    // [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
     groupId: { type: DataTypes.INTEGER },
     groupCode: { type: DataTypes.STRING },
     groupName: { type: DataTypes.STRING }

@@ -1,4 +1,4 @@
-// [MASTER PRODUCT GROUP]: FERDINAN - 16/06/2025
+// [MASTER STOCKS GROUP]: FERDINAN - 16/06/2025
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
