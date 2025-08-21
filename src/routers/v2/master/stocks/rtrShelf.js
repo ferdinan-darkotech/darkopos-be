@@ -18,7 +18,10 @@ const apiRoutes02 = [
   apiRoute02,
   apiRoute02 + '/of',
   apiRoute02 + '/import',
-  apiRoute02 + '/bulk-delete'
+  apiRoute02 + '/bulk-delete',
+
+  // [EXPORT SHELF ITEM]: FERDINAN - 21/08/2025
+  apiRoute02 + '/report'
 ]
 
 // MAIN
@@ -35,6 +38,8 @@ router.post(apiRoutes02[1], requireAuth, cShelf.ctlGetShelfOfProducts)
 router.post(apiRoutes02[2], requireAuth, cShelf.ctlImportShelfItems)
 router.delete(apiRoutes02[3], requireAuth, cShelf.ctlBulkDeleteShelfItems)
 
+// [EXPORT SHELF ITEM]: FERDINAN - 21/08/2025
+router.get(apiRoutes02[4], requireAuth, cShelf.ctlGetShelfItemsForReport)
 
 // MAIN
 

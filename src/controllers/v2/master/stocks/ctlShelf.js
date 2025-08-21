@@ -143,3 +143,22 @@ export function ctlBulkDeleteShelfItems (req, res, next) {
     }).catch(err => next(new ApiError(422, `ZSHELF-00012: Couldn't delete shelf items.`, err)))
   }).catch(err => next(new ApiError(422, `ZSHELF-00011: Couldn't delete shelf items.`, err)))
 }
+
+
+// [EXPORT SHELF ITEM]: FERDINAN - 21/08/2025
+export function ctlGetShelfItemsForReport (req, res, next) {
+  console.log('Requesting-ctlGetShelfItemsForReport: ' + JSON.stringify(req.params) + '...' + JSON.stringify(req.url))
+
+  const userLogin = req.$userAuth
+  return stores.srvGetAllStore({ ownedOnly: 'Y', m: 'lov' }, userLogin.userid).then(stores => {
+    const storeCodes = JSON.parse(JSON.stringify(stores)).map(a => a.storeCode)
+    console.log("storeCodes >>> ", storeCodes)
+    
+    return shelfs.fetchAllShelftItems(storeCodes).then(rld => {
+      res.xstatus(200).json({
+        success: true,
+        data: rld,
+      })
+    }).catch(err => next(new ApiError(422, `ZSHELF-00014: Couldn't find shelfs item for report.`, err)))
+  }).catch(err => next(new ApiError(422, `ZSHELF-00013: Couldn't find shelfs item for report.`, err)))
+}

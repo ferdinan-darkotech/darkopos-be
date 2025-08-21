@@ -187,7 +187,7 @@ export async function srvImportShelfItems (storeAccess = [], data = [], users = 
         where: {
           [Op.or]: mappingFilters01,
           store_code: { [Op.in]: storeAccess },
-          status: { [Op.eq]: true }
+          // status: { [Op.eq]: true }
         },
         raw: true
       })
@@ -412,3 +412,13 @@ export async function srvBulkDeleteShelfItems (storeAccess = [], items = []) {
 }
 
 
+// [EXPORT SHELF ITEM]: FERDINAN - 21/08/2025
+export async function fetchAllShelftItems (stores = []) {
+  return await vwShelfItem.findAll({ 
+    attributes: attrShelfItems.bf,
+    where: {
+      store_code: { $in: stores }
+    },
+    raw: true
+  })
+}
